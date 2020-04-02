@@ -1,0 +1,247 @@
+
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>4. Security Guide &mdash; Apache Sqoop  documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="Apache Sqoop  documentation" href="index.html"/>
+        <link rel="next" title="4.1. API TLS/SSL" href="security/API TLS-SSL.html"/>
+        <link rel="prev" title="3.6. Repository" href="dev/Repository.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> Apache Sqoop
+          
+
+          
+            
+            <img src="_static/sqoop-logo.png" class="logo" />
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="admin.html">1. Admin Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="user.html">2. User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dev.html">3. Developer Guide</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="">4. Security Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="security/API TLS-SSL.html">4.1. API TLS/SSL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="security/AuthenticationAndAuthorization.html">4.2. Authentication and Authorization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="security/RepositoryEncryption.html">4.3. Repository Encryption</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="index.html">Apache Sqoop</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="index.html">Docs</a> &raquo;</li>
+      
+    <li>4. Security Guide</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/security.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="security-guide">
+<h1>4. Security Guide<a class="headerlink" href="#security-guide" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="security/API TLS-SSL.html">4.1. API TLS/SSL</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="security/API TLS-SSL.html#keystore-generation">4.1.1. Keystore Generation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="security/API TLS-SSL.html#server-configuration">4.1.2. Server Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="security/API TLS-SSL.html#client-shell-configuration">4.1.3. Client/Shell Configuration</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="security/AuthenticationAndAuthorization.html">4.2. Authentication and Authorization</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="security/AuthenticationAndAuthorization.html#simple-authentication">4.2.1. Simple Authentication</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="security/AuthenticationAndAuthorization.html#configuration">4.2.1.1. Configuration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="security/AuthenticationAndAuthorization.html#run-command">4.2.1.2. Run command</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="security/AuthenticationAndAuthorization.html#kerberos-authentication">4.2.2. Kerberos Authentication</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="security/AuthenticationAndAuthorization.html#dependency">4.2.2.1. Dependency</a></li>
+<li class="toctree-l3"><a class="reference internal" href="security/AuthenticationAndAuthorization.html#id1">4.2.2.2. Configuration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="security/AuthenticationAndAuthorization.html#id2">4.2.2.3. Run command</a></li>
+<li class="toctree-l3"><a class="reference internal" href="security/AuthenticationAndAuthorization.html#verify">4.2.2.4. Verify</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="security/AuthenticationAndAuthorization.html#customized-authentication">4.2.3. Customized Authentication</a></li>
+<li class="toctree-l2"><a class="reference internal" href="security/AuthenticationAndAuthorization.html#authorization">4.2.4. Authorization</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="security/AuthenticationAndAuthorization.html#users-groups-and-roles">4.2.4.1. Users, Groups, and Roles</a></li>
+<li class="toctree-l3"><a class="reference internal" href="security/AuthenticationAndAuthorization.html#administrator">4.2.4.2. Administrator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="security/AuthenticationAndAuthorization.html#role-management-commands">4.2.4.3. Role management commands</a></li>
+<li class="toctree-l3"><a class="reference internal" href="security/AuthenticationAndAuthorization.html#principal-management-commands">4.2.4.4. Principal management commands</a></li>
+<li class="toctree-l3"><a class="reference internal" href="security/AuthenticationAndAuthorization.html#privilege-management-commands">4.2.4.5. Privilege management commands</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="security/RepositoryEncryption.html">4.3. Repository Encryption</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="security/RepositoryEncryption.html#server-configuration">4.3.1. Server Configuration</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="security/API TLS-SSL.html" class="btn btn-neutral float-right" title="4.1. API TLS/SSL" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="dev/Repository.html" class="btn btn-neutral" title="3.6. Repository" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2009-2016 The Apache Software Foundation.
+
+    </p>
+  </div> 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'',
+            VERSION:'',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

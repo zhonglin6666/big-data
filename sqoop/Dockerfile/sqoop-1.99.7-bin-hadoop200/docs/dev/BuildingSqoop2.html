@@ -1,0 +1,261 @@
+
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>3.1. Building Sqoop2 from source code &mdash; Apache Sqoop  documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="Apache Sqoop  documentation" href="../index.html"/>
+        <link rel="up" title="3. Developer Guide" href="../dev.html"/>
+        <link rel="next" title="3.2. Sqoop Java Client API Guide" href="ClientAPI.html"/>
+        <link rel="prev" title="3. Developer Guide" href="../dev.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Apache Sqoop
+          
+
+          
+            
+            <img src="../_static/sqoop-logo.png" class="logo" />
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../admin.html">1. Admin Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user.html">2. User Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../dev.html">3. Developer Guide</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="">3.1. Building Sqoop2 from source code</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#downloading-source-code">3.1.1. Downloading source code</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#building-project">3.1.2. Building project</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#running-tests">3.1.3. Running tests</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="ClientAPI.html">3.2. Sqoop Java Client API Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ConnectorDevelopment.html">3.3. Sqoop 2 Connector Development</a></li>
+<li class="toctree-l2"><a class="reference internal" href="DevEnv.html">3.4. Sqoop 2 Development Environment Setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="RESTAPI.html">3.5. Sqoop REST API Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Repository.html">3.6. Repository</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../security.html">4. Security Guide</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">Apache Sqoop</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../dev.html">3. Developer Guide</a> &raquo;</li>
+      
+    <li>3.1. Building Sqoop2 from source code</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/dev/BuildingSqoop2.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="building-sqoop2-from-source-code">
+<h1>3.1. Building Sqoop2 from source code<a class="headerlink" href="#building-sqoop2-from-source-code" title="Permalink to this headline">¶</a></h1>
+<p>This guide will show you how to build Sqoop2 from source code. Sqoop is using <a class="reference external" href="http://maven.apache.org/">maven</a> as build system. You you will need to use at least version 3.0 as older versions will not work correctly. All other dependencies will be downloaded by maven automatically. With exception of special JDBC drivers that are needed only for advanced integration tests.</p>
+<div class="section" id="downloading-source-code">
+<h2>3.1.1. Downloading source code<a class="headerlink" href="#downloading-source-code" title="Permalink to this headline">¶</a></h2>
+<p>Sqoop project is using git as a revision control system hosted at Apache Software Foundation. You can clone entire repository using following command:</p>
+<div class="highlight-none"><div class="highlight"><pre>git clone https://git-wip-us.apache.org/repos/asf/sqoop.git sqoop2
+</pre></div>
+</div>
+<p>Sqoop2 is currently developed in special branch <tt class="docutils literal"><span class="pre">sqoop2</span></tt> that you need to check out after clone:</p>
+<div class="highlight-none"><div class="highlight"><pre>cd sqoop2
+git checkout sqoop2
+</pre></div>
+</div>
+</div>
+<div class="section" id="building-project">
+<h2>3.1.2. Building project<a class="headerlink" href="#building-project" title="Permalink to this headline">¶</a></h2>
+<p>You can use usual maven targets like <tt class="docutils literal"><span class="pre">compile</span></tt> or <tt class="docutils literal"><span class="pre">package</span></tt> to build the project. Sqoop supports one major Hadoop revision at the moment - 2.x. As compiled code for one Hadoop major version can&#8217;t be used on another, you must compile Sqoop against appropriate Hadoop version.</p>
+<div class="highlight-none"><div class="highlight"><pre>mvn compile
+</pre></div>
+</div>
+<p>Maven target <tt class="docutils literal"><span class="pre">package</span></tt> can be used to create Sqoop packages similar to the ones that are officially available for download. Sqoop will build only source tarball by default. You need to specify <tt class="docutils literal"><span class="pre">-Pbinary</span></tt> to build binary distribution.</p>
+<div class="highlight-none"><div class="highlight"><pre>mvn package -Pbinary
+</pre></div>
+</div>
+</div>
+<div class="section" id="running-tests">
+<h2>3.1.3. Running tests<a class="headerlink" href="#running-tests" title="Permalink to this headline">¶</a></h2>
+<p>Sqoop supports two different sets of tests. First smaller and much faster set is called <strong>unit tests</strong> and will be executed on maven target <tt class="docutils literal"><span class="pre">test</span></tt>. Second larger set of <strong>integration tests</strong> will be executed on maven target <tt class="docutils literal"><span class="pre">integration-test</span></tt>. Please note that integration tests might require manual steps for installing various JDBC drivers into your local maven cache.</p>
+<p>Example for running unit tests:</p>
+<div class="highlight-none"><div class="highlight"><pre>mvn test
+</pre></div>
+</div>
+<p>Example for running integration tests:</p>
+<div class="highlight-none"><div class="highlight"><pre>mvn integration-test
+</pre></div>
+</div>
+<p>For the <strong>unit tests</strong>, there are two helpful profiles: <strong>fast</strong> and <strong>slow</strong>. The <strong>fast</strong> unit tests do not start or use any services. The <strong>slow</strong> unit tests, may start services or use an external service (ie. MySQL).</p>
+<div class="highlight-none"><div class="highlight"><pre>mvn test -Pfast,hadoop200
+mvn test -Pslow,hadoop200
+</pre></div>
+</div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="ClientAPI.html" class="btn btn-neutral float-right" title="3.2. Sqoop Java Client API Guide" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../dev.html" class="btn btn-neutral" title="3. Developer Guide" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2009-2016 The Apache Software Foundation.
+
+    </p>
+  </div> 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

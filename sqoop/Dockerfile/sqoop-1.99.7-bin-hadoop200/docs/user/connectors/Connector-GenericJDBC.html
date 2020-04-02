@@ -1,0 +1,500 @@
+
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>2.2.2. Generic JDBC Connector &mdash; Apache Sqoop  documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="Apache Sqoop  documentation" href="../../index.html"/>
+        <link rel="up" title="2.2. Connectors" href="../Connectors.html"/>
+        <link rel="next" title="2.2.3. HDFS Connector" href="Connector-HDFS.html"/>
+        <link rel="prev" title="2.2.1. FTP Connector" href="Connector-FTP.html"/> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Apache Sqoop
+          
+
+          
+            
+            <img src="../../_static/sqoop-logo.png" class="logo" />
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../admin.html">1. Admin Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../user.html">2. User Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../CommandLineClient.html">2.1. Command Line Shell</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../Connectors.html">2.2. Connectors</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="Connector-FTP.html">2.2.1. FTP Connector</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="">2.2.2. Generic JDBC Connector</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#usage">2.2.2.1. Usage</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#partitioner">2.2.2.2. Partitioner</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#extractor">2.2.2.3. Extractor</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#loader">2.2.2.4. Loader</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#destroyers">2.2.2.5. Destroyers</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="Connector-HDFS.html">2.2.3. HDFS Connector</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Connector-Kafka.html">2.2.4. Kafka Connector</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Connector-Kite.html">2.2.5. Kite Connector</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Connector-SFTP.html">2.2.6. SFTP Connector</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../Examples.html">2.3. Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Sqoop5MinutesDemo.html">2.4. Sqoop 5 Minutes Demo</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../dev.html">3. Developer Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../security.html">4. Security Guide</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../index.html">Apache Sqoop</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../../user.html">2. User Guide</a> &raquo;</li>
+      
+          <li><a href="../Connectors.html">2.2. Connectors</a> &raquo;</li>
+      
+    <li>2.2.2. Generic JDBC Connector</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../_sources/user/connectors/Connector-GenericJDBC.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="generic-jdbc-connector">
+<h1><a class="toc-backref" href="#id2">2.2.2. Generic JDBC Connector</a><a class="headerlink" href="#generic-jdbc-connector" title="Permalink to this headline">¶</a></h1>
+<p>The Generic JDBC Connector can connect to any data source that adheres to the <strong>JDBC 4</strong> specification.</p>
+<div class="contents topic" id="contents">
+<p class="topic-title first">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#generic-jdbc-connector" id="id2">Generic JDBC Connector</a><ul>
+<li><a class="reference internal" href="#usage" id="id3">Usage</a><ul>
+<li><a class="reference internal" href="#link-configuration" id="id4"><strong>Link Configuration</strong></a></li>
+<li><a class="reference internal" href="#from-job-configuration" id="id5"><strong>FROM Job Configuration</strong></a></li>
+<li><a class="reference internal" href="#to-job-configuration" id="id6"><strong>TO Job Configuration</strong></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#partitioner" id="id7">Partitioner</a></li>
+<li><a class="reference internal" href="#extractor" id="id8">Extractor</a></li>
+<li><a class="reference internal" href="#loader" id="id9">Loader</a></li>
+<li><a class="reference internal" href="#destroyers" id="id10">Destroyers</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="usage">
+<h2><a class="toc-backref" href="#id3">2.2.2.1. Usage</a><a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h2>
+<p>To use the Generic JDBC Connector, create a link for the connector and a job that uses the link.</p>
+<div class="section" id="link-configuration">
+<h3><a class="toc-backref" href="#id4">2.2.2.1.1. <strong>Link Configuration</strong></a><a class="headerlink" href="#link-configuration" title="Permalink to this headline">¶</a></h3>
+<p>Inputs associated with the link configuration include:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="19%" />
+<col width="6%" />
+<col width="47%" />
+<col width="28%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Input</th>
+<th class="head">Type</th>
+<th class="head">Description</th>
+<th class="head">Example</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>JDBC Driver Class</td>
+<td>String</td>
+<td>The full class name of the JDBC driver.
+<em>Required</em> and accessible by the Sqoop server.</td>
+<td>com.mysql.jdbc.Driver</td>
+</tr>
+<tr class="row-odd"><td>JDBC Connection String</td>
+<td>String</td>
+<td>The JDBC connection string to use when connecting to the data source.
+<em>Required</em>. Connectivity upon creation is optional.</td>
+<td><a class="reference external" href="jdbc:mysql://localhost/test">jdbc:mysql://localhost/test</a></td>
+</tr>
+<tr class="row-even"><td>Username</td>
+<td>String</td>
+<td>The username to provide when connecting to the data source.
+<em>Optional</em>. Connectivity upon creation is optional.</td>
+<td>sqoop</td>
+</tr>
+<tr class="row-odd"><td>Password</td>
+<td>String</td>
+<td>The password to provide when connecting to the data source.
+<em>Optional</em>. Connectivity upon creation is optional.</td>
+<td>sqoop</td>
+</tr>
+<tr class="row-even"><td>JDBC Connection Properties</td>
+<td>Map</td>
+<td>A map of JDBC connection properties to pass to the JDBC driver
+<em>Optional</em>.</td>
+<td>profileSQL=true&amp;useFastDateParsing=false</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="from-job-configuration">
+<h3><a class="toc-backref" href="#id5">2.2.2.1.2. <strong>FROM Job Configuration</strong></a><a class="headerlink" href="#from-job-configuration" title="Permalink to this headline">¶</a></h3>
+<p>Inputs associated with the Job configuration for the FROM direction include:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="19%" />
+<col width="6%" />
+<col width="47%" />
+<col width="29%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Input</th>
+<th class="head">Type</th>
+<th class="head">Description</th>
+<th class="head">Example</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>Schema name</td>
+<td>String</td>
+<td>The schema name the table is part of.
+<em>Optional</em></td>
+<td>sqoop</td>
+</tr>
+<tr class="row-odd"><td>Table name</td>
+<td>String</td>
+<td>The table name to import data from.
+<em>Optional</em>. See note below.</td>
+<td>test</td>
+</tr>
+<tr class="row-even"><td>Table SQL statement</td>
+<td>String</td>
+<td>The SQL statement used to perform a <strong>free form query</strong>.
+<em>Optional</em>. See notes below.</td>
+<td><tt class="docutils literal"><span class="pre">SELECT</span> <span class="pre">COUNT(*)</span> <span class="pre">FROM</span> <span class="pre">test</span> <span class="pre">${CONDITIONS}</span></tt></td>
+</tr>
+<tr class="row-odd"><td>Table column names</td>
+<td>String</td>
+<td>Columns to extract from the JDBC data source.
+<em>Optional</em> Comma separated list of columns.</td>
+<td>col1,col2</td>
+</tr>
+<tr class="row-even"><td>Partition column name</td>
+<td>Map</td>
+<td>The column name used to partition the data transfer process.
+<em>Optional</em>.  Defaults to table&#8217;s first column of primary key.</td>
+<td>col1</td>
+</tr>
+<tr class="row-odd"><td>Null value allowed for
+the partition column</td>
+<td>Boolean</td>
+<td>True or false depending on whether NULL values are allowed in data
+of the Partition column. <em>Optional</em>.</td>
+<td>true</td>
+</tr>
+<tr class="row-even"><td>Boundary query</td>
+<td>String</td>
+<td>The query used to define an upper and lower boundary when partitioning.
+<em>Optional</em>.</td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+<div class="section" id="notes">
+<h4>2.2.2.1.2.1. <strong>Notes</strong><a class="headerlink" href="#notes" title="Permalink to this headline">¶</a></h4>
+<ol class="arabic simple">
+<li><em>Table name</em> and <em>Table SQL statement</em> are mutually exclusive. If <em>Table name</em> is provided, the <em>Table SQL statement</em> should not be provided. If <em>Table SQL statement</em> is provided then <em>Table name</em> should not be provided.</li>
+<li><em>Table column names</em> should be provided only if <em>Table name</em> is provided.</li>
+<li>If there are columns with similar names, column aliases are required. For example: <tt class="docutils literal"><span class="pre">SELECT</span> <span class="pre">table1.id</span> <span class="pre">as</span> <span class="pre">&quot;i&quot;,</span> <span class="pre">table2.id</span> <span class="pre">as</span> <span class="pre">&quot;j&quot;</span> <span class="pre">FROM</span> <span class="pre">table1</span> <span class="pre">INNER</span> <span class="pre">JOIN</span> <span class="pre">table2</span> <span class="pre">ON</span> <span class="pre">table1.id</span> <span class="pre">=</span> <span class="pre">table2.id</span></tt>.</li>
+</ol>
+</div>
+</div>
+<div class="section" id="to-job-configuration">
+<h3><a class="toc-backref" href="#id6">2.2.2.1.3. <strong>TO Job Configuration</strong></a><a class="headerlink" href="#to-job-configuration" title="Permalink to this headline">¶</a></h3>
+<p>Inputs associated with the Job configuration for the TO direction include:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="18%" />
+<col width="6%" />
+<col width="46%" />
+<col width="31%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Input</th>
+<th class="head">Type</th>
+<th class="head">Description</th>
+<th class="head">Example</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>Schema name</td>
+<td>String</td>
+<td>The schema name the table is part of.
+<em>Optional</em></td>
+<td>sqoop</td>
+</tr>
+<tr class="row-odd"><td>Table name</td>
+<td>String</td>
+<td>The table name to import data from.
+<em>Optional</em>. See note below.</td>
+<td>test</td>
+</tr>
+<tr class="row-even"><td>Table SQL statement</td>
+<td>String</td>
+<td>The SQL statement used to perform a <strong>free form query</strong>.
+<em>Optional</em>. See note below.</td>
+<td><tt class="docutils literal"><span class="pre">INSERT</span> <span class="pre">INTO</span> <span class="pre">test</span> <span class="pre">(col1,</span> <span class="pre">col2)</span> <span class="pre">VALUES</span> <span class="pre">(?,</span> <span class="pre">?)</span></tt></td>
+</tr>
+<tr class="row-odd"><td>Table column names</td>
+<td>String</td>
+<td>Columns to insert into the JDBC data source.
+<em>Optional</em> Comma separated list of columns.</td>
+<td>col1,col2</td>
+</tr>
+<tr class="row-even"><td>Stage table name</td>
+<td>String</td>
+<td>The name of the table used as a <em>staging table</em>.
+<em>Optional</em>.</td>
+<td>staging</td>
+</tr>
+<tr class="row-odd"><td>Should clear stage table</td>
+<td>Boolean</td>
+<td>True or false depending on whether the staging table should be cleared
+after the data transfer has finished. <em>Optional</em>.</td>
+<td>true</td>
+</tr>
+</tbody>
+</table>
+<div class="section" id="id1">
+<h4>2.2.2.1.3.1. <strong>Notes</strong><a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h4>
+<ol class="arabic simple">
+<li><em>Table name</em> and <em>Table SQL statement</em> are mutually exclusive. If <em>Table name</em> is provided, the <em>Table SQL statement</em> should not be provided. If <em>Table SQL statement</em> is provided then <em>Table name</em> should not be provided.</li>
+<li><em>Table column names</em> should be provided only if <em>Table name</em> is provided.</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="section" id="partitioner">
+<h2><a class="toc-backref" href="#id7">2.2.2.2. Partitioner</a><a class="headerlink" href="#partitioner" title="Permalink to this headline">¶</a></h2>
+<p>The Generic JDBC Connector partitioner generates conditions to be used by the extractor.
+It varies in how it partitions data transfer based on the partition column data type.
+Though, each strategy roughly takes on the following form:</p>
+<div class="highlight-none"><div class="highlight"><pre>(upper boundary - lower boundary) / (max partitions)
+</pre></div>
+</div>
+<p>By default, the <em>primary key</em> will be used to partition the data unless otherwise specified.</p>
+<p>The following data types are currently supported:</p>
+<ol class="arabic simple">
+<li>TINYINT</li>
+<li>SMALLINT</li>
+<li>INTEGER</li>
+<li>BIGINT</li>
+<li>REAL</li>
+<li>FLOAT</li>
+<li>DOUBLE</li>
+<li>NUMERIC</li>
+<li>DECIMAL</li>
+<li>BIT</li>
+<li>BOOLEAN</li>
+<li>DATE</li>
+<li>TIME</li>
+<li>TIMESTAMP</li>
+<li>CHAR</li>
+<li>VARCHAR</li>
+<li>LONGVARCHAR</li>
+</ol>
+</div>
+<div class="section" id="extractor">
+<h2><a class="toc-backref" href="#id8">2.2.2.3. Extractor</a><a class="headerlink" href="#extractor" title="Permalink to this headline">¶</a></h2>
+<p>During the <em>extraction</em> phase, the JDBC data source is queried using SQL. This SQL will vary based on your configuration.</p>
+<ul class="simple">
+<li>If <em>Table name</em> is provided, then the SQL statement generated will take on the form <tt class="docutils literal"><span class="pre">SELECT</span> <span class="pre">*</span> <span class="pre">FROM</span> <span class="pre">&lt;table</span> <span class="pre">name&gt;</span></tt>.</li>
+<li>If <em>Table name</em> and <em>Columns</em> are provided, then the SQL statement generated will take on the form <tt class="docutils literal"><span class="pre">SELECT</span> <span class="pre">&lt;columns&gt;</span> <span class="pre">FROM</span> <span class="pre">&lt;table</span> <span class="pre">name&gt;</span></tt>.</li>
+<li>If <em>Table SQL statement</em> is provided, then the provided SQL statement will be used.</li>
+</ul>
+<p>The conditions generated by the <em>partitioner</em> are appended to the end of the SQL query to query a section of data.</p>
+<p>The Generic JDBC connector extracts CSV data usable by the <em>CSV Intermediate Data Format</em>.</p>
+</div>
+<div class="section" id="loader">
+<h2><a class="toc-backref" href="#id9">2.2.2.4. Loader</a><a class="headerlink" href="#loader" title="Permalink to this headline">¶</a></h2>
+<p>During the <em>loading</em> phase, the JDBC data source is queried using SQL. This SQL will vary based on your configuration.</p>
+<ul class="simple">
+<li>If <em>Table name</em> is provided, then the SQL statement generated will take on the form <tt class="docutils literal"><span class="pre">INSERT</span> <span class="pre">INTO</span> <span class="pre">&lt;table</span> <span class="pre">name&gt;</span> <span class="pre">(col1,</span> <span class="pre">col2,</span> <span class="pre">...)</span> <span class="pre">VALUES</span> <span class="pre">(?,?,..)</span></tt>.</li>
+<li>If <em>Table name</em> and <em>Columns</em> are provided, then the SQL statement generated will take on the form <tt class="docutils literal"><span class="pre">INSERT</span> <span class="pre">INTO</span> <span class="pre">&lt;table</span> <span class="pre">name&gt;</span> <span class="pre">(&lt;columns&gt;)</span> <span class="pre">VALUES</span> <span class="pre">(?,?,..)</span></tt>.</li>
+<li>If <em>Table SQL statement</em> is provided, then the provided SQL statement will be used.</li>
+</ul>
+<p>This connector expects to receive CSV data consumable by the <em>CSV Intermediate Data Format</em>.</p>
+</div>
+<div class="section" id="destroyers">
+<h2><a class="toc-backref" href="#id10">2.2.2.5. Destroyers</a><a class="headerlink" href="#destroyers" title="Permalink to this headline">¶</a></h2>
+<p>The Generic JDBC Connector performs two operations in the destroyer in the TO direction:</p>
+<ol class="arabic simple">
+<li>Copy the contents of the staging table to the desired table.</li>
+<li>Clear the staging table.</li>
+</ol>
+<p>No operations are performed in the FROM direction.</p>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="Connector-HDFS.html" class="btn btn-neutral float-right" title="2.2.3. HDFS Connector" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="Connector-FTP.html" class="btn btn-neutral" title="2.2.1. FTP Connector" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2009-2016 The Apache Software Foundation.
+
+    </p>
+  </div> 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../',
+            VERSION:'',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

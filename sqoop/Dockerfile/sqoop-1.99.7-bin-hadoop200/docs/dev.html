@@ -1,0 +1,358 @@
+
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>3. Developer Guide &mdash; Apache Sqoop  documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="Apache Sqoop  documentation" href="index.html"/>
+        <link rel="next" title="3.1. Building Sqoop2 from source code" href="dev/BuildingSqoop2.html"/>
+        <link rel="prev" title="2.4. Sqoop 5 Minutes Demo" href="user/Sqoop5MinutesDemo.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> Apache Sqoop
+          
+
+          
+            
+            <img src="_static/sqoop-logo.png" class="logo" />
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="admin.html">1. Admin Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="user.html">2. User Guide</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="">3. Developer Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="dev/BuildingSqoop2.html">3.1. Building Sqoop2 from source code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dev/ClientAPI.html">3.2. Sqoop Java Client API Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dev/ConnectorDevelopment.html">3.3. Sqoop 2 Connector Development</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dev/DevEnv.html">3.4. Sqoop 2 Development Environment Setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dev/RESTAPI.html">3.5. Sqoop REST API Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dev/Repository.html">3.6. Repository</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="security.html">4. Security Guide</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="index.html">Apache Sqoop</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="index.html">Docs</a> &raquo;</li>
+      
+    <li>3. Developer Guide</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/dev.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="developer-guide">
+<h1>3. Developer Guide<a class="headerlink" href="#developer-guide" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="dev/BuildingSqoop2.html">3.1. Building Sqoop2 from source code</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="dev/BuildingSqoop2.html#downloading-source-code">3.1.1. Downloading source code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dev/BuildingSqoop2.html#building-project">3.1.2. Building project</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dev/BuildingSqoop2.html#running-tests">3.1.3. Running tests</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="dev/ClientAPI.html">3.2. Sqoop Java Client API Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="dev/ClientAPI.html#workflow">3.2.1. Workflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dev/ClientAPI.html#project-dependencies">3.2.2. Project Dependencies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dev/ClientAPI.html#initialization">3.2.3. Initialization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dev/ClientAPI.html#link">3.2.4. Link</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="dev/ClientAPI.html#save-link">3.2.4.1. Save Link</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="dev/ClientAPI.html#job">3.2.5. Job</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="dev/ClientAPI.html#save-job">3.2.5.1. Save Job</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dev/ClientAPI.html#list-of-status-codes">3.2.5.2. List of status codes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dev/ClientAPI.html#view-error-or-warning-valdiation-message">3.2.5.3. View Error or Warning valdiation message</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dev/ClientAPI.html#updating-link-and-job">3.2.5.4. Updating link and job</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="dev/ClientAPI.html#job-start">3.2.6. Job Start</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dev/ClientAPI.html#display-config-and-input-names-for-connector">3.2.7. Display Config and Input Names For Connector</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="dev/ConnectorDevelopment.html">3.3. Sqoop 2 Connector Development</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="dev/ConnectorDevelopment.html#what-is-a-sqoop-connector">3.3.1. What is a Sqoop Connector?</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="dev/ConnectorDevelopment.html#when-do-we-add-a-new-connector">3.3.1.1. When do we add a new connector?</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="dev/ConnectorDevelopment.html#connector-implementation">3.3.2. Connector Implementation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="dev/ConnectorDevelopment.html#from">3.3.2.1. From</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="dev/ConnectorDevelopment.html#initializer-and-destroyer">3.3.2.1.1. Initializer and Destroyer</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dev/ConnectorDevelopment.html#partitioner">3.3.2.1.2. Partitioner</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dev/ConnectorDevelopment.html#extractor">3.3.2.1.3. Extractor</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="dev/ConnectorDevelopment.html#to">3.3.2.2. To</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="dev/ConnectorDevelopment.html#id1">3.3.2.2.1. Initializer and Destroyer</a></li>
+<li class="toctree-l4"><a class="reference internal" href="dev/ConnectorDevelopment.html#loader">3.3.2.2.2. Loader</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="dev/ConnectorDevelopment.html#sqoop-connector-identifier-sqoopconnector-properties">3.3.2.3. Sqoop Connector Identifier : sqoopconnector.properties</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dev/ConnectorDevelopment.html#sqoop-connector-build-time-dependencies">3.3.2.4. Sqoop Connector Build-time Dependencies</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dev/ConnectorDevelopment.html#sqoop-connector-build">3.3.2.5. Sqoop Connector Build</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="dev/ConnectorDevelopment.html#configurables">3.3.3. Configurables</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="dev/ConnectorDevelopment.html#configurable-registration">3.3.3.1. Configurable registration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dev/ConnectorDevelopment.html#configurations">3.3.3.2. Configurations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dev/ConnectorDevelopment.html#configs-and-inputs">3.3.3.3. Configs and Inputs</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="dev/ConnectorDevelopment.html#empty-configuration">3.3.3.3.1. Empty Configuration</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="dev/ConnectorDevelopment.html#configuration-resourcebundle">3.3.3.4. Configuration ResourceBundle</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dev/ConnectorDevelopment.html#validations-for-configs-and-inputs">3.3.3.5. Validations for Configs and Inputs</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="dev/ConnectorDevelopment.html#loading-external-connectors">3.3.4. Loading External Connectors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dev/ConnectorDevelopment.html#sqoop-2-mapreduce-job-execution-lifecycle-with-connector-api">3.3.5. Sqoop 2 MapReduce Job Execution Lifecycle with Connector API</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="dev/DevEnv.html">3.4. Sqoop 2 Development Environment Setup</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="dev/DevEnv.html#system-requirement">3.4.1. System Requirement</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="dev/DevEnv.html#java">3.4.1.1. Java</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dev/DevEnv.html#maven">3.4.1.2. Maven</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="dev/DevEnv.html#eclipse-setup">3.4.2. Eclipse Setup</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="dev/RESTAPI.html">3.5. Sqoop REST API Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="dev/RESTAPI.html#initialization">3.5.1. Initialization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dev/RESTAPI.html#understand-connector-driver-link-and-job">3.5.2. Understand Connector, Driver, Link and Job</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dev/RESTAPI.html#objects">3.5.3. Objects</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="dev/RESTAPI.html#configs-and-inputs">3.5.3.1. Configs and Inputs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dev/RESTAPI.html#exception-response">3.5.3.2. Exception Response</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dev/RESTAPI.html#config-and-input-validation-status-response">3.5.3.3. Config and Input Validation Status Response</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dev/RESTAPI.html#job-submission-status-response">3.5.3.4. Job Submission Status Response</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="dev/RESTAPI.html#header-parameters">3.5.4. Header Parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dev/RESTAPI.html#rest-apis">3.5.5. REST APIs</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="dev/RESTAPI.html#version-get-get-sqoop-version">3.5.5.1. /version - [GET] - Get Sqoop Version</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dev/RESTAPI.html#v1-connectors-get-get-all-connectors">3.5.5.2. /v1/connectors - [GET]  Get all Connectors</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dev/RESTAPI.html#v1-connector-cname-get-get-connector">3.5.5.3. /v1/connector/[cname] - [GET] - Get Connector</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dev/RESTAPI.html#v1-driver-get-get-sqoop-driver">3.5.5.4. /v1/driver - [GET]- Get Sqoop Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dev/RESTAPI.html#v1-links-get-get-all-links">3.5.5.5. /v1/links/ - [GET]  Get all links</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dev/RESTAPI.html#v1-links-cname-cname-get-get-all-links-by-connector">3.5.5.6. /v1/links?cname=[cname] - [GET]  Get all links by Connector</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dev/RESTAPI.html#v1-link-lname-get-get-link">3.5.5.7. /v1/link/[lname]  - [GET] - Get Link</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dev/RESTAPI.html#v1-link-post-create-link">3.5.5.8. /v1/link - [POST] - Create Link</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dev/RESTAPI.html#v1-link-lname-put-update-link">3.5.5.9. /v1/link/[lname] - [PUT] - Update Link</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dev/RESTAPI.html#v1-link-lname-delete-delete-link">3.5.5.10. /v1/link/[lname]  - [DELETE] - Delete Link</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dev/RESTAPI.html#v1-link-lname-enable-put-enable-link">3.5.5.11. /v1/link/[lname]/enable  - [PUT] - Enable Link</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dev/RESTAPI.html#v1-link-lname-disable-put-disable-link">3.5.5.12. /v1/link/[lname]/disable - [PUT] - Disable Link</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dev/RESTAPI.html#v1-jobs-get-get-all-jobs">3.5.5.13. /v1/jobs/ - [GET]  Get all jobs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dev/RESTAPI.html#v1-jobs-cname-cname-get-get-all-jobs-by-connector">3.5.5.14. /v1/jobs?cname=[cname] - [GET]  Get all jobs by connector</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dev/RESTAPI.html#v1-job-jname-get-get-job">3.5.5.15. /v1/job/[jname] - [GET] - Get Job</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dev/RESTAPI.html#v1-job-post-create-job">3.5.5.16. /v1/job - [POST] - Create Job</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dev/RESTAPI.html#v1-job-jname-put-update-job">3.5.5.17. /v1/job/[jname] - [PUT] - Update Job</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dev/RESTAPI.html#v1-job-jname-delete-delete-job">3.5.5.18. /v1/job/[jname] - [DELETE] - Delete Job</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dev/RESTAPI.html#v1-job-jname-enable-put-enable-job">3.5.5.19. /v1/job/[jname]/enable - [PUT] - Enable Job</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dev/RESTAPI.html#v1-job-jname-disable-put-disable-job">3.5.5.20. /v1/job/[jname]/disable - [PUT] - Disable Job</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dev/RESTAPI.html#v1-job-jname-start-put-start-job">3.5.5.21. /v1/job/[jname]/start - [PUT]- Start Job</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dev/RESTAPI.html#v1-job-jname-stop-put-stop-job">3.5.5.22. /v1/job/[jname]/stop  - [PUT]- Stop Job</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dev/RESTAPI.html#v1-job-jname-status-get-get-job-status">3.5.5.23. /v1/job/[jname]/status  - [GET]- Get Job Status</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dev/RESTAPI.html#v1-submissions-get-get-all-job-submissions">3.5.5.24. /v1/submissions? - [GET] - Get all job Submissions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dev/RESTAPI.html#v1-submissions-jname-jname-get-get-submissions-by-job">3.5.5.25. /v1/submissions?jname=[jname] - [GET] - Get Submissions by Job</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dev/RESTAPI.html#v1-authorization-roles-create-post-create-role">3.5.5.26. /v1/authorization/roles/create - [POST] - Create Role</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dev/RESTAPI.html#v1-authorization-role-role-name-delete-delete-role">3.5.5.27. /v1/authorization/role/[role-name]  - [DELETE] - Delete Role</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dev/RESTAPI.html#v1-authorization-roles-principal-type-principal-type-principal-name-principal-name-get-get-all-roles-by-principal">3.5.5.28. /v1/authorization/roles?principal_type=[principal-type]&amp;principal_name=[principal-name] - [GET]  Get all Roles by Principal</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dev/RESTAPI.html#v1-authorization-principals-role-name-rname-get-get-all-principals-by-role">3.5.5.29. /v1/authorization/principals?role_name=[rname] - [GET]  Get all Principals by Role</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dev/RESTAPI.html#v1-authorization-roles-grant-put-grant-a-role-to-a-principal">3.5.5.30. /v1/authorization/roles/grant - [PUT] - Grant a Role to a Principal</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dev/RESTAPI.html#v1-authorization-roles-revoke-put-revoke-a-role-from-a-principal">3.5.5.31. /v1/authorization/roles/revoke - [PUT] - Revoke a Role from a Principal</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dev/RESTAPI.html#v1-authorization-privileges-grant-put-grant-a-privilege-to-a-principal">3.5.5.32. /v1/authorization/privileges/grant - [PUT] - Grant a Privilege to a Principal</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dev/RESTAPI.html#v1-authorization-privileges-revoke-put-revoke-a-privilege-to-a-principal">3.5.5.33. /v1/authorization/privileges/revoke - [PUT] - Revoke a Privilege to a Principal</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dev/RESTAPI.html#v1-authorization-privilieges-principal-type-principal-type-principal-name-principal-name-resource-type-resource-type-resource-name-resource-name-get-get-all-roles-by-principal-and-resource">3.5.5.34. /v1/authorization/privilieges?principal_type=[principal-type]&amp;principal_name=[principal-name]&amp;resource_type=[resource-type]&amp;resource_name=[resource-name] - [GET]  Get all Roles by Principal (and Resource)</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="dev/Repository.html">3.6. Repository</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="dev/Repository.html#sqoop-schema">3.6.1. Sqoop Schema</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="dev/Repository.html#sq-system">3.6.1.1. SQ_SYSTEM</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dev/Repository.html#sq-direction">3.6.1.2. SQ_DIRECTION</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dev/Repository.html#sq-configurable">3.6.1.3. SQ_CONFIGURABLE</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dev/Repository.html#sq-connector-directions">3.6.1.4. SQ_CONNECTOR_DIRECTIONS</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dev/Repository.html#sq-config">3.6.1.5. SQ_CONFIG</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dev/Repository.html#sq-config-directions">3.6.1.6. SQ_CONFIG_DIRECTIONS</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dev/Repository.html#sq-input">3.6.1.7. SQ_INPUT</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dev/Repository.html#sq-link">3.6.1.8. SQ_LINK</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dev/Repository.html#sq-job">3.6.1.9. SQ_JOB</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dev/Repository.html#sq-link-input">3.6.1.10. SQ_LINK_INPUT</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dev/Repository.html#sq-job-input">3.6.1.11. SQ_JOB_INPUT</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dev/Repository.html#sq-submission">3.6.1.12. SQ_SUBMISSION</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dev/Repository.html#sq-counter-group">3.6.1.13. SQ_COUNTER_GROUP</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dev/Repository.html#sq-counter">3.6.1.14. SQ_COUNTER</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dev/Repository.html#sq-counter-submission">3.6.1.15. SQ_COUNTER_SUBMISSION</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="dev/BuildingSqoop2.html" class="btn btn-neutral float-right" title="3.1. Building Sqoop2 from source code" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="user/Sqoop5MinutesDemo.html" class="btn btn-neutral" title="2.4. Sqoop 5 Minutes Demo" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2009-2016 The Apache Software Foundation.
+
+    </p>
+  </div> 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'',
+            VERSION:'',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

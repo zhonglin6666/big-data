@@ -1,0 +1,725 @@
+
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>3.6. Repository &mdash; Apache Sqoop  documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="Apache Sqoop  documentation" href="../index.html"/>
+        <link rel="up" title="3. Developer Guide" href="../dev.html"/>
+        <link rel="next" title="4. Security Guide" href="../security.html"/>
+        <link rel="prev" title="3.5. Sqoop REST API Guide" href="RESTAPI.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Apache Sqoop
+          
+
+          
+            
+            <img src="../_static/sqoop-logo.png" class="logo" />
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../admin.html">1. Admin Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user.html">2. User Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../dev.html">3. Developer Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="BuildingSqoop2.html">3.1. Building Sqoop2 from source code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ClientAPI.html">3.2. Sqoop Java Client API Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ConnectorDevelopment.html">3.3. Sqoop 2 Connector Development</a></li>
+<li class="toctree-l2"><a class="reference internal" href="DevEnv.html">3.4. Sqoop 2 Development Environment Setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="RESTAPI.html">3.5. Sqoop REST API Guide</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="">3.6. Repository</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#sqoop-schema">3.6.1. Sqoop Schema</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#sq-system">3.6.1.1. SQ_SYSTEM</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sq-direction">3.6.1.2. SQ_DIRECTION</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sq-configurable">3.6.1.3. SQ_CONFIGURABLE</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sq-connector-directions">3.6.1.4. SQ_CONNECTOR_DIRECTIONS</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sq-config">3.6.1.5. SQ_CONFIG</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sq-config-directions">3.6.1.6. SQ_CONFIG_DIRECTIONS</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sq-input">3.6.1.7. SQ_INPUT</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sq-link">3.6.1.8. SQ_LINK</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sq-job">3.6.1.9. SQ_JOB</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sq-link-input">3.6.1.10. SQ_LINK_INPUT</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sq-job-input">3.6.1.11. SQ_JOB_INPUT</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sq-submission">3.6.1.12. SQ_SUBMISSION</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sq-counter-group">3.6.1.13. SQ_COUNTER_GROUP</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sq-counter">3.6.1.14. SQ_COUNTER</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sq-counter-submission">3.6.1.15. SQ_COUNTER_SUBMISSION</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../security.html">4. Security Guide</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">Apache Sqoop</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../dev.html">3. Developer Guide</a> &raquo;</li>
+      
+    <li>3.6. Repository</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/dev/Repository.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="repository">
+<h1>3.6. Repository<a class="headerlink" href="#repository" title="Permalink to this headline">¶</a></h1>
+<p>This repository contains additional information regarding Sqoop.</p>
+<div class="section" id="sqoop-schema">
+<h2>3.6.1. Sqoop Schema<a class="headerlink" href="#sqoop-schema" title="Permalink to this headline">¶</a></h2>
+<p>The DDL queries that create the Sqoop repository schema in Derby database create the following tables:</p>
+<div class="section" id="sq-system">
+<h3>3.6.1.1. SQ_SYSTEM<a class="headerlink" href="#sq-system" title="Permalink to this headline">¶</a></h3>
+<p>Store for various state information</p>
+<blockquote>
+<div><table border="1" class="docutils">
+<colgroup>
+<col width="100%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">SQ_SYSTEM</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>SQM_ID: BIGINT PK</td>
+</tr>
+<tr class="row-odd"><td>SQM_KEY: VARCHAR(64)</td>
+</tr>
+<tr class="row-even"><td>SQM_VALUE: VARCHAR(64)</td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+</div>
+<div class="section" id="sq-direction">
+<h3>3.6.1.2. SQ_DIRECTION<a class="headerlink" href="#sq-direction" title="Permalink to this headline">¶</a></h3>
+<p>Directions</p>
+<blockquote>
+<div><table border="1" class="docutils">
+<colgroup>
+<col width="75%" />
+<col width="25%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">SQ_DIRECTION</th>
+<th class="head">&nbsp;</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>SQD_ID: BIGINT PK AUTO-GEN</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td>SQD_NAME: VARCHAR(64)</td>
+<td>&#8220;FROM&#8221;|&#8221;TO&#8221;</td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+</div>
+<div class="section" id="sq-configurable">
+<h3>3.6.1.3. SQ_CONFIGURABLE<a class="headerlink" href="#sq-configurable" title="Permalink to this headline">¶</a></h3>
+<p>Configurable registration</p>
+<blockquote>
+<div><table border="1" class="docutils">
+<colgroup>
+<col width="57%" />
+<col width="43%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">SQ_CONFIGURABLE</th>
+<th class="head">&nbsp;</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>SQC_ID: BIGINT PK AUTO-GEN</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td>SQC_NAME: VARCHAR(64)</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td>SQC_CLASS: VARCHAR(255)</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td>SQC_TYPE: VARCHAR(32)</td>
+<td>&#8220;CONNECTOR&#8221;|&#8221;DRIVER&#8221;</td>
+</tr>
+<tr class="row-even"><td>SQC_VERSION: VARCHAR(64)</td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+</div>
+<div class="section" id="sq-connector-directions">
+<h3>3.6.1.4. SQ_CONNECTOR_DIRECTIONS<a class="headerlink" href="#sq-connector-directions" title="Permalink to this headline">¶</a></h3>
+<p>Connector directions</p>
+<blockquote>
+<div><table border="1" class="docutils">
+<colgroup>
+<col width="50%" />
+<col width="50%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">SQ_CONNECTOR_DIRECTIONS</th>
+<th class="head">&nbsp;</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>SQCD_ID: BIGINT PK AUTO-GEN</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td>SQCD_CONNECTOR: BIGINT</td>
+<td>FK SQCD_CONNECTOR(SQC_ID)</td>
+</tr>
+<tr class="row-even"><td>SQCD_DIRECTION: BIGINT</td>
+<td>FK SQCD_DIRECTION(SQD_ID)</td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+</div>
+<div class="section" id="sq-config">
+<h3>3.6.1.5. SQ_CONFIG<a class="headerlink" href="#sq-config" title="Permalink to this headline">¶</a></h3>
+<p>Config details</p>
+<blockquote>
+<div><table border="1" class="docutils">
+<colgroup>
+<col width="41%" />
+<col width="59%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">SQ_CONFIG</th>
+<th class="head">&nbsp;</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>SQ_CFG_ID: BIGINT PK AUTO-GEN</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td>SQ_CFG_CONNECTOR: BIGINT</td>
+<td>FK SQ_CFG_CONNECTOR(SQC_ID), NULL for driver</td>
+</tr>
+<tr class="row-even"><td>SQ_CFG_NAME: VARCHAR(64)</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td>SQ_CFG_TYPE: VARCHAR(32)</td>
+<td>&#8220;LINK&#8221;|&#8221;JOB&#8221;</td>
+</tr>
+<tr class="row-even"><td>SQ_CFG_INDEX: SMALLINT</td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+</div>
+<div class="section" id="sq-config-directions">
+<h3>3.6.1.6. SQ_CONFIG_DIRECTIONS<a class="headerlink" href="#sq-config-directions" title="Permalink to this headline">¶</a></h3>
+<p>Connector directions</p>
+<blockquote>
+<div><table border="1" class="docutils">
+<colgroup>
+<col width="50%" />
+<col width="50%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">SQ_CONNECTOR_DIRECTIONS</th>
+<th class="head">&nbsp;</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>SQCD_ID: BIGINT PK AUTO-GEN</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td>SQCD_CONFIG: BIGINT</td>
+<td>FK SQCD_CONFIG(SQ_CFG_ID)</td>
+</tr>
+<tr class="row-even"><td>SQCD_DIRECTION: BIGINT</td>
+<td>FK SQCD_DIRECTION(SQD_ID)</td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+</div>
+<div class="section" id="sq-input">
+<h3>3.6.1.7. SQ_INPUT<a class="headerlink" href="#sq-input" title="Permalink to this headline">¶</a></h3>
+<p>Input details</p>
+<blockquote>
+<div><table border="1" class="docutils">
+<colgroup>
+<col width="52%" />
+<col width="48%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">SQ_INPUT</th>
+<th class="head">&nbsp;</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>SQI_ID: BIGINT PK AUTO-GEN</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td>SQI_NAME: VARCHAR(64)</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td>SQI_CONFIG: BIGINT</td>
+<td>FK SQ_CONFIG(SQ_CFG_ID)</td>
+</tr>
+<tr class="row-odd"><td>SQI_INDEX: SMALLINT</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td>SQI_TYPE: VARCHAR(32)</td>
+<td>&#8220;STRING&#8221;|&#8221;MAP&#8221;</td>
+</tr>
+<tr class="row-odd"><td>SQI_STRMASK: BOOLEAN</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td>SQI_STRLENGTH: SMALLINT</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td>SQI_ENUMVALS: VARCHAR(100)</td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+</div>
+<div class="section" id="sq-link">
+<h3>3.6.1.8. SQ_LINK<a class="headerlink" href="#sq-link" title="Permalink to this headline">¶</a></h3>
+<p>Stored links</p>
+<blockquote>
+<div><table border="1" class="docutils">
+<colgroup>
+<col width="57%" />
+<col width="43%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">SQ_LINK</th>
+<th class="head">&nbsp;</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>SQ_LNK_ID: BIGINT PK AUTO-GEN</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td>SQ_LNK_NAME: VARCHAR(64)</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td>SQ_LNK_CONNECTOR: BIGINT</td>
+<td>FK SQ_CONNECTOR(SQC_ID)</td>
+</tr>
+<tr class="row-odd"><td>SQ_LNK_CREATION_USER: VARCHAR(32)</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td>SQ_LNK_CREATION_DATE: TIMESTAMP</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td>SQ_LNK_UPDATE_USER: VARCHAR(32)</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td>SQ_LNK_UPDATE_DATE: TIMESTAMP</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td>SQ_LNK_ENABLED: BOOLEAN</td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+</div>
+<div class="section" id="sq-job">
+<h3>3.6.1.9. SQ_JOB<a class="headerlink" href="#sq-job" title="Permalink to this headline">¶</a></h3>
+<p>Stored jobs</p>
+<blockquote>
+<div><table border="1" class="docutils">
+<colgroup>
+<col width="58%" />
+<col width="42%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">SQ_JOB</th>
+<th class="head">&nbsp;</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>SQB_ID: BIGINT PK AUTO-GEN</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td>SQB_NAME: VARCHAR(64)</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td>SQB_FROM_LINK: BIGINT</td>
+<td>FK SQ_LINK(SQ_LNK_ID)</td>
+</tr>
+<tr class="row-odd"><td>SQB_TO_LINK: BIGINT</td>
+<td>FK SQ_LINK(SQ_LNK_ID)</td>
+</tr>
+<tr class="row-even"><td>SQB_CREATION_USER: VARCHAR(32)</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td>SQB_CREATION_DATE: TIMESTAMP</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td>SQB_UPDATE_USER: VARCHAR(32)</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td>SQB_UPDATE_DATE: TIMESTAMP</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td>SQB_ENABLED: BOOLEAN</td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+</div>
+<div class="section" id="sq-link-input">
+<h3>3.6.1.10. SQ_LINK_INPUT<a class="headerlink" href="#sq-link-input" title="Permalink to this headline">¶</a></h3>
+<p>N:M relationship link and input</p>
+<blockquote>
+<div><table border="1" class="docutils">
+<colgroup>
+<col width="55%" />
+<col width="45%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">SQ_LINK_INPUT</th>
+<th class="head">&nbsp;</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>SQ_LNKI_LINK: BIGINT PK</td>
+<td>FK SQ_LINK(SQ_LNK_ID)</td>
+</tr>
+<tr class="row-odd"><td>SQ_LNKI_INPUT: BIGINT PK</td>
+<td>FK SQ_INPUT(SQI_ID)</td>
+</tr>
+<tr class="row-even"><td>SQ_LNKI_VALUE: LONG VARCHAR</td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+</div>
+<div class="section" id="sq-job-input">
+<h3>3.6.1.11. SQ_JOB_INPUT<a class="headerlink" href="#sq-job-input" title="Permalink to this headline">¶</a></h3>
+<p>N:M relationship job and input</p>
+<blockquote>
+<div><table border="1" class="docutils">
+<colgroup>
+<col width="57%" />
+<col width="43%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">SQ_JOB_INPUT</th>
+<th class="head">&nbsp;</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>SQBI_JOB: BIGINT PK</td>
+<td>FK SQ_JOB(SQB_ID)</td>
+</tr>
+<tr class="row-odd"><td>SQBI_INPUT: BIGINT PK</td>
+<td>FK SQ_INPUT(SQI_ID)</td>
+</tr>
+<tr class="row-even"><td>SQBI_VALUE: LONG VARCHAR</td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+</div>
+<div class="section" id="sq-submission">
+<h3>3.6.1.12. SQ_SUBMISSION<a class="headerlink" href="#sq-submission" title="Permalink to this headline">¶</a></h3>
+<p>List of submissions</p>
+<blockquote>
+<div><table border="1" class="docutils">
+<colgroup>
+<col width="65%" />
+<col width="35%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">SQ_JOB_SUBMISSION</th>
+<th class="head">&nbsp;</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>SQS_ID: BIGINT PK</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td>SQS_JOB: BIGINT</td>
+<td>FK SQ_JOB(SQB_ID)</td>
+</tr>
+<tr class="row-even"><td>SQS_STATUS: VARCHAR(20)</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td>SQS_CREATION_USER: VARCHAR(32)</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td>SQS_CREATION_DATE: TIMESTAMP</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td>SQS_UPDATE_USER: VARCHAR(32)</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td>SQS_UPDATE_DATE: TIMESTAMP</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td>SQS_EXTERNAL_ID: VARCHAR(50)</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td>SQS_EXTERNAL_LINK: VARCHAR(150)</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td>SQS_EXCEPTION: VARCHAR(150)</td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td>SQS_EXCEPTION_TRACE: VARCHAR(750)</td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+</div>
+<div class="section" id="sq-counter-group">
+<h3>3.6.1.13. SQ_COUNTER_GROUP<a class="headerlink" href="#sq-counter-group" title="Permalink to this headline">¶</a></h3>
+<p>List of counter groups</p>
+<blockquote>
+<div><table border="1" class="docutils">
+<colgroup>
+<col width="100%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">SQ_COUNTER_GROUP</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>SQG_ID: BIGINT PK</td>
+</tr>
+<tr class="row-odd"><td>SQG_NAME: VARCHAR(75)</td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+</div>
+<div class="section" id="sq-counter">
+<h3>3.6.1.14. SQ_COUNTER<a class="headerlink" href="#sq-counter" title="Permalink to this headline">¶</a></h3>
+<p>List of counters</p>
+<blockquote>
+<div><table border="1" class="docutils">
+<colgroup>
+<col width="100%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">SQ_COUNTER</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>SQR_ID: BIGINT PK</td>
+</tr>
+<tr class="row-odd"><td>SQR_NAME: VARCHAR(75)</td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+</div>
+<div class="section" id="sq-counter-submission">
+<h3>3.6.1.15. SQ_COUNTER_SUBMISSION<a class="headerlink" href="#sq-counter-submission" title="Permalink to this headline">¶</a></h3>
+<p>N:M Relationship</p>
+<blockquote>
+<div><table border="1" class="docutils">
+<colgroup>
+<col width="47%" />
+<col width="53%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">SQ_COUNTER_SUBMISSION</th>
+<th class="head">&nbsp;</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>SQRS_GROUP: BIGINT PK</td>
+<td>FK SQ_COUNTER_GROUP(SQR_ID)</td>
+</tr>
+<tr class="row-odd"><td>SQRS_COUNTER: BIGINT PK</td>
+<td>FK SQ_COUNTER(SQR_ID)</td>
+</tr>
+<tr class="row-even"><td>SQRS_SUBMISSION: BIGINT PK</td>
+<td>FK SQ_SUBMISSION(SQS_ID)</td>
+</tr>
+<tr class="row-odd"><td>SQRS_VALUE: BIGINT</td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+</div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../security.html" class="btn btn-neutral float-right" title="4. Security Guide" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="RESTAPI.html" class="btn btn-neutral" title="3.5. Sqoop REST API Guide" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2009-2016 The Apache Software Foundation.
+
+    </p>
+  </div> 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

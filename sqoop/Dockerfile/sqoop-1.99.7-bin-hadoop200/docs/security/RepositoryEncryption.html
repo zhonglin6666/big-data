@@ -1,0 +1,271 @@
+
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>4.3. Repository Encryption &mdash; Apache Sqoop  documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="Apache Sqoop  documentation" href="../index.html"/>
+        <link rel="up" title="4. Security Guide" href="../security.html"/>
+        <link rel="prev" title="4.2. Authentication and Authorization" href="AuthenticationAndAuthorization.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Apache Sqoop
+          
+
+          
+            
+            <img src="../_static/sqoop-logo.png" class="logo" />
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../admin.html">1. Admin Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user.html">2. User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev.html">3. Developer Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../security.html">4. Security Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="API TLS-SSL.html">4.1. API TLS/SSL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="AuthenticationAndAuthorization.html">4.2. Authentication and Authorization</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="">4.3. Repository Encryption</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#server-configuration">4.3.1. Server Configuration</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">Apache Sqoop</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../security.html">4. Security Guide</a> &raquo;</li>
+      
+    <li>4.3. Repository Encryption</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/security/RepositoryEncryption.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="repository-encryption">
+<span id="repositoryencryption"></span><h1>4.3. Repository Encryption<a class="headerlink" href="#repository-encryption" title="Permalink to this headline">¶</a></h1>
+<p>Sqoop 2 uses a database to store metadata about the various data sources it talks to, we call this database the repository.</p>
+<p>The repository can store passwords and other pieces of information that are security sensitive, within the context of Sqoop
+2, this information is referred to as sensitive inputs. Which inputs are considered sensitive is determined by the connector.</p>
+<p>We support encrypting sensitive inputs in the repository using a provided password or password generator. Sqoop 2 uses the
+provided password and the provided key generation algorithm (such as PBKDF2) to generate a key to encrypt sensitive inputs
+and another hmac key to verify their integrity.</p>
+<p>Only the sensitive inputs are encrypted. If an input is not defined as sensitive by the connector, it is NOT encrypted.</p>
+<div class="section" id="server-configuration">
+<h2>4.3.1. Server Configuration<a class="headerlink" href="#server-configuration" title="Permalink to this headline">¶</a></h2>
+<p>Note: This configuration will allow a new Sqoop instance to encrypt information or read from an already encrypted repository.
+It will not encrypt sensitive inputs in an existing repository. For instructions on how to encrypt an existing repository,
+please look here: <a class="reference internal" href="../admin/Tools.html#repositoryencryption-tool"><em>RepositoryEncryption</em></a></p>
+<p>First, repository encryption must be enabled.</p>
+<div class="highlight-none"><div class="highlight"><pre>org.apache.sqoop.security.repo_encryption.enabled=true
+</pre></div>
+</div>
+<p>Then we configure the password:</p>
+<div class="highlight-none"><div class="highlight"><pre>org.apache.sqoop.security.repo_encryption.password=supersecret
+</pre></div>
+</div>
+<p>Or the password generator:</p>
+<div class="highlight-none"><div class="highlight"><pre>org.apache.sqoop.security.repo_encryption.password_generator=echo supersecret
+</pre></div>
+</div>
+<p>The plaintext password is always given preference to the password generator if both are present.</p>
+<p>Then we can configure the HMAC algorithm. Please find the list of possibilities here:
+<a class="reference external" href="http://docs.oracle.com/javase/7/docs/technotes/guides/security/StandardNames.html#Mac">Standard Algorithm Name Documentation - Mac</a>
+We can store digests with up to 1024 bits.</p>
+<div class="highlight-none"><div class="highlight"><pre>org.apache.sqoop.security.repo_encryption.hmac_algorithm=HmacSHA256
+</pre></div>
+</div>
+<p>Then we configure the cipher algorithm. Possibilities can be found here:
+<a class="reference external" href="http://docs.oracle.com/javase/7/docs/technotes/guides/security/StandardNames.html#Cipher">Standard Algorithm Name Documentation - Cipher</a></p>
+<div class="highlight-none"><div class="highlight"><pre>org.apache.sqoop.security.repo_encryption.cipher_algorithm=AES
+</pre></div>
+</div>
+<p>Then we configure the key size for the cipher in bytes. We can store up to 1024 bit keys.</p>
+<div class="highlight-none"><div class="highlight"><pre>org.apache.sqoop.security.repo_encryption.cipher_key_size=16
+</pre></div>
+</div>
+<p>Next we need to specify the cipher transformation. The options for this field are listed here:
+<a class="reference external" href="http://docs.oracle.com/javase/7/docs/api/javax/crypto/Cipher.html">Cipher (Java Platform SE 7)</a></p>
+<div class="highlight-none"><div class="highlight"><pre>org.apache.sqoop.security.repo_encryption.cipher_spec=AES/CBC/PKCS5Padding
+</pre></div>
+</div>
+<p>The size of the initialization vector to use in bytes. We support up to 1024 bit initialization vectors.</p>
+<div class="highlight-none"><div class="highlight"><pre>org.apache.sqoop.security.repo_encryption.initialization_vector_size=16
+</pre></div>
+</div>
+<p>Next we need to specfy the algorithm for secret key generation. Please refer to:
+<a class="reference external" href="http://docs.oracle.com/javase/7/docs/technotes/guides/security/StandardNames.html#SecretKeyFactory">Standard Algorithm Name Documentation - SecretKeyFactory</a></p>
+<div class="highlight-none"><div class="highlight"><pre>org.apache.sqoop.security.repo_encryption.pbkdf2_algorithm=PBKDF2WithHmacSHA1
+</pre></div>
+</div>
+<p>Finally specify the number of rounds/iterations for the generation of a key from a password.</p>
+<div class="highlight-none"><div class="highlight"><pre>org.apache.sqoop.security.repo_encryption.pbkdf2_rounds=4000
+</pre></div>
+</div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="AuthenticationAndAuthorization.html" class="btn btn-neutral" title="4.2. Authentication and Authorization" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2009-2016 The Apache Software Foundation.
+
+    </p>
+  </div> 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

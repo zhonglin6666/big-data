@@ -1,0 +1,358 @@
+
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>1.1. Installation &mdash; Apache Sqoop  documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="Apache Sqoop  documentation" href="../index.html"/>
+        <link rel="up" title="1. Admin Guide" href="../admin.html"/>
+        <link rel="next" title="1.2. Tools" href="Tools.html"/>
+        <link rel="prev" title="1. Admin Guide" href="../admin.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Apache Sqoop
+          
+
+          
+            
+            <img src="../_static/sqoop-logo.png" class="logo" />
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../admin.html">1. Admin Guide</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="">1.1. Installation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#server-installation">1.1.1. Server installation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#hadoop-dependencies">1.1.1.1. Hadoop dependencies</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#hadoop-configuration">1.1.1.2. Hadoop configuration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#third-party-jars">1.1.1.3. Third party jars</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#configuring-path">1.1.1.4. Configuring <tt class="docutils literal"><span class="pre">PATH</span></tt></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#configuring-server">1.1.1.5. Configuring Server</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#repository-initialization">1.1.1.6. Repository Initialization</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#server-life-cycle">1.1.1.7. Server Life Cycle</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#client-installation">1.1.2. Client installation</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="Tools.html">1.2. Tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Upgrade.html">1.3. Upgrade</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../user.html">2. User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev.html">3. Developer Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../security.html">4. Security Guide</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">Apache Sqoop</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../admin.html">1. Admin Guide</a> &raquo;</li>
+      
+    <li>1.1. Installation</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/admin/Installation.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="installation">
+<h1>1.1. Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h1>
+<p>Sqoop ships as one binary package that incorporates two separate parts - client and server.</p>
+<ul class="simple">
+<li><strong>Server</strong> You need to install server on single node in your cluster. This node will then serve as an entry point for all Sqoop clients.</li>
+<li><strong>Client</strong> Clients can be installed on any number of machines.</li>
+</ul>
+<div class="section" id="server-installation">
+<h2>1.1.1. Server installation<a class="headerlink" href="#server-installation" title="Permalink to this headline">¶</a></h2>
+<p>Copy the Sqoop artifact to the machine where you want to run Sqoop server. The Sqoop server acts as a Hadoop client, therefore Hadoop libraries (Yarn, Mapreduce, and HDFS jar files) and configuration files (<tt class="docutils literal"><span class="pre">core-site.xml</span></tt>, <tt class="docutils literal"><span class="pre">mapreduce-site.xml</span></tt>, ...) must be available on this node. You do not need to run any Hadoop related services - running the server on a &#8220;gateway&#8221; node is perfectly fine.</p>
+<p>You should be able to list a HDFS for example:</p>
+<div class="highlight-bash"><div class="highlight"><pre>hadoop dfs -ls
+</pre></div>
+</div>
+<p>Sqoop currently supports Hadoop version 2.6.0 or later. To install the Sqoop server, decompress the tarball (in a location of your choosing) and set the newly created forder as your working directory.</p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="c"># Decompress Sqoop distribution tarball</span>
+tar -xvf sqoop-&lt;version&gt;-bin-hadoop&lt;hadoop-version&gt;.tar.gz
+
+<span class="c"># Move decompressed content to any location</span>
+mv sqoop-&lt;version&gt;-bin-hadoop&lt;hadoop version&gt;.tar.gz /usr/lib/sqoop
+
+<span class="c"># Change working directory</span>
+<span class="nb">cd</span> /usr/lib/sqoop
+</pre></div>
+</div>
+<div class="section" id="hadoop-dependencies">
+<h3>1.1.1.1. Hadoop dependencies<a class="headerlink" href="#hadoop-dependencies" title="Permalink to this headline">¶</a></h3>
+<p>Sqoop server needs following environmental variables pointing at Hadoop libraries - <tt class="docutils literal"><span class="pre">$HADOOP_COMMON_HOME</span></tt>, <tt class="docutils literal"><span class="pre">$HADOOP_HDFS_HOME</span></tt>, <tt class="docutils literal"><span class="pre">$HADOOP_MAPRED_HOME</span></tt> and <tt class="docutils literal"><span class="pre">$HADOOP_YARN_HOME</span></tt>. You have to make sure that those variables are defined and pointing to a valid Hadoop installation. Sqoop server will not start if Hadoop libraries can&#8217;t be found.</p>
+<p>The Sqoop server uses environment variables to find Hadoop libraries. If the environment variable <tt class="docutils literal"><span class="pre">$HADOOP_HOME</span></tt> is set, Sqoop will look for jars in the following locations: <tt class="docutils literal"><span class="pre">$HADOOP_HOME/share/hadoop/common</span></tt>, <tt class="docutils literal"><span class="pre">$HADOOP_HOME/share/hadoop/hdfs</span></tt>, <tt class="docutils literal"><span class="pre">$HADOOP_HOME/share/hadoop/mapreduce</span></tt> and <tt class="docutils literal"><span class="pre">$HADOOP_HOME/share/hadoop/yarn</span></tt>. You can specify where the Sqoop server should look for the common, hdfs, mapreduce, and yarn jars indepently with the <tt class="docutils literal"><span class="pre">$HADOOP_COMMON_HOME</span></tt>, <tt class="docutils literal"><span class="pre">$HADOOP_HDFS_HOME</span></tt>, <tt class="docutils literal"><span class="pre">$HADOOP_MAPRED_HOME</span></tt> and <tt class="docutils literal"><span class="pre">$HADOOP_YARN_HOME</span></tt> environment variables.</p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="c"># Export HADOOP_HOME variable</span>
+<span class="nb">export </span><span class="nv">HADOOP_HOME</span><span class="o">=</span>/...
+
+<span class="c"># Or alternatively HADOOP_*_HOME variables</span>
+<span class="nb">export </span><span class="nv">HADOOP_COMMON_HOME</span><span class="o">=</span>/...
+<span class="nb">export </span><span class="nv">HADOOP_HDFS_HOME</span><span class="o">=</span>/...
+<span class="nb">export </span><span class="nv">HADOOP_MAPRED_HOME</span><span class="o">=</span>/...
+<span class="nb">export </span><span class="nv">HADOOP_YARN_HOME</span><span class="o">=</span>/...
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If the environment <tt class="docutils literal"><span class="pre">$HADOOP_HOME</span></tt> is set, Sqoop will usee the following locations: <tt class="docutils literal"><span class="pre">$HADOOP_HOME/share/hadoop/common</span></tt>, <tt class="docutils literal"><span class="pre">$HADOOP_HOME/share/hadoop/hdfs</span></tt>, <tt class="docutils literal"><span class="pre">$HADOOP_HOME/share/hadoop/mapreduce</span></tt> and <tt class="docutils literal"><span class="pre">$HADOOP_HOME/share/hadoop/yarn</span></tt>.</p>
+</div>
+</div>
+<div class="section" id="hadoop-configuration">
+<h3>1.1.1.2. Hadoop configuration<a class="headerlink" href="#hadoop-configuration" title="Permalink to this headline">¶</a></h3>
+<p>Sqoop server will need to impersonate users to access HDFS and other resources in or outside of the cluster as the user who started given job rather then user who is running the server. You need to configure Hadoop to explicitly allow this impersonation via so called proxyuser system. You need to create two properties in  <tt class="docutils literal"><span class="pre">core-site.xml</span></tt> file - <tt class="docutils literal"><span class="pre">hadoop.proxyuser.$SERVER_USER.hosts</span></tt> and <tt class="docutils literal"><span class="pre">hadoop.proxyuser.$SERVER_USER.groups</span></tt> where <tt class="docutils literal"><span class="pre">$SERVER_USER</span></tt> is the user who will be running Sqoop 2 server. In most scenarios configuring <tt class="docutils literal"><span class="pre">*</span></tt> is sufficient. Please refer to Hadoop documentation for details how to use those properties.</p>
+<p>Example fragment that needs to be present in <tt class="docutils literal"><span class="pre">core-site.xml</span></tt> file for case when server is running under <tt class="docutils literal"><span class="pre">sqoop2</span></tt> user:</p>
+<div class="highlight-xml"><div class="highlight"><pre><span class="nt">&lt;property&gt;</span>
+  <span class="nt">&lt;name&gt;</span>hadoop.proxyuser.sqoop2.hosts<span class="nt">&lt;/name&gt;</span>
+  <span class="nt">&lt;value&gt;</span>*<span class="nt">&lt;/value&gt;</span>
+<span class="nt">&lt;/property&gt;</span>
+<span class="nt">&lt;property&gt;</span>
+  <span class="nt">&lt;name&gt;</span>hadoop.proxyuser.sqoop2.groups<span class="nt">&lt;/name&gt;</span>
+  <span class="nt">&lt;value&gt;</span>*<span class="nt">&lt;/value&gt;</span>
+<span class="nt">&lt;/property&gt;</span>
+</pre></div>
+</div>
+<p>If you&#8217;re running Sqoop 2 server under a so called system user (user with ID less then <tt class="docutils literal"><span class="pre">min.user.id</span></tt> - 1000 by default), then YARN will by default refuse to run Sqoop 2 jobs. You will need to add the user name who is running Sqoop 2 server (most likely user <tt class="docutils literal"><span class="pre">sqoop2</span></tt>) to a <tt class="docutils literal"><span class="pre">allowed.system.users</span></tt> property of <tt class="docutils literal"><span class="pre">container-executor.cfg</span></tt>. Please refer to YARN documentation for further details.</p>
+<p>Example fragment that needs to be present in <tt class="docutils literal"><span class="pre">container-executor.cfg</span></tt> file for case when server is running under <tt class="docutils literal"><span class="pre">sqoop2</span></tt> user:</p>
+<div class="highlight-xml"><div class="highlight"><pre>allowed.system.users=sqoop2
+</pre></div>
+</div>
+</div>
+<div class="section" id="third-party-jars">
+<h3>1.1.1.3. Third party jars<a class="headerlink" href="#third-party-jars" title="Permalink to this headline">¶</a></h3>
+<p>To propagate any third party jars to Sqoop server classpath, create a directory anywhere on the file system and export it&#8217;s location in <tt class="docutils literal"><span class="pre">SQOOP_SERVER_EXTRA_LIB</span></tt> variable.</p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="c"># Create directory for extra jars</span>
+mkdir -p /var/lib/sqoop2/
+
+<span class="c"># Copy all your JDBC drivers to this directory</span>
+cp mysql-jdbc*.jar /var/lib/sqoop2/
+cp postgresql-jdbc*.jar /var/lib/sqoop2/
+
+<span class="c"># And finally export this directory to SQOOP_SERVER_EXTRA_LIB</span>
+<span class="nb">export </span><span class="nv">SQOOP_SERVER_EXTRA_LIB</span><span class="o">=</span>/var/lib/sqoop2/
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Sqoop doesn&#8217;t ship with any JDBC drivers due to incompatible licenses. You will need to use this mechanism to install all JDBC drivers that are needed.</p>
+</div>
+</div>
+<div class="section" id="configuring-path">
+<h3>1.1.1.4. Configuring <tt class="docutils literal"><span class="pre">PATH</span></tt><a class="headerlink" href="#configuring-path" title="Permalink to this headline">¶</a></h3>
+<p>All user and administrator facing shell commands are stored in <tt class="docutils literal"><span class="pre">bin/</span></tt> directory. It&#8217;s recommended to add this directory to your <tt class="docutils literal"><span class="pre">$PATH</span></tt> for easier execution, for example:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="nv">PATH</span><span class="o">=</span><span class="nv">$PATH</span>:<span class="sb">`</span><span class="nb">pwd</span><span class="sb">`</span>/bin/
+</pre></div>
+</div>
+<p>The remainder of the Sqoop 2 documentation assumes that the shell commands are in your <tt class="docutils literal"><span class="pre">$PATH</span></tt>.</p>
+</div>
+<div class="section" id="configuring-server">
+<h3>1.1.1.5. Configuring Server<a class="headerlink" href="#configuring-server" title="Permalink to this headline">¶</a></h3>
+<p>Server configuration files are stored in <tt class="docutils literal"><span class="pre">conf</span></tt> directory. File <tt class="docutils literal"><span class="pre">sqoop_bootstrap.properties</span></tt> specifies which configuration provider should be used for loading configuration for rest of Sqoop server. Default value <tt class="docutils literal"><span class="pre">PropertiesConfigurationProvider</span></tt> should be sufficient.</p>
+<p>Second configuration file called <tt class="docutils literal"><span class="pre">sqoop.properties</span></tt> contains remaining configuration properties that can affect Sqoop server. The configuration file is very well documented, so check if all configuration properties fits your environment. Default or very little tweaking should be sufficient in most common cases.</p>
+</div>
+<div class="section" id="repository-initialization">
+<h3>1.1.1.6. Repository Initialization<a class="headerlink" href="#repository-initialization" title="Permalink to this headline">¶</a></h3>
+<p>The metadata repository needs to be initialized before starting Sqoop 2 server for the first time. Use <a class="reference internal" href="Tools.html#tool-upgrade"><em>Upgrade tool</em></a> to initialize the repository:</p>
+<div class="highlight-bash"><div class="highlight"><pre>sqoop2-tool upgrade
+</pre></div>
+</div>
+<p>You can verify if everything have been configured correctly using <a class="reference internal" href="Tools.html#tool-verify"><em>Verify tool</em></a>:</p>
+<div class="highlight-bash"><div class="highlight"><pre>sqoop2-tool verify
+...
+Verification was successful.
+Tool class org.apache.sqoop.tools.tool.VerifyTool has finished correctly
+</pre></div>
+</div>
+</div>
+<div class="section" id="server-life-cycle">
+<h3>1.1.1.7. Server Life Cycle<a class="headerlink" href="#server-life-cycle" title="Permalink to this headline">¶</a></h3>
+<p>After installation and configuration you can start Sqoop server with following command:</p>
+<div class="highlight-bash"><div class="highlight"><pre>sqoop2-server start
+</pre></div>
+</div>
+<p>You can stop the server using the following command:</p>
+<div class="highlight-bash"><div class="highlight"><pre>sqoop2-server stop
+</pre></div>
+</div>
+<p>By default Sqoop server daemon use port <tt class="docutils literal"><span class="pre">12000</span></tt>. You can set <tt class="docutils literal"><span class="pre">org.apache.sqoop.jetty.port</span></tt> in configuration file <tt class="docutils literal"><span class="pre">conf/sqoop.properties</span></tt> to use different port.</p>
+</div>
+</div>
+<div class="section" id="client-installation">
+<h2>1.1.2. Client installation<a class="headerlink" href="#client-installation" title="Permalink to this headline">¶</a></h2>
+<p>Just copy Sqoop distribution artifact on target machine and unzip it in desired location. You can start client with following command:</p>
+<div class="highlight-bash"><div class="highlight"><pre>sqoop2-shell
+</pre></div>
+</div>
+<p>You can find more documentation for Sqoop shell in <a class="reference internal" href="../user/CommandLineClient.html"><em>Command Line Shell</em></a>.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Client is not acting as a Hadoop client and thus you do not need to be installed on node with Hadoop libraries and configuration files.</p>
+</div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="Tools.html" class="btn btn-neutral float-right" title="1.2. Tools" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../admin.html" class="btn btn-neutral" title="1. Admin Guide" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2009-2016 The Apache Software Foundation.
+
+    </p>
+  </div> 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

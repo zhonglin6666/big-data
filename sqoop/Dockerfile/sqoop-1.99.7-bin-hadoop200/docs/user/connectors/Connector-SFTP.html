@@ -1,0 +1,344 @@
+
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>2.2.6. SFTP Connector &mdash; Apache Sqoop  documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="Apache Sqoop  documentation" href="../../index.html"/>
+        <link rel="up" title="2.2. Connectors" href="../Connectors.html"/>
+        <link rel="next" title="2.3. Examples" href="../Examples.html"/>
+        <link rel="prev" title="2.2.5. Kite Connector" href="Connector-Kite.html"/> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Apache Sqoop
+          
+
+          
+            
+            <img src="../../_static/sqoop-logo.png" class="logo" />
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../admin.html">1. Admin Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../user.html">2. User Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../CommandLineClient.html">2.1. Command Line Shell</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../Connectors.html">2.2. Connectors</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="Connector-FTP.html">2.2.1. FTP Connector</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Connector-GenericJDBC.html">2.2.2. Generic JDBC Connector</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Connector-HDFS.html">2.2.3. HDFS Connector</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Connector-Kafka.html">2.2.4. Kafka Connector</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Connector-Kite.html">2.2.5. Kite Connector</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="">2.2.6. SFTP Connector</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#usage">2.2.6.1. Usage</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#loader">2.2.6.2. Loader</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../Examples.html">2.3. Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Sqoop5MinutesDemo.html">2.4. Sqoop 5 Minutes Demo</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../dev.html">3. Developer Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../security.html">4. Security Guide</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../index.html">Apache Sqoop</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../../user.html">2. User Guide</a> &raquo;</li>
+      
+          <li><a href="../Connectors.html">2.2. Connectors</a> &raquo;</li>
+      
+    <li>2.2.6. SFTP Connector</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../_sources/user/connectors/Connector-SFTP.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="sftp-connector">
+<h1><a class="toc-backref" href="#id2">2.2.6. SFTP Connector</a><a class="headerlink" href="#sftp-connector" title="Permalink to this headline">¶</a></h1>
+<p>The SFTP connector supports moving data between a Secure File Transfer Protocol (SFTP) server and other supported Sqoop2 connectors.</p>
+<p>Currently only the TO direction is supported to write records to an SFTP server. A FROM connector is pending (SQOOP-2218).</p>
+<div class="contents topic" id="contents">
+<p class="topic-title first">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#sftp-connector" id="id2">SFTP Connector</a><ul>
+<li><a class="reference internal" href="#usage" id="id3">Usage</a><ul>
+<li><a class="reference internal" href="#link-configuration" id="id4"><strong>Link Configuration</strong></a></li>
+<li><a class="reference internal" href="#to-job-configuration" id="id5"><strong>TO Job Configuration</strong></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#loader" id="id6">Loader</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="usage">
+<h2><a class="toc-backref" href="#id3">2.2.6.1. Usage</a><a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h2>
+<p>Before executing a Sqoop2 job with the SFTP connector, set <strong>mapreduce.task.classpath.user.precedence</strong> to true in the Hadoop cluster config, for example:</p>
+<div class="highlight-none"><div class="highlight"><pre>&lt;property&gt;
+  &lt;name&gt;mapreduce.task.classpath.user.precedence&lt;/name&gt;
+  &lt;value&gt;true&lt;/value&gt;
+&lt;/property&gt;
+</pre></div>
+</div>
+<p>This is required since the SFTP connector uses the JSch library (<a class="reference external" href="http://www.jcraft.com/jsch/">http://www.jcraft.com/jsch/</a>) to provide SFTP functionality. Unfortunately Hadoop currently ships with an earlier version of this library which causes an issue with some SFTP servers. Setting this property ensures that the current version of the library packaged with this connector will appear first in the classpath.</p>
+<p>To use the SFTP Connector, create a link for the connector and a job that uses the link.</p>
+<div class="section" id="link-configuration">
+<h3><a class="toc-backref" href="#id4">2.2.6.1.1. <strong>Link Configuration</strong></a><a class="headerlink" href="#link-configuration" title="Permalink to this headline">¶</a></h3>
+<p>Inputs associated with the link configuration include:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="21%" />
+<col width="7%" />
+<col width="52%" />
+<col width="20%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Input</th>
+<th class="head">Type</th>
+<th class="head">Description</th>
+<th class="head">Example</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>SFTP server hostname</td>
+<td>String</td>
+<td>Hostname for the SFTP server.
+<em>Required</em>.</td>
+<td>sftp.example.com</td>
+</tr>
+<tr class="row-odd"><td>SFTP server port</td>
+<td>Integer</td>
+<td>Port number for the SFTP server. Defaults to 22.
+<em>Optional</em>.</td>
+<td>2220</td>
+</tr>
+<tr class="row-even"><td>Username</td>
+<td>String</td>
+<td>The username to provide when connecting to the SFTP server.
+<em>Required</em>.</td>
+<td>sqoop</td>
+</tr>
+<tr class="row-odd"><td>Password</td>
+<td>String</td>
+<td>The password to provide when connecting to the SFTP server.
+<em>Required</em></td>
+<td>sqoop</td>
+</tr>
+</tbody>
+</table>
+<div class="section" id="notes">
+<h4>2.2.6.1.1.1. <strong>Notes</strong><a class="headerlink" href="#notes" title="Permalink to this headline">¶</a></h4>
+<ol class="arabic simple">
+<li>The SFTP connector will attempt to connect to the SFTP server as part of the link validation process. If for some reason a connection can not be established, you&#8217;ll see a corresponding error message.</li>
+<li>Note that during connection, the SFTP connector explictly disables <em>StrictHostKeyChecking</em> to avoid &#8220;UnknownHostKey&#8221; errors.</li>
+</ol>
+</div>
+</div>
+<div class="section" id="to-job-configuration">
+<h3><a class="toc-backref" href="#id5">2.2.6.1.2. <strong>TO Job Configuration</strong></a><a class="headerlink" href="#to-job-configuration" title="Permalink to this headline">¶</a></h3>
+<p>Inputs associated with the Job configuration for the TO direction include:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="20%" />
+<col width="6%" />
+<col width="50%" />
+<col width="24%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Input</th>
+<th class="head">Type</th>
+<th class="head">Description</th>
+<th class="head">Example</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>Output directory</td>
+<td>String</td>
+<td>The location on the SFTP server that the connector will write files to.
+<em>Required</em></td>
+<td>uploads</td>
+</tr>
+</tbody>
+</table>
+<div class="section" id="id1">
+<h4>2.2.6.1.2.1. <strong>Notes</strong><a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h4>
+<ol class="arabic simple">
+<li>The <em>output directory</em> value needs to be an existing directory on the SFTP server.</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="section" id="loader">
+<h2><a class="toc-backref" href="#id6">2.2.6.2. Loader</a><a class="headerlink" href="#loader" title="Permalink to this headline">¶</a></h2>
+<p>During the <em>loading</em> phase, the connector will create uniquely named files in the <em>output directory</em> for each partition of data received from the <strong>FROM</strong> connector.</p>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../Examples.html" class="btn btn-neutral float-right" title="2.3. Examples" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="Connector-Kite.html" class="btn btn-neutral" title="2.2.5. Kite Connector" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2009-2016 The Apache Software Foundation.
+
+    </p>
+  </div> 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../',
+            VERSION:'',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

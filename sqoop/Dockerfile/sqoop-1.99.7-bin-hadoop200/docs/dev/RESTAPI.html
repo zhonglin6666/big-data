@@ -1,0 +1,2073 @@
+
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>3.5. Sqoop REST API Guide &mdash; Apache Sqoop  documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="Apache Sqoop  documentation" href="../index.html"/>
+        <link rel="up" title="3. Developer Guide" href="../dev.html"/>
+        <link rel="next" title="3.6. Repository" href="Repository.html"/>
+        <link rel="prev" title="3.4. Sqoop 2 Development Environment Setup" href="DevEnv.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Apache Sqoop
+          
+
+          
+            
+            <img src="../_static/sqoop-logo.png" class="logo" />
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../admin.html">1. Admin Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user.html">2. User Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../dev.html">3. Developer Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="BuildingSqoop2.html">3.1. Building Sqoop2 from source code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ClientAPI.html">3.2. Sqoop Java Client API Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ConnectorDevelopment.html">3.3. Sqoop 2 Connector Development</a></li>
+<li class="toctree-l2"><a class="reference internal" href="DevEnv.html">3.4. Sqoop 2 Development Environment Setup</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="">3.5. Sqoop REST API Guide</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#initialization">3.5.1. Initialization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#understand-connector-driver-link-and-job">3.5.2. Understand Connector, Driver, Link and Job</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#objects">3.5.3. Objects</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#configs-and-inputs">3.5.3.1. Configs and Inputs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#exception-response">3.5.3.2. Exception Response</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#config-and-input-validation-status-response">3.5.3.3. Config and Input Validation Status Response</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#job-submission-status-response">3.5.3.4. Job Submission Status Response</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#header-parameters">3.5.4. Header Parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#rest-apis">3.5.5. REST APIs</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#version-get-get-sqoop-version">3.5.5.1. /version - [GET] - Get Sqoop Version</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#v1-connectors-get-get-all-connectors">3.5.5.2. /v1/connectors - [GET]  Get all Connectors</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#v1-connector-cname-get-get-connector">3.5.5.3. /v1/connector/[cname] - [GET] - Get Connector</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#v1-driver-get-get-sqoop-driver">3.5.5.4. /v1/driver - [GET]- Get Sqoop Driver</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#v1-links-get-get-all-links">3.5.5.5. /v1/links/ - [GET]  Get all links</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#v1-links-cname-cname-get-get-all-links-by-connector">3.5.5.6. /v1/links?cname=[cname] - [GET]  Get all links by Connector</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#v1-link-lname-get-get-link">3.5.5.7. /v1/link/[lname]  - [GET] - Get Link</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#v1-link-post-create-link">3.5.5.8. /v1/link - [POST] - Create Link</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#v1-link-lname-put-update-link">3.5.5.9. /v1/link/[lname] - [PUT] - Update Link</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#v1-link-lname-delete-delete-link">3.5.5.10. /v1/link/[lname]  - [DELETE] - Delete Link</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#v1-link-lname-enable-put-enable-link">3.5.5.11. /v1/link/[lname]/enable  - [PUT] - Enable Link</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#v1-link-lname-disable-put-disable-link">3.5.5.12. /v1/link/[lname]/disable - [PUT] - Disable Link</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#v1-jobs-get-get-all-jobs">3.5.5.13. /v1/jobs/ - [GET]  Get all jobs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#v1-jobs-cname-cname-get-get-all-jobs-by-connector">3.5.5.14. /v1/jobs?cname=[cname] - [GET]  Get all jobs by connector</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#v1-job-jname-get-get-job">3.5.5.15. /v1/job/[jname] - [GET] - Get Job</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#v1-job-post-create-job">3.5.5.16. /v1/job - [POST] - Create Job</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#v1-job-jname-put-update-job">3.5.5.17. /v1/job/[jname] - [PUT] - Update Job</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#v1-job-jname-delete-delete-job">3.5.5.18. /v1/job/[jname] - [DELETE] - Delete Job</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#v1-job-jname-enable-put-enable-job">3.5.5.19. /v1/job/[jname]/enable - [PUT] - Enable Job</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#v1-job-jname-disable-put-disable-job">3.5.5.20. /v1/job/[jname]/disable - [PUT] - Disable Job</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#v1-job-jname-start-put-start-job">3.5.5.21. /v1/job/[jname]/start - [PUT]- Start Job</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#v1-job-jname-stop-put-stop-job">3.5.5.22. /v1/job/[jname]/stop  - [PUT]- Stop Job</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#v1-job-jname-status-get-get-job-status">3.5.5.23. /v1/job/[jname]/status  - [GET]- Get Job Status</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#v1-submissions-get-get-all-job-submissions">3.5.5.24. /v1/submissions? - [GET] - Get all job Submissions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#v1-submissions-jname-jname-get-get-submissions-by-job">3.5.5.25. /v1/submissions?jname=[jname] - [GET] - Get Submissions by Job</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#v1-authorization-roles-create-post-create-role">3.5.5.26. /v1/authorization/roles/create - [POST] - Create Role</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#v1-authorization-role-role-name-delete-delete-role">3.5.5.27. /v1/authorization/role/[role-name]  - [DELETE] - Delete Role</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#v1-authorization-roles-principal-type-principal-type-principal-name-principal-name-get-get-all-roles-by-principal">3.5.5.28. /v1/authorization/roles?principal_type=[principal-type]&amp;principal_name=[principal-name] - [GET]  Get all Roles by Principal</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#v1-authorization-principals-role-name-rname-get-get-all-principals-by-role">3.5.5.29. /v1/authorization/principals?role_name=[rname] - [GET]  Get all Principals by Role</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#v1-authorization-roles-grant-put-grant-a-role-to-a-principal">3.5.5.30. /v1/authorization/roles/grant - [PUT] - Grant a Role to a Principal</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#v1-authorization-roles-revoke-put-revoke-a-role-from-a-principal">3.5.5.31. /v1/authorization/roles/revoke - [PUT] - Revoke a Role from a Principal</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#v1-authorization-privileges-grant-put-grant-a-privilege-to-a-principal">3.5.5.32. /v1/authorization/privileges/grant - [PUT] - Grant a Privilege to a Principal</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#v1-authorization-privileges-revoke-put-revoke-a-privilege-to-a-principal">3.5.5.33. /v1/authorization/privileges/revoke - [PUT] - Revoke a Privilege to a Principal</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#v1-authorization-privilieges-principal-type-principal-type-principal-name-principal-name-resource-type-resource-type-resource-name-resource-name-get-get-all-roles-by-principal-and-resource">3.5.5.34. /v1/authorization/privilieges?principal_type=[principal-type]&amp;principal_name=[principal-name]&amp;resource_type=[resource-type]&amp;resource_name=[resource-name] - [GET]  Get all Roles by Principal (and Resource)</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="Repository.html">3.6. Repository</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../security.html">4. Security Guide</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">Apache Sqoop</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../dev.html">3. Developer Guide</a> &raquo;</li>
+      
+    <li>3.5. Sqoop REST API Guide</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/dev/RESTAPI.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="sqoop-rest-api-guide">
+<h1><a class="toc-backref" href="#id1">3.5. Sqoop REST API Guide</a><a class="headerlink" href="#sqoop-rest-api-guide" title="Permalink to this headline">¶</a></h1>
+<p>This document will explain how you can use Sqoop REST API to build applications interacting with Sqoop server.
+The REST API covers all aspects of managing Sqoop jobs and allows you to build an app in any programming language using HTTP over JSON.</p>
+<div class="contents topic" id="table-of-contents">
+<p class="topic-title first">Table of Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#sqoop-rest-api-guide" id="id1">Sqoop REST API Guide</a><ul>
+<li><a class="reference internal" href="#initialization" id="id2">Initialization</a></li>
+<li><a class="reference internal" href="#understand-connector-driver-link-and-job" id="id3">Understand Connector, Driver, Link and Job</a></li>
+<li><a class="reference internal" href="#objects" id="id4">Objects</a><ul>
+<li><a class="reference internal" href="#configs-and-inputs" id="id5">Configs and Inputs</a></li>
+<li><a class="reference internal" href="#exception-response" id="id6">Exception Response</a></li>
+<li><a class="reference internal" href="#config-and-input-validation-status-response" id="id7">Config and Input Validation Status Response</a></li>
+<li><a class="reference internal" href="#job-submission-status-response" id="id8">Job Submission Status Response</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#header-parameters" id="id9">Header Parameters</a></li>
+<li><a class="reference internal" href="#rest-apis" id="id10">REST APIs</a><ul>
+<li><a class="reference internal" href="#version-get-get-sqoop-version" id="id11">/version - [GET] - Get Sqoop Version</a></li>
+<li><a class="reference internal" href="#v1-connectors-get-get-all-connectors" id="id12">/v1/connectors - [GET]  Get all Connectors</a></li>
+<li><a class="reference internal" href="#v1-connector-cname-get-get-connector" id="id13">/v1/connector/[cname] - [GET] - Get Connector</a></li>
+<li><a class="reference internal" href="#v1-driver-get-get-sqoop-driver" id="id14">/v1/driver - [GET]- Get Sqoop Driver</a></li>
+<li><a class="reference internal" href="#v1-links-get-get-all-links" id="id15">/v1/links/ - [GET]  Get all links</a></li>
+<li><a class="reference internal" href="#v1-links-cname-cname-get-get-all-links-by-connector" id="id16">/v1/links?cname=[cname] - [GET]  Get all links by Connector</a></li>
+<li><a class="reference internal" href="#v1-link-lname-get-get-link" id="id17">/v1/link/[lname]  - [GET] - Get Link</a></li>
+<li><a class="reference internal" href="#v1-link-post-create-link" id="id18">/v1/link - [POST] - Create Link</a></li>
+<li><a class="reference internal" href="#v1-link-lname-put-update-link" id="id19">/v1/link/[lname] - [PUT] - Update Link</a></li>
+<li><a class="reference internal" href="#v1-link-lname-delete-delete-link" id="id20">/v1/link/[lname]  - [DELETE] - Delete Link</a></li>
+<li><a class="reference internal" href="#v1-link-lname-enable-put-enable-link" id="id21">/v1/link/[lname]/enable  - [PUT] - Enable Link</a></li>
+<li><a class="reference internal" href="#v1-link-lname-disable-put-disable-link" id="id22">/v1/link/[lname]/disable - [PUT] - Disable Link</a></li>
+<li><a class="reference internal" href="#v1-jobs-get-get-all-jobs" id="id23">/v1/jobs/ - [GET]  Get all jobs</a></li>
+<li><a class="reference internal" href="#v1-jobs-cname-cname-get-get-all-jobs-by-connector" id="id24">/v1/jobs?cname=[cname] - [GET]  Get all jobs by connector</a></li>
+<li><a class="reference internal" href="#v1-job-jname-get-get-job" id="id25">/v1/job/[jname] - [GET] - Get Job</a></li>
+<li><a class="reference internal" href="#v1-job-post-create-job" id="id26">/v1/job - [POST] - Create Job</a></li>
+<li><a class="reference internal" href="#v1-job-jname-put-update-job" id="id27">/v1/job/[jname] - [PUT] - Update Job</a></li>
+<li><a class="reference internal" href="#v1-job-jname-delete-delete-job" id="id28">/v1/job/[jname] - [DELETE] - Delete Job</a></li>
+<li><a class="reference internal" href="#v1-job-jname-enable-put-enable-job" id="id29">/v1/job/[jname]/enable - [PUT] - Enable Job</a></li>
+<li><a class="reference internal" href="#v1-job-jname-disable-put-disable-job" id="id30">/v1/job/[jname]/disable - [PUT] - Disable Job</a></li>
+<li><a class="reference internal" href="#v1-job-jname-start-put-start-job" id="id31">/v1/job/[jname]/start - [PUT]- Start Job</a></li>
+<li><a class="reference internal" href="#v1-job-jname-stop-put-stop-job" id="id32">/v1/job/[jname]/stop  - [PUT]- Stop Job</a></li>
+<li><a class="reference internal" href="#v1-job-jname-status-get-get-job-status" id="id33">/v1/job/[jname]/status  - [GET]- Get Job Status</a></li>
+<li><a class="reference internal" href="#v1-submissions-get-get-all-job-submissions" id="id34">/v1/submissions? - [GET] - Get all job Submissions</a></li>
+<li><a class="reference internal" href="#v1-submissions-jname-jname-get-get-submissions-by-job" id="id35">/v1/submissions?jname=[jname] - [GET] - Get Submissions by Job</a></li>
+<li><a class="reference internal" href="#v1-authorization-roles-create-post-create-role" id="id36">/v1/authorization/roles/create - [POST] - Create Role</a></li>
+<li><a class="reference internal" href="#v1-authorization-role-role-name-delete-delete-role" id="id37">/v1/authorization/role/[role-name]  - [DELETE] - Delete Role</a></li>
+<li><a class="reference internal" href="#v1-authorization-roles-principal-type-principal-type-principal-name-principal-name-get-get-all-roles-by-principal" id="id38">/v1/authorization/roles?principal_type=[principal-type]&amp;principal_name=[principal-name] - [GET]  Get all Roles by Principal</a></li>
+<li><a class="reference internal" href="#v1-authorization-principals-role-name-rname-get-get-all-principals-by-role" id="id39">/v1/authorization/principals?role_name=[rname] - [GET]  Get all Principals by Role</a></li>
+<li><a class="reference internal" href="#v1-authorization-roles-grant-put-grant-a-role-to-a-principal" id="id40">/v1/authorization/roles/grant - [PUT] - Grant a Role to a Principal</a></li>
+<li><a class="reference internal" href="#v1-authorization-roles-revoke-put-revoke-a-role-from-a-principal" id="id41">/v1/authorization/roles/revoke - [PUT] - Revoke a Role from a Principal</a></li>
+<li><a class="reference internal" href="#v1-authorization-privileges-grant-put-grant-a-privilege-to-a-principal" id="id42">/v1/authorization/privileges/grant - [PUT] - Grant a Privilege to a Principal</a></li>
+<li><a class="reference internal" href="#v1-authorization-privileges-revoke-put-revoke-a-privilege-to-a-principal" id="id43">/v1/authorization/privileges/revoke - [PUT] - Revoke a Privilege to a Principal</a></li>
+<li><a class="reference internal" href="#v1-authorization-privilieges-principal-type-principal-type-principal-name-principal-name-resource-type-resource-type-resource-name-resource-name-get-get-all-roles-by-principal-and-resource" id="id44">/v1/authorization/privilieges?principal_type=[principal-type]&amp;principal_name=[principal-name]&amp;resource_type=[resource-type]&amp;resource_name=[resource-name] - [GET]  Get all Roles by Principal (and Resource)</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="initialization">
+<h2><a class="toc-backref" href="#id2">3.5.1. Initialization</a><a class="headerlink" href="#initialization" title="Permalink to this headline">¶</a></h2>
+<p>Before continuing further, make sure that the Sqoop server is running.</p>
+<p>The Sqoop 2 server exposes its REST API via Jetty. By default the server is accessible over HTTP but it can be configured to use HTTPS, please see: <a class="reference internal" href="../security/API TLS-SSL.html#apitlsssl"><em>API TLS/SSL</em></a> for more information. The endpoints are registered under the <tt class="docutils literal"><span class="pre">/sqoop</span></tt> path and the port is configurable (the default is 12000). For example, if the host running the Sqoop 2 server is <tt class="docutils literal"><span class="pre">example.com</span></tt> and we are using the default port, we can reach the version endpoint by sending a GET request to:</p>
+<blockquote>
+<div><div class="highlight-none"><div class="highlight"><pre>http://example.com:12000/sqoop/v1/version
+</pre></div>
+</div>
+</div></blockquote>
+<p>Certain requests might need to contain some additional query parameters and post data. These parameters could be given via
+the HTTP headers, request body or both. All the content in the HTTP body is in <tt class="docutils literal"><span class="pre">JSON</span></tt> format.</p>
+</div>
+<div class="section" id="understand-connector-driver-link-and-job">
+<h2><a class="toc-backref" href="#id3">3.5.2. Understand Connector, Driver, Link and Job</a><a class="headerlink" href="#understand-connector-driver-link-and-job" title="Permalink to this headline">¶</a></h2>
+<p>To create and run a Sqoop Job, we need to provide config values for connecting to a data source and then processing the data in that data source. Processing might be either reading from or writing to the data source. Thus we have configurable entities such as the <tt class="docutils literal"><span class="pre">From</span></tt> and <tt class="docutils literal"><span class="pre">To</span></tt> parts of the connectors, the driver that each expose configs and one or more inputs within them.</p>
+<p>For instance a connector that represents a relational data source such as MySQL will expose config classes for connecting to the database. Some of the relevant inputs are the connection string, driver class, the username and the password to connect to the database. These configs remain the same to read data from any of the tables within that database. Hence they are grouped under <tt class="docutils literal"><span class="pre">LinkConfiguration</span></tt>.</p>
+<p>Each connector can support Reading from a data source and/or writing/to a data source it represents. Reading from and writing to a data source are represented by From and To respectively. Specific configurations are required to peform the job of reading from or writing to the data source. These are grouped in the <tt class="docutils literal"><span class="pre">FromJobConfiguration</span></tt> and <tt class="docutils literal"><span class="pre">ToJobConfiguration</span></tt> objects of the connector.</p>
+<p>For instance, a connector that represents a relational data source such as MySQL will expose the table name to read from or the SQL query to use while reading data as a FromJobConfiguration. Similarly a connector that represents a data source such as HDFS, will expose the output directory to write to as a ToJobConfiguration.</p>
+</div>
+<div class="section" id="objects">
+<h2><a class="toc-backref" href="#id4">3.5.3. Objects</a><a class="headerlink" href="#objects" title="Permalink to this headline">¶</a></h2>
+<p>This section covers all the objects that might exist in an API request and/or API response.</p>
+<div class="section" id="configs-and-inputs">
+<h3><a class="toc-backref" href="#id5">3.5.3.1. Configs and Inputs</a><a class="headerlink" href="#configs-and-inputs" title="Permalink to this headline">¶</a></h3>
+<p>Before creating any link for a connector or a job with associated <tt class="docutils literal"><span class="pre">From</span></tt> and <tt class="docutils literal"><span class="pre">To</span></tt> links, the first thing to do is getting familiar with all the configurations that the connector exposes.</p>
+<p>Each config consists of the following information</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="24%" />
+<col width="76%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Field</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">id</span></tt></td>
+<td>The id of this config</td>
+</tr>
+<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">inputs</span></tt></td>
+<td>A array of inputs of this config</td>
+</tr>
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">name</span></tt></td>
+<td>The unique name of this config per connector</td>
+</tr>
+<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">type</span></tt></td>
+<td>The type of this config (LINK/ JOB)</td>
+</tr>
+</tbody>
+</table>
+<p>A typical config object is showing below:</p>
+<div class="highlight-none"><div class="highlight"><pre> {
+  id:7,
+  inputs:[
+    {
+       id: 25,
+       name: &quot;throttlingConfig.numExtractors&quot;,
+       type: &quot;INTEGER&quot;,
+       sensitive: false
+    },
+    {
+       id: 26,
+       name: &quot;throttlingConfig.numLoaders&quot;,
+       type: &quot;INTEGER&quot;,
+       sensitive: false
+     }
+  ],
+  name: &quot;throttlingConfig&quot;,
+  type: &quot;JOB&quot;
+}
+</pre></div>
+</div>
+<p>Each input object in a config is structured below:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="24%" />
+<col width="76%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Field</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">id</span></tt></td>
+<td>The id of this input</td>
+</tr>
+<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">name</span></tt></td>
+<td>The unique name of this input per config</td>
+</tr>
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">type</span></tt></td>
+<td>The data type of this input field</td>
+</tr>
+<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">size</span></tt></td>
+<td>The length of this input field</td>
+</tr>
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">sensitive</span></tt></td>
+<td>Whether this input contain sensitive information</td>
+</tr>
+</tbody>
+</table>
+<p>To send a filled config in the request, you should always use config id and input id to map the values to their correspondig names.
+For example, the following request contains an input value <tt class="docutils literal"><span class="pre">com.mysql.jdbc.Driver</span></tt> with input id <tt class="docutils literal"><span class="pre">7</span></tt> inside a config with id <tt class="docutils literal"><span class="pre">4</span></tt> that belongs to a link with name <tt class="docutils literal"><span class="pre">linkName</span></tt></p>
+<div class="highlight-none"><div class="highlight"><pre>link: {
+      id : 3,
+      name: &quot;linkName&quot;,
+      enabled: true,
+      link-config-values: [{
+          id: 4,
+          inputs: [{
+              id: 7,
+              name: &quot;linkConfig.jdbcDriver&quot;,
+              value: &quot;com.mysql.jdbc.Driver&quot;,
+              type: &quot;STRING&quot;,
+              size: 128,
+              sensitive: false
+          }, {
+              id: 8,
+              name: &quot;linkConfig.connectionString&quot;,
+              value: &quot;jdbc%3Amysql%3A%2F%2Fmysql.ent.cloudera.com%2Fsqoop&quot;,
+              type: &quot;STRING&quot;,
+              size: 128,
+              sensitive: false
+          },
+          ...
+       }
+     }
+</pre></div>
+</div>
+</div>
+<div class="section" id="exception-response">
+<h3><a class="toc-backref" href="#id6">3.5.3.2. Exception Response</a><a class="headerlink" href="#exception-response" title="Permalink to this headline">¶</a></h3>
+<p>Each operation on Sqoop server might return an exception in the Http response. Remember to take this into account.The exception code and message could be found in both the header and body of the response.</p>
+<p>Please jump to &#8220;Header Parameters&#8221; section to find how to get exception information from header.</p>
+<p>In the body, the exception is expressed in <tt class="docutils literal"><span class="pre">JSON</span></tt> format. An example of the exception is:</p>
+<div class="highlight-none"><div class="highlight"><pre>{
+  &quot;message&quot;:&quot;DERBYREPO_0030:Unable to load specific job metadata from repository - Couldn&#39;t find job with id 2&quot;,
+  &quot;stack-trace&quot;:[
+    {
+      &quot;file&quot;:&quot;DerbyRepositoryHandler.java&quot;,
+      &quot;line&quot;:1111,
+      &quot;class&quot;:&quot;org.apache.sqoop.repository.derby.DerbyRepositoryHandler&quot;,
+      &quot;method&quot;:&quot;findJob&quot;
+    },
+    {
+      &quot;file&quot;:&quot;JdbcRepository.java&quot;,
+      &quot;line&quot;:451,
+      &quot;class&quot;:&quot;org.apache.sqoop.repository.JdbcRepository$16&quot;,
+      &quot;method&quot;:&quot;doIt&quot;
+    },
+    {
+      &quot;file&quot;:&quot;JdbcRepository.java&quot;,
+      &quot;line&quot;:90,
+      &quot;class&quot;:&quot;org.apache.sqoop.repository.JdbcRepository&quot;,
+      &quot;method&quot;:&quot;doWithConnection&quot;
+    },
+    {
+      &quot;file&quot;:&quot;JdbcRepository.java&quot;,
+      &quot;line&quot;:61,
+      &quot;class&quot;:&quot;org.apache.sqoop.repository.JdbcRepository&quot;,
+      &quot;method&quot;:&quot;doWithConnection&quot;
+    },
+    {
+      &quot;file&quot;:&quot;JdbcRepository.java&quot;,
+      &quot;line&quot;:448,
+      &quot;class&quot;:&quot;org.apache.sqoop.repository.JdbcRepository&quot;,
+      &quot;method&quot;:&quot;findJob&quot;
+    },
+    {
+      &quot;file&quot;:&quot;JobRequestHandler.java&quot;,
+      &quot;line&quot;:238,
+      &quot;class&quot;:&quot;org.apache.sqoop.handler.JobRequestHandler&quot;,
+      &quot;method&quot;:&quot;getJobs&quot;
+    }
+  ],
+  &quot;class&quot;:&quot;org.apache.sqoop.common.SqoopException&quot;
+}
+</pre></div>
+</div>
+</div>
+<div class="section" id="config-and-input-validation-status-response">
+<h3><a class="toc-backref" href="#id7">3.5.3.3. Config and Input Validation Status Response</a><a class="headerlink" href="#config-and-input-validation-status-response" title="Permalink to this headline">¶</a></h3>
+<p>The config and the inputs associated with the connectors also provide custom validation rules for the values given to these input fields. Sqoop applies these custom validators and its corresponding valdation logic when config values for the LINK and JOB are posted.</p>
+<p>An example of a OK status with the persisted ID:</p>
+<div class="highlight-none"><div class="highlight"><pre>{
+   &quot;id&quot;: 3,
+   &quot;validation-result&quot;: [
+       {}
+   ]
+}
+</pre></div>
+</div>
+<p>An example of ERROR status:</p>
+<div class="highlight-none"><div class="highlight"><pre>{
+  &quot;validation-result&quot;: [
+    {
+     &quot;linkConfig&quot;: [
+       {
+         &quot;message&quot;: &quot;Invalid URI. URI must either be null or a valid URI. Here are a few valid example URIs: hdfs://example.com:8020/, hdfs://example.com/, file:///, file:///tmp, file://localhost/tmp&quot;,
+         &quot;status&quot;: &quot;ERROR&quot;
+       }
+     ]
+   }
+  ]
+}
+</pre></div>
+</div>
+</div>
+<div class="section" id="job-submission-status-response">
+<h3><a class="toc-backref" href="#id8">3.5.3.4. Job Submission Status Response</a><a class="headerlink" href="#job-submission-status-response" title="Permalink to this headline">¶</a></h3>
+<p>After starting a job, you could look up the running status of it. There could be 7 possible status:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="34%" />
+<col width="66%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Status</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">BOOTING</span></tt></td>
+<td>In the middle of submitting the job</td>
+</tr>
+<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">FAILURE_ON_SUBMIT</span></tt></td>
+<td>Unable to submit this job to remote cluster</td>
+</tr>
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">RUNNING</span></tt></td>
+<td>The job is running now</td>
+</tr>
+<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">SUCCEEDED</span></tt></td>
+<td>Job finished successfully</td>
+</tr>
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">FAILED</span></tt></td>
+<td>Job failed</td>
+</tr>
+<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">NEVER_EXECUTED</span></tt></td>
+<td>The job has never been executed since created</td>
+</tr>
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">UNKNOWN</span></tt></td>
+<td>The status is unknown</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="section" id="header-parameters">
+<h2><a class="toc-backref" href="#id9">3.5.4. Header Parameters</a><a class="headerlink" href="#header-parameters" title="Permalink to this headline">¶</a></h2>
+<p>For all the responses, the following parameters in the HTTP message header are available:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="23%" />
+<col width="9%" />
+<col width="68%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Parameter</th>
+<th class="head">Required</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">sqoop-error-code</span></tt></td>
+<td>false</td>
+<td>The error code when some error happen in the server side for this request</td>
+</tr>
+<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">sqoop-error-message</span></tt></td>
+<td>false</td>
+<td>The explanation for a error code</td>
+</tr>
+</tbody>
+</table>
+<p>So far, there are only these 2 parameters in the header of response message. They only exist when something bad happen in the server.
+And they always come along with an exception message in the response body.</p>
+</div>
+<div class="section" id="rest-apis">
+<h2><a class="toc-backref" href="#id10">3.5.5. REST APIs</a><a class="headerlink" href="#rest-apis" title="Permalink to this headline">¶</a></h2>
+<p>The section elaborates all the rest apis that are supported by the Sqoop server.</p>
+<p>For all Sqoop requests, the following request parameters will be added automatically. However, this user name is only in simple mode. In Kerberos mode, this user name will be ignored by Sqoop server and user name in UGI which is authenticated by Kerberos server will be used instead.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="32%" />
+<col width="68%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Parameter</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">user.name</span></tt></td>
+<td>The name of the user who makes the requests</td>
+</tr>
+</tbody>
+</table>
+<div class="section" id="version-get-get-sqoop-version">
+<h3><a class="toc-backref" href="#id11">3.5.5.1. /version - [GET] - Get Sqoop Version</a><a class="headerlink" href="#version-get-get-sqoop-version" title="Permalink to this headline">¶</a></h3>
+<p>Get all the version metadata of Sqoop software in the server side.</p>
+<ul class="simple">
+<li>Method: <tt class="docutils literal"><span class="pre">GET</span></tt></li>
+<li>Format: <tt class="docutils literal"><span class="pre">JSON</span></tt></li>
+<li>Request Content: <tt class="docutils literal"><span class="pre">None</span></tt></li>
+<li>Fields of Response:</li>
+</ul>
+<table border="1" class="docutils">
+<colgroup>
+<col width="26%" />
+<col width="74%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Field</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">source-revision</span></tt></td>
+<td>The revision number of Sqoop source code</td>
+</tr>
+<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">api-versions</span></tt></td>
+<td>The version of network protocol</td>
+</tr>
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">build-date</span></tt></td>
+<td>The Sqoop release date</td>
+</tr>
+<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">user</span></tt></td>
+<td>The user who made the release</td>
+</tr>
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">source-url</span></tt></td>
+<td>The url of the source code trunk</td>
+</tr>
+<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">build-version</span></tt></td>
+<td>The version of Sqoop in the server side</td>
+</tr>
+</tbody>
+</table>
+<ul class="simple">
+<li>Response Example:</li>
+</ul>
+<div class="highlight-none"><div class="highlight"><pre>{
+ source-url: &quot;git://vbasavaraj.local/Users/vbasavaraj/Projects/SqoopRefactoring/sqoop2/common&quot;,
+ source-revision: &quot;418c5f637c3f09b94ea7fc3b0a4610831373a25f&quot;,
+ build-version: &quot;2.0.0-SNAPSHOT&quot;,
+ api-versions: [
+    &quot;v1&quot;
+  ],
+ user: &quot;vbasavaraj&quot;,
+ build-date: &quot;Mon Nov 3 08:18:21 PST 2014&quot;
+}
+</pre></div>
+</div>
+</div>
+<div class="section" id="v1-connectors-get-get-all-connectors">
+<h3><a class="toc-backref" href="#id12">3.5.5.2. /v1/connectors - [GET]  Get all Connectors</a><a class="headerlink" href="#v1-connectors-get-get-all-connectors" title="Permalink to this headline">¶</a></h3>
+<p>Get all the connectors registered in Sqoop</p>
+<ul class="simple">
+<li>Method: <tt class="docutils literal"><span class="pre">GET</span></tt></li>
+<li>Format: <tt class="docutils literal"><span class="pre">JSON</span></tt></li>
+<li>Request Content: <tt class="docutils literal"><span class="pre">None</span></tt></li>
+<li>Response Example</li>
+</ul>
+<div class="highlight-none"><div class="highlight"><pre>{
+  connectors: [{
+      id: 1,
+      link-config: [],
+      job-config: {},
+      name: &quot;hdfs-connector&quot;,
+      class: &quot;org.apache.sqoop.connector.hdfs.HdfsConnector&quot;,
+      all-config-resources: {},
+      version: &quot;2.0.0-SNAPSHOT&quot;
+  }, {
+      id: 2,
+      link-config: [],
+      job-config: {},
+      name: &quot;generic-jdbc-connector&quot;,
+      class: &quot;org.apache.sqoop.connector.jdbc.GenericJdbcConnector&quot;,
+      all-config - resources: {},
+      version: &quot;2.0.0-SNAPSHOT&quot;
+  }]
+}
+</pre></div>
+</div>
+</div>
+<div class="section" id="v1-connector-cname-get-get-connector">
+<h3><a class="toc-backref" href="#id13">3.5.5.3. /v1/connector/[cname] - [GET] - Get Connector</a><a class="headerlink" href="#v1-connector-cname-get-get-connector" title="Permalink to this headline">¶</a></h3>
+<p>Provide the unique name of the connector in the url <tt class="docutils literal"><span class="pre">[cname]</span></tt> part.</p>
+<ul class="simple">
+<li>Method: <tt class="docutils literal"><span class="pre">GET</span></tt></li>
+<li>Format: <tt class="docutils literal"><span class="pre">JSON</span></tt></li>
+<li>Request Content: <tt class="docutils literal"><span class="pre">None</span></tt></li>
+<li>Fields of Response:</li>
+</ul>
+<table border="1" class="docutils">
+<colgroup>
+<col width="23%" />
+<col width="77%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Field</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">name</span></tt></td>
+<td>The name for the connector ( registered as a configurable )</td>
+</tr>
+<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">job-config</span></tt></td>
+<td>Connector job config and inputs for both FROM and TO</td>
+</tr>
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">link-config</span></tt></td>
+<td>Connector link config and inputs</td>
+</tr>
+<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">all-config-resources</span></tt></td>
+<td>All config inputs labels and description for the given connector</td>
+</tr>
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">version</span></tt></td>
+<td>The build version required for config and input data upgrades</td>
+</tr>
+</tbody>
+</table>
+<ul class="simple">
+<li>Response Example:</li>
+</ul>
+<div class="highlight-none"><div class="highlight"><pre>{
+ connector: {
+     id: 1,
+     name: &quot;connectorName&quot;,
+     job-config: {
+         TO: [{
+             id: 3,
+             inputs: [{
+                 id: 3,
+                 values: &quot;TEXT_FILE,SEQUENCE_FILE&quot;,
+                 name: &quot;toJobConfig.outputFormat&quot;,
+                 type: &quot;ENUM&quot;,
+                 sensitive: false
+             }, {
+                 id: 4,
+                 values: &quot;NONE,DEFAULT,DEFLATE,GZIP,BZIP2,LZO,LZ4,SNAPPY,CUSTOM&quot;,
+                 name: &quot;toJobConfig.compression&quot;,
+                 type: &quot;ENUM&quot;,
+                 sensitive: false
+             }, {
+                 id: 5,
+                 name: &quot;toJobConfig.customCompression&quot;,
+                 type: &quot;STRING&quot;,
+                 size: 255,
+                 sensitive: false
+             }, {
+                 id: 6,
+                 name: &quot;toJobConfig.outputDirectory&quot;,
+                 type: &quot;STRING&quot;,
+                 size: 255,
+                 sensitive: false
+             }],
+             name: &quot;toJobConfig&quot;,
+             type: &quot;JOB&quot;
+         }],
+         FROM: [{
+             id: 2,
+             inputs: [{
+                 id: 2,
+                 name: &quot;fromJobConfig.inputDirectory&quot;,
+                 type: &quot;STRING&quot;,
+                 size: 255,
+                 sensitive: false
+             }],
+             name: &quot;fromJobConfig&quot;,
+             type: &quot;JOB&quot;
+         }]
+     },
+     link-config: [{
+         id: 1,
+         inputs: [{
+             id: 1,
+             name: &quot;linkConfig.uri&quot;,
+             type: &quot;STRING&quot;,
+             size: 255,
+             sensitive: false
+         }],
+         name: &quot;linkConfig&quot;,
+         type: &quot;LINK&quot;
+     }],
+     name: &quot;hdfs-connector&quot;,
+     class: &quot;org.apache.sqoop.connector.hdfs.HdfsConnector&quot;,
+     all-config-resources: {
+         fromJobConfig.label: &quot;From Job configuration&quot;,
+             toJobConfig.ignored.label: &quot;Ignored&quot;,
+             fromJobConfig.help: &quot;Specifies information required to get data from Hadoop ecosystem&quot;,
+             toJobConfig.ignored.help: &quot;This value is ignored&quot;,
+             toJobConfig.label: &quot;ToJob configuration&quot;,
+             toJobConfig.storageType.label: &quot;Storage type&quot;,
+             fromJobConfig.inputDirectory.label: &quot;Input directory&quot;,
+             toJobConfig.outputFormat.label: &quot;Output format&quot;,
+             toJobConfig.outputDirectory.label: &quot;Output directory&quot;,
+             toJobConfig.outputDirectory.help: &quot;Output directory for final data&quot;,
+             toJobConfig.compression.help: &quot;Compression that should be used for the data&quot;,
+             toJobConfig.outputFormat.help: &quot;Format in which data should be serialized&quot;,
+             toJobConfig.customCompression.label: &quot;Custom compression format&quot;,
+             toJobConfig.compression.label: &quot;Compression format&quot;,
+             linkConfig.label: &quot;Link configuration&quot;,
+             toJobConfig.customCompression.help: &quot;Full class name of the custom compression&quot;,
+             toJobConfig.storageType.help: &quot;Target on Hadoop ecosystem where to store data&quot;,
+             linkConfig.help: &quot;Here you supply information necessary to connect to HDFS&quot;,
+             linkConfig.uri.help: &quot;HDFS URI used to connect to HDFS&quot;,
+             linkConfig.uri.label: &quot;HDFS URI&quot;,
+             fromJobConfig.inputDirectory.help: &quot;Directory that should be exported&quot;,
+             toJobConfig.help: &quot;You must supply the information requested in order to get information where you want to store your data.&quot;
+     },
+     version: &quot;2.0.0-SNAPSHOT&quot;
+  }
+}
+</pre></div>
+</div>
+</div>
+<div class="section" id="v1-driver-get-get-sqoop-driver">
+<h3><a class="toc-backref" href="#id14">3.5.5.4. /v1/driver - [GET]- Get Sqoop Driver</a><a class="headerlink" href="#v1-driver-get-get-sqoop-driver" title="Permalink to this headline">¶</a></h3>
+<p>Driver exposes configurations required for the job execution.</p>
+<ul class="simple">
+<li>Method: <tt class="docutils literal"><span class="pre">GET</span></tt></li>
+<li>Format: <tt class="docutils literal"><span class="pre">JSON</span></tt></li>
+<li>Request Content: <tt class="docutils literal"><span class="pre">None</span></tt></li>
+<li>Fields of Response:</li>
+</ul>
+<table border="1" class="docutils">
+<colgroup>
+<col width="21%" />
+<col width="79%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Field</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">id</span></tt></td>
+<td>The id for the driver ( registered as a configurable )</td>
+</tr>
+<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">job-config</span></tt></td>
+<td>Driver job config and inputs</td>
+</tr>
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">version</span></tt></td>
+<td>The build version of the driver</td>
+</tr>
+<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">all-config-resources</span></tt></td>
+<td>Driver exposed config and input labels and description</td>
+</tr>
+</tbody>
+</table>
+<ul class="simple">
+<li>Response Example:</li>
+</ul>
+<div class="highlight-none"><div class="highlight"><pre>{
+   id: 3,
+   job-config: [{
+       id: 7,
+       inputs: [{
+           id: 25,
+           name: &quot;throttlingConfig.numExtractors&quot;,
+           type: &quot;INTEGER&quot;,
+           sensitive: false
+       }, {
+           id: 26,
+           name: &quot;throttlingConfig.numLoaders&quot;,
+           type: &quot;INTEGER&quot;,
+           sensitive: false
+       }],
+       name: &quot;throttlingConfig&quot;,
+       type: &quot;JOB&quot;
+   }],
+   all-config-resources: {
+       throttlingConfig.numExtractors.label: &quot;Extractors&quot;,
+           throttlingConfig.numLoaders.help: &quot;Number of loaders that Sqoop will use&quot;,
+           throttlingConfig.numLoaders.label: &quot;Loaders&quot;,
+           throttlingConfig.label: &quot;Throttling resources&quot;,
+           throttlingConfig.numExtractors.help: &quot;Number of extractors that Sqoop will use&quot;,
+           throttlingConfig.help: &quot;Set throttling boundaries to not overload your systems&quot;
+   },
+   version: &quot;1&quot;
+}
+</pre></div>
+</div>
+</div>
+<div class="section" id="v1-links-get-get-all-links">
+<h3><a class="toc-backref" href="#id15">3.5.5.5. /v1/links/ - [GET]  Get all links</a><a class="headerlink" href="#v1-links-get-get-all-links" title="Permalink to this headline">¶</a></h3>
+<p>Get all the links created in Sqoop</p>
+<ul class="simple">
+<li>Method: <tt class="docutils literal"><span class="pre">GET</span></tt></li>
+<li>Format: <tt class="docutils literal"><span class="pre">JSON</span></tt></li>
+<li>Request Content: <tt class="docutils literal"><span class="pre">None</span></tt></li>
+<li>Response Example</li>
+</ul>
+<div class="highlight-none"><div class="highlight"><pre>{
+  links: [
+    {
+      id: 1,
+      enabled: true,
+      update-user: &quot;root&quot;,
+      link-config-values: [],
+      name: &quot;First Link&quot;,
+      creation-date: 1415309361756,
+      connector-name: &quot;connectorName1&quot;,
+      update-date: 1415309361756,
+      creation-user: &quot;root&quot;
+    },
+    {
+      id: 2,
+      enabled: true,
+      update-user: &quot;root&quot;,
+      link-config-values: [],
+      name: &quot;Second Link&quot;,
+      creation-date: 1415309390807,
+      connector-name: &quot;connectorName2&quot;,
+      update-date: 1415309390807,
+      creation-user: &quot;root&quot;
+    }
+  ]
+}
+</pre></div>
+</div>
+</div>
+<div class="section" id="v1-links-cname-cname-get-get-all-links-by-connector">
+<h3><a class="toc-backref" href="#id16">3.5.5.6. /v1/links?cname=[cname] - [GET]  Get all links by Connector</a><a class="headerlink" href="#v1-links-cname-cname-get-get-all-links-by-connector" title="Permalink to this headline">¶</a></h3>
+<p>Get all the links for a given connector identified by <tt class="docutils literal"><span class="pre">[cname]</span></tt> part.</p>
+</div>
+<div class="section" id="v1-link-lname-get-get-link">
+<h3><a class="toc-backref" href="#id17">3.5.5.7. /v1/link/[lname]  - [GET] - Get Link</a><a class="headerlink" href="#v1-link-lname-get-get-link" title="Permalink to this headline">¶</a></h3>
+<p>Provide the unique name of the link in the url <tt class="docutils literal"><span class="pre">[lname]</span></tt> part.</p>
+<p>Get all the details of the link including the name, type and the corresponding config input values for the link</p>
+<ul class="simple">
+<li>Method: <tt class="docutils literal"><span class="pre">GET</span></tt></li>
+<li>Format: <tt class="docutils literal"><span class="pre">JSON</span></tt></li>
+<li>Request Content: <tt class="docutils literal"><span class="pre">None</span></tt></li>
+<li>Response Example:</li>
+</ul>
+<div class="highlight-none"><div class="highlight"><pre>{
+   link: {
+       id: 1,
+       enabled: true,
+       link-config-values: [{
+           id: 1,
+           inputs: [{
+               id: 1,
+               name: &quot;linkConfig.uri&quot;,
+               value: &quot;hdfs%3A%2F%2Fnamenode%3A8090&quot;,
+               type: &quot;STRING&quot;,
+               size: 255,
+               sensitive: false
+           }],
+           name: &quot;linkConfig&quot;,
+           type: &quot;LINK&quot;
+       }],
+       update-user: &quot;root&quot;,
+       name: &quot;First Link&quot;,
+       creation-date: 1415287846371,
+       connector-name: &quot;connectorName&quot;,
+       update-date: 1415287846371,
+       creation-user: &quot;root&quot;
+   }
+}
+</pre></div>
+</div>
+</div>
+<div class="section" id="v1-link-post-create-link">
+<h3><a class="toc-backref" href="#id18">3.5.5.8. /v1/link - [POST] - Create Link</a><a class="headerlink" href="#v1-link-post-create-link" title="Permalink to this headline">¶</a></h3>
+<p>Create a new link object. Provide values to the link config inputs for the ones that are required.</p>
+<ul class="simple">
+<li>Method: <tt class="docutils literal"><span class="pre">POST</span></tt></li>
+<li>Format: <tt class="docutils literal"><span class="pre">JSON</span></tt></li>
+<li>Fields of Request:</li>
+</ul>
+<table border="1" class="docutils">
+<colgroup>
+<col width="23%" />
+<col width="77%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Field</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">link</span></tt></td>
+<td>The root of the post data in JSON</td>
+</tr>
+<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">id</span></tt></td>
+<td>The id of the link can be left blank in the post data</td>
+</tr>
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">enabled</span></tt></td>
+<td>Whether to enable this link (true/false)</td>
+</tr>
+<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">update-date</span></tt></td>
+<td>The last updated time of this link</td>
+</tr>
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">creation-date</span></tt></td>
+<td>The creation time of this link</td>
+</tr>
+<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">update-user</span></tt></td>
+<td>The user who updated this link</td>
+</tr>
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">creation-user</span></tt></td>
+<td>The user who created this link</td>
+</tr>
+<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">name</span></tt></td>
+<td>The name of this link</td>
+</tr>
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">link-config-values</span></tt></td>
+<td>Config input values for link config for the corresponding connector</td>
+</tr>
+<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">connector-id</span></tt></td>
+<td>The id of the connector used for this link</td>
+</tr>
+</tbody>
+</table>
+<ul class="simple">
+<li>Request Example:</li>
+</ul>
+<div class="highlight-none"><div class="highlight"><pre>{
+  link: {
+      id: -1,
+      enabled: true,
+      link-config-values: [{
+          id: 1,
+          inputs: [{
+              id: 1,
+              name: &quot;linkConfig.uri&quot;,
+              value: &quot;hdfs%3A%2F%2Fvbsqoop-1.ent.cloudera.com%3A8020%2Fuser%2Froot%2Fjob1&quot;,
+              type: &quot;STRING&quot;,
+              size: 255,
+              sensitive: false
+          }],
+          name: &quot;testInput&quot;,
+          type: &quot;LINK&quot;
+      }],
+      update-user: &quot;root&quot;,
+      name: &quot;testLink&quot;,
+      creation-date: 1415202223048,
+      connector-name: &quot;connectorName&quot;,
+      update-date: 1415202223048,
+      creation-user: &quot;root&quot;
+  }
+}
+</pre></div>
+</div>
+<ul class="simple">
+<li>Fields of Response:</li>
+</ul>
+<table border="1" class="docutils">
+<colgroup>
+<col width="24%" />
+<col width="76%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Field</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">name</span></tt></td>
+<td>The name assigned for this new created link</td>
+</tr>
+<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">validation-result</span></tt></td>
+<td>The validation status for the  link config inputs given in the post data</td>
+</tr>
+</tbody>
+</table>
+<ul class="simple">
+<li>ERROR Response Example:</li>
+</ul>
+<div class="highlight-none"><div class="highlight"><pre>{
+  &quot;validation-result&quot;: [
+      {
+          &quot;linkConfig&quot;: [
+              {
+                  &quot;message&quot;: &quot;Invalid URI. URI must either be null or a valid URI. Here are a few valid example URIs: hdfs://example.com:8020/, hdfs://example.com/, file:///, file:///tmp, file://localhost/tmp&quot;,
+                  &quot;status&quot;: &quot;ERROR&quot;
+              }
+          ]
+      }
+  ]
+}
+</pre></div>
+</div>
+</div>
+<div class="section" id="v1-link-lname-put-update-link">
+<h3><a class="toc-backref" href="#id19">3.5.5.9. /v1/link/[lname] - [PUT] - Update Link</a><a class="headerlink" href="#v1-link-lname-put-update-link" title="Permalink to this headline">¶</a></h3>
+<p>Update an existing link object with name [lname]. To make the procedure of filling inputs easier, the general practice
+is get the link first and then change some of the values for the inputs.</p>
+<ul class="simple">
+<li>Method: <tt class="docutils literal"><span class="pre">PUT</span></tt></li>
+<li>Format: <tt class="docutils literal"><span class="pre">JSON</span></tt></li>
+<li>OK Response Example:</li>
+</ul>
+<div class="highlight-none"><div class="highlight"><pre>{
+  &quot;validation-result&quot;: [
+      {}
+  ]
+}
+</pre></div>
+</div>
+</div>
+<div class="section" id="v1-link-lname-delete-delete-link">
+<h3><a class="toc-backref" href="#id20">3.5.5.10. /v1/link/[lname]  - [DELETE] - Delete Link</a><a class="headerlink" href="#v1-link-lname-delete-delete-link" title="Permalink to this headline">¶</a></h3>
+<p>Delete a link with name [lname]</p>
+<ul class="simple">
+<li>Method: <tt class="docutils literal"><span class="pre">DELETE</span></tt></li>
+<li>Format: <tt class="docutils literal"><span class="pre">JSON</span></tt></li>
+<li>Request Content: <tt class="docutils literal"><span class="pre">None</span></tt></li>
+<li>Response Content: <tt class="docutils literal"><span class="pre">None</span></tt></li>
+</ul>
+</div>
+<div class="section" id="v1-link-lname-enable-put-enable-link">
+<h3><a class="toc-backref" href="#id21">3.5.5.11. /v1/link/[lname]/enable  - [PUT] - Enable Link</a><a class="headerlink" href="#v1-link-lname-enable-put-enable-link" title="Permalink to this headline">¶</a></h3>
+<p>Enable a link with name <tt class="docutils literal"><span class="pre">lname</span></tt></p>
+<ul class="simple">
+<li>Method: <tt class="docutils literal"><span class="pre">PUT</span></tt></li>
+<li>Format: <tt class="docutils literal"><span class="pre">JSON</span></tt></li>
+<li>Request Content: <tt class="docutils literal"><span class="pre">None</span></tt></li>
+<li>Response Content: <tt class="docutils literal"><span class="pre">None</span></tt></li>
+</ul>
+</div>
+<div class="section" id="v1-link-lname-disable-put-disable-link">
+<h3><a class="toc-backref" href="#id22">3.5.5.12. /v1/link/[lname]/disable - [PUT] - Disable Link</a><a class="headerlink" href="#v1-link-lname-disable-put-disable-link" title="Permalink to this headline">¶</a></h3>
+<p>Disable a link with name <tt class="docutils literal"><span class="pre">lname</span></tt></p>
+<ul class="simple">
+<li>Method: <tt class="docutils literal"><span class="pre">PUT</span></tt></li>
+<li>Format: <tt class="docutils literal"><span class="pre">JSON</span></tt></li>
+<li>Request Content: <tt class="docutils literal"><span class="pre">None</span></tt></li>
+<li>Response Content: <tt class="docutils literal"><span class="pre">None</span></tt></li>
+</ul>
+</div>
+<div class="section" id="v1-jobs-get-get-all-jobs">
+<h3><a class="toc-backref" href="#id23">3.5.5.13. /v1/jobs/ - [GET]  Get all jobs</a><a class="headerlink" href="#v1-jobs-get-get-all-jobs" title="Permalink to this headline">¶</a></h3>
+<p>Get all the jobs created in Sqoop</p>
+<ul class="simple">
+<li>Method: <tt class="docutils literal"><span class="pre">GET</span></tt></li>
+<li>Format: <tt class="docutils literal"><span class="pre">JSON</span></tt></li>
+<li>Request Content: <tt class="docutils literal"><span class="pre">None</span></tt></li>
+<li>Response Example:</li>
+</ul>
+<div class="highlight-none"><div class="highlight"><pre>{
+   jobs: [{
+      driver-config-values: [],
+          enabled: true,
+          from-connector-name: &quot;fromConnectorName&quot;,
+          update-user: &quot;root&quot;,
+          to-config-values: [],
+          to-connector-name: &quot;toConnectorName&quot;,
+          creation-date: 1415310157618,
+          update-date: 1415310157618,
+          creation-user: &quot;root&quot;,
+          id: 1,
+          to-link-name: &quot;toLinkName&quot;,
+          from-config-values: [],
+          name: &quot;First Job&quot;,
+          from-link-name: &quot;fromLinkName&quot;
+     },{
+      driver-config-values: [],
+          enabled: true,
+          from-connector-name: &quot;fromConnectorName&quot;,
+          update-user: &quot;root&quot;,
+          to-config-values: [],
+          to-connector-name: &quot;toConnectorName&quot;,
+          creation-date: 1415310650600,
+          update-date: 1415310650600,
+          creation-user: &quot;root&quot;,
+          id: 2,
+          to-link-name: &quot;toLinkName&quot;,
+          from-config-values: [],
+          name: &quot;Second Job&quot;,
+          from-link-name: &quot;fromLinkName&quot;
+     }]
+}
+</pre></div>
+</div>
+</div>
+<div class="section" id="v1-jobs-cname-cname-get-get-all-jobs-by-connector">
+<h3><a class="toc-backref" href="#id24">3.5.5.14. /v1/jobs?cname=[cname] - [GET]  Get all jobs by connector</a><a class="headerlink" href="#v1-jobs-cname-cname-get-get-all-jobs-by-connector" title="Permalink to this headline">¶</a></h3>
+<p>Get all the jobs for a given connector identified by <tt class="docutils literal"><span class="pre">[cname]</span></tt> part.</p>
+</div>
+<div class="section" id="v1-job-jname-get-get-job">
+<h3><a class="toc-backref" href="#id25">3.5.5.15. /v1/job/[jname] - [GET] - Get Job</a><a class="headerlink" href="#v1-job-jname-get-get-job" title="Permalink to this headline">¶</a></h3>
+<p>Provide the name of the job in the url [jname] part.</p>
+<ul class="simple">
+<li>Method: <tt class="docutils literal"><span class="pre">GET</span></tt></li>
+<li>Format: <tt class="docutils literal"><span class="pre">JSON</span></tt></li>
+<li>Request Content: <tt class="docutils literal"><span class="pre">None</span></tt></li>
+<li>Response Example:</li>
+</ul>
+<div class="highlight-none"><div class="highlight"><pre> {
+   job: {
+       driver-config-values: [{
+               id: 7,
+               inputs: [{
+                   id: 25,
+                   name: &quot;throttlingConfig.numExtractors&quot;,
+                   value: &quot;3&quot;,
+                   type: &quot;INTEGER&quot;,
+                   sensitive: false
+               }, {
+                   id: 26,
+                   name: &quot;throttlingConfig.numLoaders&quot;,
+                   value: &quot;3&quot;,
+                   type: &quot;INTEGER&quot;,
+                   sensitive: false
+               }],
+               name: &quot;throttlingConfig&quot;,
+               type: &quot;JOB&quot;
+           }],
+           enabled: true,
+           from-connector-name: &quot;fromConnectorName&quot;,
+           update-user: &quot;root&quot;,
+           to-config-values: [{
+               id: 6,
+               inputs: [{
+                   id: 19,
+                   name: &quot;toJobConfig.schemaName&quot;,
+                   type: &quot;STRING&quot;,
+                   size: 50,
+                   sensitive: false
+               }, {
+                   id: 20,
+                   name: &quot;toJobConfig.tableName&quot;,
+                   value: &quot;text&quot;,
+                   type: &quot;STRING&quot;,
+                   size: 2000,
+                   sensitive: false
+               }, {
+                   id: 21,
+                   name: &quot;toJobConfig.sql&quot;,
+                   type: &quot;STRING&quot;,
+                   size: 50,
+                   sensitive: false
+               }, {
+                   id: 22,
+                   name: &quot;toJobConfig.columns&quot;,
+                   type: &quot;STRING&quot;,
+                   size: 50,
+                   sensitive: false
+               }, {
+                   id: 23,
+                   name: &quot;toJobConfig.stageTableName&quot;,
+                   type: &quot;STRING&quot;,
+                   size: 2000,
+                   sensitive: false
+               }, {
+                   id: 24,
+                   name: &quot;toJobConfig.shouldClearStageTable&quot;,
+                   type: &quot;BOOLEAN&quot;,
+                   sensitive: false
+               }],
+               name: &quot;toJobConfig&quot;,
+               type: &quot;JOB&quot;
+           }],
+           to-connector-name: &quot;toConnectorName&quot;,
+           creation-date: 1415310157618,
+           update-date: 1415310157618,
+           creation-user: &quot;root&quot;,
+           id: 1,
+           to-link-name: &quot;toLinkName&quot;,
+           from-config-values: [{
+               id: 2,
+               inputs: [{
+                   id: 2,
+                   name: &quot;fromJobConfig.inputDirectory&quot;,
+                   value: &quot;hdfs%3A%2F%2Fvbsqoop-1.ent.cloudera.com%3A8020%2Fuser%2Froot%2Fjob1&quot;,
+                   type: &quot;STRING&quot;,
+                   size: 255,
+                   sensitive: false
+               }],
+               name: &quot;fromJobConfig&quot;,
+               type: &quot;JOB&quot;
+           }],
+           name: &quot;First Job&quot;,
+           from-link-name: &quot;fromLinkName&quot;
+   }
+}
+</pre></div>
+</div>
+</div>
+<div class="section" id="v1-job-post-create-job">
+<h3><a class="toc-backref" href="#id26">3.5.5.16. /v1/job - [POST] - Create Job</a><a class="headerlink" href="#v1-job-post-create-job" title="Permalink to this headline">¶</a></h3>
+<p>Create a new job object with the corresponding config values.</p>
+<ul class="simple">
+<li>Method: <tt class="docutils literal"><span class="pre">POST</span></tt></li>
+<li>Format: <tt class="docutils literal"><span class="pre">JSON</span></tt></li>
+<li>Fields of Request:</li>
+</ul>
+<table border="1" class="docutils">
+<colgroup>
+<col width="23%" />
+<col width="77%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Field</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">job</span></tt></td>
+<td>The root of the post data in JSON</td>
+</tr>
+<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">from-link-name</span></tt></td>
+<td>The name of the from link for the job</td>
+</tr>
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">to-link-name</span></tt></td>
+<td>The name of the to link for the job</td>
+</tr>
+<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">id</span></tt></td>
+<td>The id of the link can be left blank in the post data</td>
+</tr>
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">enabled</span></tt></td>
+<td>Whether to enable this job (true/false)</td>
+</tr>
+<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">update-date</span></tt></td>
+<td>The last updated time of this job</td>
+</tr>
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">creation-date</span></tt></td>
+<td>The creation time of this job</td>
+</tr>
+<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">update-user</span></tt></td>
+<td>The user who updated this job</td>
+</tr>
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">creation-user</span></tt></td>
+<td>The uset who creates this job</td>
+</tr>
+<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">name</span></tt></td>
+<td>The name of this job</td>
+</tr>
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">from-config-values</span></tt></td>
+<td>Config input values for FROM part of the job</td>
+</tr>
+<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">to-config-values</span></tt></td>
+<td>Config input values for TO part of the job</td>
+</tr>
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">driver-config-values</span></tt></td>
+<td>Config input values for driver</td>
+</tr>
+<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">from-connector-name</span></tt></td>
+<td>The name of the from connector for the job</td>
+</tr>
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">to-connector-name</span></tt></td>
+<td>The name of the to connector for the job</td>
+</tr>
+</tbody>
+</table>
+<ul class="simple">
+<li>Request Example:</li>
+</ul>
+<div class="highlight-none"><div class="highlight"><pre>{
+  job: {
+    driver-config-values: [
+      {
+        id: 7,
+        inputs: [
+          {
+            id: 25,
+            name: &quot;throttlingConfig.numExtractors&quot;,
+            value: &quot;3&quot;,
+            type: &quot;INTEGER&quot;,
+            sensitive: false
+          },
+          {
+            id: 26,
+            name: &quot;throttlingConfig.numLoaders&quot;,
+            value: &quot;3&quot;,
+            type: &quot;INTEGER&quot;,
+            sensitive: false
+          }
+        ],
+        name: &quot;throttlingConfig&quot;,
+        type: &quot;JOB&quot;
+      }
+    ],
+    enabled: true,
+    from-connector-name: &quot;fromConnectorName&quot;,
+    update-user: &quot;root&quot;,
+    to-config-values: [
+      {
+        id: 6,
+        inputs: [
+          {
+            id: 19,
+            name: &quot;toJobConfig.schemaName&quot;,
+            type: &quot;STRING&quot;,
+            size: 50,
+            sensitive: false
+          },
+          {
+            id: 20,
+            name: &quot;toJobConfig.tableName&quot;,
+            value: &quot;text&quot;,
+            type: &quot;STRING&quot;,
+            size: 2000,
+            sensitive: false
+          },
+          {
+            id: 21,
+            name: &quot;toJobConfig.sql&quot;,
+            type: &quot;STRING&quot;,
+            size: 50,
+            sensitive: false
+          },
+          {
+            id: 22,
+            name: &quot;toJobConfig.columns&quot;,
+            type: &quot;STRING&quot;,
+            size: 50,
+            sensitive: false
+          },
+          {
+            id: 23,
+            name: &quot;toJobConfig.stageTableName&quot;,
+            type: &quot;STRING&quot;,
+            size: 2000,
+            sensitive: false
+          },
+          {
+            id: 24,
+            name: &quot;toJobConfig.shouldClearStageTable&quot;,
+            type: &quot;BOOLEAN&quot;,
+            sensitive: false
+          }
+        ],
+        name: &quot;toJobConfig&quot;,
+        type: &quot;JOB&quot;
+      }
+    ],
+    to-connector-name: &quot;toConnectorName&quot;,
+    creation-date: 1415310157618,
+    update-date: 1415310157618,
+    creation-user: &quot;root&quot;,
+    id: -1,
+    to-link-name: &quot;toLinkName&quot;,
+    from-config-values: [
+      {
+        id: 2,
+        inputs: [
+          {
+            id: 2,
+            name: &quot;fromJobConfig.inputDirectory&quot;,
+            value: &quot;hdfs%3A%2F%2Fvbsqoop-1.ent.cloudera.com%3A8020%2Fuser%2Froot%2Fjob1&quot;,
+            type: &quot;STRING&quot;,
+            size: 255,
+            sensitive: false
+          }
+        ],
+        name: &quot;fromJobConfig&quot;,
+        type: &quot;JOB&quot;
+      }
+    ],
+    name: &quot;Test Job&quot;,
+    from-link-name: &quot;fromLinkName&quot;
+   }
+ }
+</pre></div>
+</div>
+<ul class="simple">
+<li>Fields of Response:</li>
+</ul>
+<table border="1" class="docutils">
+<colgroup>
+<col width="23%" />
+<col width="0%" />
+<col width="77%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head" colspan="2">Field</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td colspan="3"><tt class="docutils literal"><span class="pre">name</span></tt>                  | The name assigned for this new created job</td>
+</tr>
+<tr class="row-odd"><td colspan="3"><tt class="docutils literal"><span class="pre">validation-result</span></tt>     | The validation status for the job config and driver config inputs in the post data</td>
+</tr>
+</tbody>
+</table>
+<ul class="simple">
+<li>ERROR Response Example:</li>
+</ul>
+<div class="highlight-none"><div class="highlight"><pre>{
+  &quot;validation-result&quot;: [
+      {
+          &quot;linkConfig&quot;: [
+              {
+                  &quot;message&quot;: &quot;Invalid URI. URI must either be null or a valid URI. Here are a few valid example URIs: hdfs://example.com:8020/, hdfs://example.com/, file:///, file:///tmp, file://localhost/tmp&quot;,
+                  &quot;status&quot;: &quot;ERROR&quot;
+              }
+          ]
+      }
+  ]
+}
+</pre></div>
+</div>
+</div>
+<div class="section" id="v1-job-jname-put-update-job">
+<h3><a class="toc-backref" href="#id27">3.5.5.17. /v1/job/[jname] - [PUT] - Update Job</a><a class="headerlink" href="#v1-job-jname-put-update-job" title="Permalink to this headline">¶</a></h3>
+<p>Update an existing job object with name [jname]. To make the procedure of filling inputs easier, the general practice
+is get the existing job object first and then change some of the inputs.</p>
+<ul class="simple">
+<li>Method: <tt class="docutils literal"><span class="pre">PUT</span></tt></li>
+<li>Format: <tt class="docutils literal"><span class="pre">JSON</span></tt></li>
+</ul>
+<p>The same as Create Job.</p>
+<ul class="simple">
+<li>OK Response Example:</li>
+</ul>
+<div class="highlight-none"><div class="highlight"><pre>{
+  &quot;validation-result&quot;: [
+      {}
+  ]
+}
+</pre></div>
+</div>
+</div>
+<div class="section" id="v1-job-jname-delete-delete-job">
+<h3><a class="toc-backref" href="#id28">3.5.5.18. /v1/job/[jname] - [DELETE] - Delete Job</a><a class="headerlink" href="#v1-job-jname-delete-delete-job" title="Permalink to this headline">¶</a></h3>
+<p>Delete a job with name <tt class="docutils literal"><span class="pre">jname</span></tt>.</p>
+<ul class="simple">
+<li>Method: <tt class="docutils literal"><span class="pre">DELETE</span></tt></li>
+<li>Format: <tt class="docutils literal"><span class="pre">JSON</span></tt></li>
+<li>Request Content: <tt class="docutils literal"><span class="pre">None</span></tt></li>
+<li>Response Content: <tt class="docutils literal"><span class="pre">None</span></tt></li>
+</ul>
+</div>
+<div class="section" id="v1-job-jname-enable-put-enable-job">
+<h3><a class="toc-backref" href="#id29">3.5.5.19. /v1/job/[jname]/enable - [PUT] - Enable Job</a><a class="headerlink" href="#v1-job-jname-enable-put-enable-job" title="Permalink to this headline">¶</a></h3>
+<p>Enable a job with name <tt class="docutils literal"><span class="pre">jname</span></tt>.</p>
+<ul class="simple">
+<li>Method: <tt class="docutils literal"><span class="pre">PUT</span></tt></li>
+<li>Format: <tt class="docutils literal"><span class="pre">JSON</span></tt></li>
+<li>Request Content: <tt class="docutils literal"><span class="pre">None</span></tt></li>
+<li>Response Content: <tt class="docutils literal"><span class="pre">None</span></tt></li>
+</ul>
+</div>
+<div class="section" id="v1-job-jname-disable-put-disable-job">
+<h3><a class="toc-backref" href="#id30">3.5.5.20. /v1/job/[jname]/disable - [PUT] - Disable Job</a><a class="headerlink" href="#v1-job-jname-disable-put-disable-job" title="Permalink to this headline">¶</a></h3>
+<p>Disable a job with name <tt class="docutils literal"><span class="pre">jname</span></tt>.</p>
+<ul class="simple">
+<li>Method: <tt class="docutils literal"><span class="pre">PUT</span></tt></li>
+<li>Format: <tt class="docutils literal"><span class="pre">JSON</span></tt></li>
+<li>Request Content: <tt class="docutils literal"><span class="pre">None</span></tt></li>
+<li>Response Content: <tt class="docutils literal"><span class="pre">None</span></tt></li>
+</ul>
+</div>
+<div class="section" id="v1-job-jname-start-put-start-job">
+<h3><a class="toc-backref" href="#id31">3.5.5.21. /v1/job/[jname]/start - [PUT]- Start Job</a><a class="headerlink" href="#v1-job-jname-start-put-start-job" title="Permalink to this headline">¶</a></h3>
+<p>Start a job with name <tt class="docutils literal"><span class="pre">[jname]</span></tt> to trigger the job execution</p>
+<ul class="simple">
+<li>Method: <tt class="docutils literal"><span class="pre">POST</span></tt></li>
+<li>Format: <tt class="docutils literal"><span class="pre">JSON</span></tt></li>
+<li>Request Content: <tt class="docutils literal"><span class="pre">None</span></tt></li>
+<li>Response Content: <tt class="docutils literal"><span class="pre">Submission</span> <span class="pre">Record</span></tt></li>
+<li>BOOTING Response Example</li>
+</ul>
+<div class="highlight-none"><div class="highlight"><pre>{
+  &quot;submission&quot;: {
+    &quot;progress&quot;: -1,
+    &quot;last-update-date&quot;: 1415312531188,
+    &quot;external-id&quot;: &quot;job_1412137947693_0004&quot;,
+    &quot;status&quot;: &quot;BOOTING&quot;,
+    &quot;job&quot;: 2,
+    &quot;job-name&quot;: &quot;jobName&quot;,
+    &quot;creation-date&quot;: 1415312531188,
+    &quot;to-schema&quot;: {
+      &quot;created&quot;: 1415312531426,
+      &quot;name&quot;: &quot;HDFS file&quot;,
+      &quot;columns&quot;: []
+    },
+    &quot;external-link&quot;: &quot;http://vbsqoop-1.ent.cloudera.com:8088/proxy/application_1412137947693_0004/&quot;,
+    &quot;from-schema&quot;: {
+      &quot;created&quot;: 1415312531342,
+      &quot;name&quot;: &quot;text&quot;,
+      &quot;columns&quot;: [
+        {
+          &quot;name&quot;: &quot;id&quot;,
+          &quot;nullable&quot;: true,
+          &quot;unsigned&quot;: null,
+          &quot;type&quot;: &quot;FIXED_POINT&quot;,
+          &quot;size&quot;: null
+        },
+        {
+          &quot;name&quot;: &quot;txt&quot;,
+          &quot;nullable&quot;: true,
+          &quot;type&quot;: &quot;TEXT&quot;,
+          &quot;size&quot;: null
+        }
+      ]
+    }
+  }
+}
+</pre></div>
+</div>
+<ul class="simple">
+<li>SUCCEEDED Response Example</li>
+</ul>
+<div class="highlight-none"><div class="highlight"><pre>{
+  submission: {
+    progress: -1,
+    last-update-date: 1415312809485,
+    external-id: &quot;job_1412137947693_0004&quot;,
+    status: &quot;SUCCEEDED&quot;,
+    job: 2,
+    job-name: &quot;jobName&quot;,
+    creation-date: 1415312531188,
+    external-link: &quot;http://vbsqoop-1.ent.cloudera.com:8088/proxy/application_1412137947693_0004/&quot;,
+    counters: {
+      org.apache.hadoop.mapreduce.JobCounter: {
+        SLOTS_MILLIS_MAPS: 373553,
+        MB_MILLIS_MAPS: 382518272,
+        TOTAL_LAUNCHED_MAPS: 10,
+        MILLIS_MAPS: 373553,
+        VCORES_MILLIS_MAPS: 373553,
+        OTHER_LOCAL_MAPS: 10
+      },
+      org.apache.hadoop.mapreduce.lib.output.FileOutputFormatCounter: {
+        BYTES_WRITTEN: 0
+      },
+      org.apache.hadoop.mapreduce.lib.input.FileInputFormatCounter: {
+        BYTES_READ: 0
+      },
+      org.apache.hadoop.mapreduce.TaskCounter: {
+        MAP_INPUT_RECORDS: 0,
+        MERGED_MAP_OUTPUTS: 0,
+        PHYSICAL_MEMORY_BYTES: 4065599488,
+        SPILLED_RECORDS: 0,
+        COMMITTED_HEAP_BYTES: 3439853568,
+        CPU_MILLISECONDS: 236900,
+        FAILED_SHUFFLE: 0,
+        VIRTUAL_MEMORY_BYTES: 15231422464,
+        SPLIT_RAW_BYTES: 1187,
+        MAP_OUTPUT_RECORDS: 1000000,
+        GC_TIME_MILLIS: 7282
+      },
+      org.apache.hadoop.mapreduce.FileSystemCounter: {
+        FILE_WRITE_OPS: 0,
+        FILE_READ_OPS: 0,
+        FILE_LARGE_READ_OPS: 0,
+        FILE_BYTES_READ: 0,
+        HDFS_BYTES_READ: 1187,
+        FILE_BYTES_WRITTEN: 1191230,
+        HDFS_LARGE_READ_OPS: 0,
+        HDFS_WRITE_OPS: 10,
+        HDFS_READ_OPS: 10,
+        HDFS_BYTES_WRITTEN: 276389736
+      },
+      org.apache.sqoop.submission.counter.SqoopCounters: {
+        ROWS_READ: 1000000
+      }
+    }
+  }
+}
+</pre></div>
+</div>
+<ul class="simple">
+<li>ERROR Response Example</li>
+</ul>
+<div class="highlight-none"><div class="highlight"><pre>{
+  &quot;submission&quot;: {
+    &quot;progress&quot;: -1,
+    &quot;last-update-date&quot;: 1415312390570,
+    &quot;status&quot;: &quot;FAILURE_ON_SUBMIT&quot;,
+    &quot;error-summary&quot;: &quot;org.apache.sqoop.common.SqoopException: GENERIC_HDFS_CONNECTOR_0000:Error occurs during partitioner run&quot;,
+    &quot;job&quot;: 1,
+    &quot;job-name&quot;: &quot;jobName&quot;,
+    &quot;creation-date&quot;: 1415312390570,
+    &quot;to-schema&quot;: {
+      &quot;created&quot;: 1415312390797,
+      &quot;name&quot;: &quot;text&quot;,
+      &quot;columns&quot;: [
+        {
+          &quot;name&quot;: &quot;id&quot;,
+          &quot;nullable&quot;: true,
+          &quot;unsigned&quot;: null,
+          &quot;type&quot;: &quot;FIXED_POINT&quot;,
+          &quot;size&quot;: null
+        },
+        {
+          &quot;name&quot;: &quot;txt&quot;,
+          &quot;nullable&quot;: true,
+          &quot;type&quot;: &quot;TEXT&quot;,
+          &quot;size&quot;: null
+        }
+      ]
+    },
+    &quot;from-schema&quot;: {
+      &quot;created&quot;: 1415312390778,
+      &quot;name&quot;: &quot;HDFS file&quot;,
+      &quot;columns&quot;: [
+      ]
+    },
+    &quot;error-details&quot;: &quot;org.apache.sqoop.common.SqoopException: GENERIC_HDFS_CONNECTOR_00&quot;
+  }
+}
+</pre></div>
+</div>
+</div>
+<div class="section" id="v1-job-jname-stop-put-stop-job">
+<h3><a class="toc-backref" href="#id32">3.5.5.22. /v1/job/[jname]/stop  - [PUT]- Stop Job</a><a class="headerlink" href="#v1-job-jname-stop-put-stop-job" title="Permalink to this headline">¶</a></h3>
+<p>Stop a job with name <tt class="docutils literal"><span class="pre">[jname]</span></tt> to abort the running job.</p>
+<ul class="simple">
+<li>Method: <tt class="docutils literal"><span class="pre">PUT</span></tt></li>
+<li>Format: <tt class="docutils literal"><span class="pre">JSON</span></tt></li>
+<li>Request Content: <tt class="docutils literal"><span class="pre">None</span></tt></li>
+<li>Response Content: <tt class="docutils literal"><span class="pre">Submission</span> <span class="pre">Record</span></tt></li>
+</ul>
+</div>
+<div class="section" id="v1-job-jname-status-get-get-job-status">
+<h3><a class="toc-backref" href="#id33">3.5.5.23. /v1/job/[jname]/status  - [GET]- Get Job Status</a><a class="headerlink" href="#v1-job-jname-status-get-get-job-status" title="Permalink to this headline">¶</a></h3>
+<p>Get status of the running job with name <tt class="docutils literal"><span class="pre">[jname]</span></tt></p>
+<ul class="simple">
+<li>Method: <tt class="docutils literal"><span class="pre">GET</span></tt></li>
+<li>Format: <tt class="docutils literal"><span class="pre">JSON</span></tt></li>
+<li>Request Content: <tt class="docutils literal"><span class="pre">None</span></tt></li>
+<li>Response Content: <tt class="docutils literal"><span class="pre">Submission</span> <span class="pre">Record</span></tt></li>
+</ul>
+<div class="highlight-none"><div class="highlight"><pre>{
+    &quot;submission&quot;: {
+        &quot;progress&quot;: 0.25,
+        &quot;last-update-date&quot;: 1415312603838,
+        &quot;external-id&quot;: &quot;job_1412137947693_0004&quot;,
+        &quot;status&quot;: &quot;RUNNING&quot;,
+        &quot;job&quot;: 2,
+        &quot;job-name&quot;: &quot;jobName&quot;,
+        &quot;creation-date&quot;: 1415312531188,
+        &quot;external-link&quot;: &quot;http://vbsqoop-1.ent.cloudera.com:8088/proxy/application_1412137947693_0004/&quot;
+    }
+}
+</pre></div>
+</div>
+</div>
+<div class="section" id="v1-submissions-get-get-all-job-submissions">
+<h3><a class="toc-backref" href="#id34">3.5.5.24. /v1/submissions? - [GET] - Get all job Submissions</a><a class="headerlink" href="#v1-submissions-get-get-all-job-submissions" title="Permalink to this headline">¶</a></h3>
+<p>Get all the submissions for every job started in SQoop</p>
+</div>
+<div class="section" id="v1-submissions-jname-jname-get-get-submissions-by-job">
+<h3><a class="toc-backref" href="#id35">3.5.5.25. /v1/submissions?jname=[jname] - [GET] - Get Submissions by Job</a><a class="headerlink" href="#v1-submissions-jname-jname-get-get-submissions-by-job" title="Permalink to this headline">¶</a></h3>
+<p>Retrieve all job submissions in the past for the given job. Each submission record will have details such as the status, counters and urls for those submissions.</p>
+<p>Provide the name of the job in the url [jname] part.</p>
+<ul class="simple">
+<li>Method: <tt class="docutils literal"><span class="pre">GET</span></tt></li>
+<li>Format: <tt class="docutils literal"><span class="pre">JSON</span></tt></li>
+<li>Request Content: <tt class="docutils literal"><span class="pre">None</span></tt></li>
+<li>Fields of Response:</li>
+</ul>
+<table border="1" class="docutils">
+<colgroup>
+<col width="23%" />
+<col width="77%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Field</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">progress</span></tt></td>
+<td>The progress of the running Sqoop job</td>
+</tr>
+<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">job</span></tt></td>
+<td>The id of the Sqoop job</td>
+</tr>
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">job-name</span></tt></td>
+<td>The name of the Sqoop job</td>
+</tr>
+<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">creation-date</span></tt></td>
+<td>The submission timestamp</td>
+</tr>
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">last-update-date</span></tt></td>
+<td>The timestamp of the last status update</td>
+</tr>
+<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">status</span></tt></td>
+<td>The status of this job submission</td>
+</tr>
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">external-id</span></tt></td>
+<td>The job id of Sqoop job running on Hadoop</td>
+</tr>
+<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">external-link</span></tt></td>
+<td>The link to track the job status on Hadoop</td>
+</tr>
+</tbody>
+</table>
+<ul class="simple">
+<li>Response Example:</li>
+</ul>
+<div class="highlight-none"><div class="highlight"><pre>{
+  submissions: [
+    {
+      progress: -1,
+      last-update-date: 1415312809485,
+      external-id: &quot;job_1412137947693_0004&quot;,
+      status: &quot;SUCCEEDED&quot;,
+      job: 2,
+      job-name: &quot;jobName&quot;,
+      creation-date: 1415312531188,
+      external-link: &quot;http://vbsqoop-1.ent.cloudera.com:8088/proxy/application_1412137947693_0004/&quot;,
+      counters: {
+        org.apache.hadoop.mapreduce.JobCounter: {
+          SLOTS_MILLIS_MAPS: 373553,
+          MB_MILLIS_MAPS: 382518272,
+          TOTAL_LAUNCHED_MAPS: 10,
+          MILLIS_MAPS: 373553,
+          VCORES_MILLIS_MAPS: 373553,
+          OTHER_LOCAL_MAPS: 10
+        },
+        org.apache.hadoop.mapreduce.lib.output.FileOutputFormatCounter: {
+          BYTES_WRITTEN: 0
+        },
+        org.apache.hadoop.mapreduce.lib.input.FileInputFormatCounter: {
+          BYTES_READ: 0
+        },
+        org.apache.hadoop.mapreduce.TaskCounter: {
+          MAP_INPUT_RECORDS: 0,
+          MERGED_MAP_OUTPUTS: 0,
+          PHYSICAL_MEMORY_BYTES: 4065599488,
+          SPILLED_RECORDS: 0,
+          COMMITTED_HEAP_BYTES: 3439853568,
+          CPU_MILLISECONDS: 236900,
+          FAILED_SHUFFLE: 0,
+          VIRTUAL_MEMORY_BYTES: 15231422464,
+          SPLIT_RAW_BYTES: 1187,
+          MAP_OUTPUT_RECORDS: 1000000,
+          GC_TIME_MILLIS: 7282
+        },
+        org.apache.hadoop.mapreduce.FileSystemCounter: {
+          FILE_WRITE_OPS: 0,
+          FILE_READ_OPS: 0,
+          FILE_LARGE_READ_OPS: 0,
+          FILE_BYTES_READ: 0,
+          HDFS_BYTES_READ: 1187,
+          FILE_BYTES_WRITTEN: 1191230,
+          HDFS_LARGE_READ_OPS: 0,
+          HDFS_WRITE_OPS: 10,
+          HDFS_READ_OPS: 10,
+          HDFS_BYTES_WRITTEN: 276389736
+        },
+        org.apache.sqoop.submission.counter.SqoopCounters: {
+          ROWS_READ: 1000000
+        }
+      }
+    },
+    {
+      progress: -1,
+      last-update-date: 1415312390570,
+      status: &quot;FAILURE_ON_SUBMIT&quot;,
+      error-summary: &quot;org.apache.sqoop.common.SqoopException: GENERIC_HDFS_CONNECTOR_0000:Error occurs during partitioner run&quot;,
+      job: 1,
+      job-name: &quot;jobName&quot;,
+      creation-date: 1415312390570,
+      error-details: &quot;org.apache.sqoop.common.SqoopException: GENERIC_HDFS_CONNECTOR_0000:Error occurs during partitioner....&quot;
+    }
+  ]
+}
+</pre></div>
+</div>
+</div>
+<div class="section" id="v1-authorization-roles-create-post-create-role">
+<h3><a class="toc-backref" href="#id36">3.5.5.26. /v1/authorization/roles/create - [POST] - Create Role</a><a class="headerlink" href="#v1-authorization-roles-create-post-create-role" title="Permalink to this headline">¶</a></h3>
+<p>Create a new role object. Provide values to the link config inputs for the ones that are required.</p>
+<ul class="simple">
+<li>Method: <tt class="docutils literal"><span class="pre">POST</span></tt></li>
+<li>Format: <tt class="docutils literal"><span class="pre">JSON</span></tt></li>
+<li>Fields of Request:</li>
+</ul>
+<table border="1" class="docutils">
+<colgroup>
+<col width="23%" />
+<col width="77%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Field</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">role</span></tt></td>
+<td>The root of the post data in JSON</td>
+</tr>
+<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">name</span></tt></td>
+<td>The name of this role</td>
+</tr>
+</tbody>
+</table>
+<ul class="simple">
+<li>Request Example:</li>
+</ul>
+<div class="highlight-none"><div class="highlight"><pre>{
+  role: {
+      name: &quot;testRole&quot;,
+  }
+}
+</pre></div>
+</div>
+</div>
+<div class="section" id="v1-authorization-role-role-name-delete-delete-role">
+<h3><a class="toc-backref" href="#id37">3.5.5.27. /v1/authorization/role/[role-name]  - [DELETE] - Delete Role</a><a class="headerlink" href="#v1-authorization-role-role-name-delete-delete-role" title="Permalink to this headline">¶</a></h3>
+<p>Delete a role with name [role-name]</p>
+<ul class="simple">
+<li>Method: <tt class="docutils literal"><span class="pre">DELETE</span></tt></li>
+<li>Format: <tt class="docutils literal"><span class="pre">JSON</span></tt></li>
+<li>Request Content: <tt class="docutils literal"><span class="pre">None</span></tt></li>
+<li>Response Content: <tt class="docutils literal"><span class="pre">None</span></tt></li>
+</ul>
+</div>
+<div class="section" id="v1-authorization-roles-principal-type-principal-type-principal-name-principal-name-get-get-all-roles-by-principal">
+<h3><a class="toc-backref" href="#id38">3.5.5.28. /v1/authorization/roles?principal_type=[principal-type]&amp;principal_name=[principal-name] - [GET]  Get all Roles by Principal</a><a class="headerlink" href="#v1-authorization-roles-principal-type-principal-type-principal-name-principal-name-get-get-all-roles-by-principal" title="Permalink to this headline">¶</a></h3>
+<p>Get all the roles or for a given principal identified by <tt class="docutils literal"><span class="pre">[principal-type]</span></tt> and <tt class="docutils literal"><span class="pre">[principal-name]</span></tt> part.</p>
+</div>
+<div class="section" id="v1-authorization-principals-role-name-rname-get-get-all-principals-by-role">
+<h3><a class="toc-backref" href="#id39">3.5.5.29. /v1/authorization/principals?role_name=[rname] - [GET]  Get all Principals by Role</a><a class="headerlink" href="#v1-authorization-principals-role-name-rname-get-get-all-principals-by-role" title="Permalink to this headline">¶</a></h3>
+<p>Get all the principals for a given role identified by <tt class="docutils literal"><span class="pre">[rname]</span></tt> part.</p>
+</div>
+<div class="section" id="v1-authorization-roles-grant-put-grant-a-role-to-a-principal">
+<h3><a class="toc-backref" href="#id40">3.5.5.30. /v1/authorization/roles/grant - [PUT] - Grant a Role to a Principal</a><a class="headerlink" href="#v1-authorization-roles-grant-put-grant-a-role-to-a-principal" title="Permalink to this headline">¶</a></h3>
+<p>Grant a role with <tt class="docutils literal"><span class="pre">[role-name]</span></tt> to a principal with <tt class="docutils literal"><span class="pre">[principal-type]</span></tt> and <tt class="docutils literal"><span class="pre">[principal-name]</span></tt>.</p>
+<ul class="simple">
+<li>Method: <tt class="docutils literal"><span class="pre">PUT</span></tt></li>
+<li>Format: <tt class="docutils literal"><span class="pre">JSON</span></tt></li>
+<li>Fields of Request:</li>
+</ul>
+<p>The same as Create Role and</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="23%" />
+<col width="77%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Field</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">principals</span></tt></td>
+<td>The root of the post data in JSON</td>
+</tr>
+<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">name</span></tt></td>
+<td>The name of this principal</td>
+</tr>
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">type</span></tt></td>
+<td>The type of this principal, (&#8220;USER&#8221;, &#8220;GROUP&#8221;, &#8220;ROLE&#8221;)</td>
+</tr>
+</tbody>
+</table>
+<ul class="simple">
+<li>Request Example:</li>
+</ul>
+<div class="highlight-none"><div class="highlight"><pre>{
+  roles: [{
+      name: &quot;testRole&quot;,
+  }],
+  principals: [{
+      name: &quot;testPrincipalName&quot;,
+      type: &quot;USER&quot;,
+  }]
+}
+</pre></div>
+</div>
+<ul class="simple">
+<li>Response Content: <tt class="docutils literal"><span class="pre">None</span></tt></li>
+</ul>
+</div>
+<div class="section" id="v1-authorization-roles-revoke-put-revoke-a-role-from-a-principal">
+<h3><a class="toc-backref" href="#id41">3.5.5.31. /v1/authorization/roles/revoke - [PUT] - Revoke a Role from a Principal</a><a class="headerlink" href="#v1-authorization-roles-revoke-put-revoke-a-role-from-a-principal" title="Permalink to this headline">¶</a></h3>
+<p>Revoke a role with <tt class="docutils literal"><span class="pre">[role-name]</span></tt> to a principal with <tt class="docutils literal"><span class="pre">[principal-type]</span></tt> and <tt class="docutils literal"><span class="pre">[principal-name]</span></tt>.</p>
+<ul class="simple">
+<li>Method: <tt class="docutils literal"><span class="pre">PUT</span></tt></li>
+<li>Format: <tt class="docutils literal"><span class="pre">JSON</span></tt></li>
+<li>Fields of Request:</li>
+</ul>
+<p>The same as Grant Role</p>
+<ul class="simple">
+<li>Response Content: <tt class="docutils literal"><span class="pre">None</span></tt></li>
+</ul>
+</div>
+<div class="section" id="v1-authorization-privileges-grant-put-grant-a-privilege-to-a-principal">
+<h3><a class="toc-backref" href="#id42">3.5.5.32. /v1/authorization/privileges/grant - [PUT] - Grant a Privilege to a Principal</a><a class="headerlink" href="#v1-authorization-privileges-grant-put-grant-a-privilege-to-a-principal" title="Permalink to this headline">¶</a></h3>
+<p>Grant a privilege with <tt class="docutils literal"><span class="pre">[resource-name]</span></tt>, <tt class="docutils literal"><span class="pre">[resource-type]</span></tt>, <tt class="docutils literal"><span class="pre">[action]</span></tt> and <tt class="docutils literal"><span class="pre">[with-grant-option]</span></tt> to a principal with``[principal-type]`` and <tt class="docutils literal"><span class="pre">[principal-name]</span></tt>.</p>
+<ul class="simple">
+<li>Method: <tt class="docutils literal"><span class="pre">PUT</span></tt></li>
+<li>Format: <tt class="docutils literal"><span class="pre">JSON</span></tt></li>
+<li>Fields of Request:</li>
+</ul>
+<p>The same as Principal and</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="23%" />
+<col width="77%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Field</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">privileges</span></tt></td>
+<td>The root of the post data in JSON</td>
+</tr>
+<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">resource-name</span></tt></td>
+<td>The resource name of this privilege</td>
+</tr>
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">resource-type</span></tt></td>
+<td>The resource type of this privilege, (&#8220;CONNECTOR&#8221;, &#8220;LINK&#8221;, &#8220;JOB&#8221;)</td>
+</tr>
+<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">action</span></tt></td>
+<td>The action type of this privilege, (&#8220;READ&#8221;, &#8220;WRITE&#8221;, &#8220;ALL&#8221;)</td>
+</tr>
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">with-grant-option</span></tt></td>
+<td>The resource type of this privilege</td>
+</tr>
+</tbody>
+</table>
+<ul class="simple">
+<li>Request Example:</li>
+</ul>
+<div class="highlight-none"><div class="highlight"><pre>{
+  privileges: [{
+      resource-name: &quot;testResourceName&quot;,
+      resource-type: &quot;LINK&quot;,
+      action: &quot;READ&quot;,
+      with-grant-option: false,
+  }]
+  principals: [{
+      name: &quot;testPrincipalName&quot;,
+      type: &quot;USER&quot;,
+  }]
+}
+</pre></div>
+</div>
+<ul class="simple">
+<li>Response Content: <tt class="docutils literal"><span class="pre">None</span></tt></li>
+</ul>
+</div>
+<div class="section" id="v1-authorization-privileges-revoke-put-revoke-a-privilege-to-a-principal">
+<h3><a class="toc-backref" href="#id43">3.5.5.33. /v1/authorization/privileges/revoke - [PUT] - Revoke a Privilege to a Principal</a><a class="headerlink" href="#v1-authorization-privileges-revoke-put-revoke-a-privilege-to-a-principal" title="Permalink to this headline">¶</a></h3>
+<p>Revoke a privilege with <tt class="docutils literal"><span class="pre">[resource-name]</span></tt>, <tt class="docutils literal"><span class="pre">[resource-type]</span></tt>, <tt class="docutils literal"><span class="pre">[action]</span></tt> and <tt class="docutils literal"><span class="pre">[with-grant-option]</span></tt> to a principal with``[principal-type]`` and <tt class="docutils literal"><span class="pre">[principal-name]</span></tt>.</p>
+<ul class="simple">
+<li>Method: <tt class="docutils literal"><span class="pre">PUT</span></tt></li>
+<li>Format: <tt class="docutils literal"><span class="pre">JSON</span></tt></li>
+<li>Fields of Request:</li>
+</ul>
+<p>The same as Grant Privilege</p>
+<ul class="simple">
+<li>Response Content: <tt class="docutils literal"><span class="pre">None</span></tt></li>
+</ul>
+</div>
+<div class="section" id="v1-authorization-privilieges-principal-type-principal-type-principal-name-principal-name-resource-type-resource-type-resource-name-resource-name-get-get-all-roles-by-principal-and-resource">
+<h3><a class="toc-backref" href="#id44">3.5.5.34. /v1/authorization/privilieges?principal_type=[principal-type]&amp;principal_name=[principal-name]&amp;resource_type=[resource-type]&amp;resource_name=[resource-name] - [GET]  Get all Roles by Principal (and Resource)</a><a class="headerlink" href="#v1-authorization-privilieges-principal-type-principal-type-principal-name-principal-name-resource-type-resource-type-resource-name-resource-name-get-get-all-roles-by-principal-and-resource" title="Permalink to this headline">¶</a></h3>
+<p>Get all the privileges or for a given principal identified by <tt class="docutils literal"><span class="pre">[principal-type]</span></tt> and <tt class="docutils literal"><span class="pre">[principal-name]</span></tt> (and a given resource identified by <tt class="docutils literal"><span class="pre">[resource-type]</span></tt> and <tt class="docutils literal"><span class="pre">[resource-name]</span></tt>).</p>
+</div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="Repository.html" class="btn btn-neutral float-right" title="3.6. Repository" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="DevEnv.html" class="btn btn-neutral" title="3.4. Sqoop 2 Development Environment Setup" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2009-2016 The Apache Software Foundation.
+
+    </p>
+  </div> 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

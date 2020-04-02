@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: big-data
+  name: sqoop2
+  labels:
+    app: sqoop2
+spec:
+  selector:
+    matchLabels:
+      app: sqoop2
+  template:
+    metadata:
+      labels:
+        app: sqoop2
+    spec:
+      containers:
+        - image: sqoop:1.99.7
+          imagePullPolicy: IfNotPresent
+          name: sqoop2
+          volumeMounts:
+            - name: hadoop-config
+              mountPath: /usr/local/hadoop-2.9.0/etc/hadoop/
+      volumes:
+        - name: hadoop-config
+          configMap:
+            defaultMode: 420
+            name: hadoop-hadoop

@@ -1,0 +1,431 @@
+
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>1.2. Tools &mdash; Apache Sqoop  documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="Apache Sqoop  documentation" href="../index.html"/>
+        <link rel="up" title="1. Admin Guide" href="../admin.html"/>
+        <link rel="next" title="1.3. Upgrade" href="Upgrade.html"/>
+        <link rel="prev" title="1.1. Installation" href="Installation.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Apache Sqoop
+          
+
+          
+            
+            <img src="../_static/sqoop-logo.png" class="logo" />
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../admin.html">1. Admin Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="Installation.html">1.1. Installation</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="">1.2. Tools</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#verify-tool">1.2.1. Verify tool</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#upgrade-tool">1.2.2. Upgrade tool</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#repositorydump">1.2.3. RepositoryDump</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#repositoryload">1.2.4. RepositoryLoad</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#repositoryencryption">1.2.5. RepositoryEncryption</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#changing-the-password">1.2.5.1. Changing the Password</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#generate-a-new-key-for-the-existing-password">1.2.5.2. Generate a New Key for the Existing Password</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#encrypting-an-existing-unencrypted-repository">1.2.5.3. Encrypting an Existing Unencrypted Repository</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#decrypting-an-existing-encrypted-repository">1.2.5.4. Decrypting an Existing Encrypted Repository</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="Upgrade.html">1.3. Upgrade</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../user.html">2. User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev.html">3. Developer Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../security.html">4. Security Guide</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">Apache Sqoop</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../admin.html">1. Admin Guide</a> &raquo;</li>
+      
+    <li>1.2. Tools</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/admin/Tools.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="tools">
+<h1>1.2. Tools<a class="headerlink" href="#tools" title="Permalink to this headline">¶</a></h1>
+<p>Tools are server commands that administrators can execute on the Sqoop server machine in order to perform various maintenance tasks. The tool execution will always perform a given task and finish. There are no long running services implemented as tools.</p>
+<p>In order to perform the maintenance task each tool is suppose to do, they need to be executed in exactly the same environment as the main Sqoop server. The tool binary will take care of setting up the <tt class="docutils literal"><span class="pre">CLASSPATH</span></tt> and other environmental variables that might be required. However it&#8217;s up to the administrator himself to run the tool under the same user as is used for the server. This is usually configured automatically for various Hadoop distributions (such as Apache Bigtop).</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Running tools while the Sqoop Server is also running is not recommended as it might lead to a data corruption and service disruption.</p>
+</div>
+<p>List of available tools:</p>
+<ul class="simple">
+<li>verify</li>
+<li>upgrade</li>
+</ul>
+<p>To run the desired tool, execute binary <tt class="docutils literal"><span class="pre">sqoop2-tool</span></tt> with desired tool name. For example to run <tt class="docutils literal"><span class="pre">verify</span></tt> tool:</p>
+<div class="highlight-none"><div class="highlight"><pre>sqoop2-tool verify
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Stop the Sqoop Server before running Sqoop tools. Running tools while Sqoop Server is running can lead to a data corruption and service disruption.</p>
+</div>
+<div class="section" id="verify-tool">
+<span id="tool-verify"></span><h2>1.2.1. Verify tool<a class="headerlink" href="#verify-tool" title="Permalink to this headline">¶</a></h2>
+<p>The verify tool will verify Sqoop server configuration by starting all subsystems with the exception of servlets and tearing them down.</p>
+<p>To run the <tt class="docutils literal"><span class="pre">verify</span></tt> tool:</p>
+<div class="highlight-none"><div class="highlight"><pre>sqoop2-tool verify
+</pre></div>
+</div>
+<p>If the verification process succeeds, you should see messages like:</p>
+<div class="highlight-none"><div class="highlight"><pre>Verification was successful.
+Tool class org.apache.sqoop.tools.tool.VerifyTool has finished correctly
+</pre></div>
+</div>
+<p>If the verification process will find any inconsistencies, it will print out the following message instead:</p>
+<div class="highlight-none"><div class="highlight"><pre>Verification has failed, please check Server logs for further details.
+Tool class org.apache.sqoop.tools.tool.VerifyTool has failed.
+</pre></div>
+</div>
+<p>Further details why the verification has failed will be available in the Sqoop server log - same file as the Sqoop Server logs into.</p>
+</div>
+<div class="section" id="upgrade-tool">
+<span id="tool-upgrade"></span><h2>1.2.2. Upgrade tool<a class="headerlink" href="#upgrade-tool" title="Permalink to this headline">¶</a></h2>
+<p>Upgrades all versionable components inside Sqoop2. This includes structural changes inside the repository and stored metadata.
+Running this tool on Sqoop deployment that was already upgraded will have no effect.</p>
+<p>To run the <tt class="docutils literal"><span class="pre">upgrade</span></tt> tool:</p>
+<div class="highlight-none"><div class="highlight"><pre>sqoop2-tool upgrade
+</pre></div>
+</div>
+<p>Upon successful upgrade you should see following message:</p>
+<div class="highlight-none"><div class="highlight"><pre>Tool class org.apache.sqoop.tools.tool.UpgradeTool has finished correctly.
+</pre></div>
+</div>
+<p>Execution failure will show the following message instead:</p>
+<div class="highlight-none"><div class="highlight"><pre>Tool class org.apache.sqoop.tools.tool.UpgradeTool has failed.
+</pre></div>
+</div>
+<p>Further details why the upgrade process has failed will be available in the Sqoop server log - same file as the Sqoop Server logs into.</p>
+</div>
+<div class="section" id="repositorydump">
+<h2>1.2.3. RepositoryDump<a class="headerlink" href="#repositorydump" title="Permalink to this headline">¶</a></h2>
+<p>Writes the user-created contents of the Sqoop repository to a file in JSON format. This includes connections, jobs and submissions.</p>
+<p>To run the <tt class="docutils literal"><span class="pre">repositorydump</span></tt> tool:</p>
+<div class="highlight-none"><div class="highlight"><pre>sqoop2-tool repositorydump -o repository.json
+</pre></div>
+</div>
+<p>As an option, the administrator can choose to include sensitive information such as database connection passwords in the file:</p>
+<div class="highlight-none"><div class="highlight"><pre>sqoop2-tool repositorydump -o repository.json --include-sensitive
+</pre></div>
+</div>
+<p>Upon successful execution, you should see the following message:</p>
+<div class="highlight-none"><div class="highlight"><pre>Tool class org.apache.sqoop.tools.tool.RepositoryDumpTool has finished correctly.
+</pre></div>
+</div>
+<p>If repository dump has failed, you will see the following message instead:</p>
+<div class="highlight-none"><div class="highlight"><pre>Tool class org.apache.sqoop.tools.tool.RepositoryDumpTool has failed.
+</pre></div>
+</div>
+<p>Further details why the upgrade process has failed will be available in the Sqoop server log - same file as the Sqoop Server logs into.</p>
+</div>
+<div class="section" id="repositoryload">
+<h2>1.2.4. RepositoryLoad<a class="headerlink" href="#repositoryload" title="Permalink to this headline">¶</a></h2>
+<p>Reads a json formatted file created by RepositoryDump and loads to current Sqoop repository.</p>
+<p>To run the <tt class="docutils literal"><span class="pre">repositoryLoad</span></tt> tool:</p>
+<div class="highlight-none"><div class="highlight"><pre>sqoop2-tool repositoryload -i repository.json
+</pre></div>
+</div>
+<p>Upon successful execution, you should see the following message:</p>
+<div class="highlight-none"><div class="highlight"><pre>Tool class org.apache.sqoop.tools.tool.RepositoryLoadTool has finished correctly.
+</pre></div>
+</div>
+<p>If repository load failed you will see the following message instead:</p>
+<div class="highlight-none"><div class="highlight"><pre>Tool class org.apache.sqoop.tools.tool.RepositoryLoadTool has failed.
+</pre></div>
+</div>
+<p>Or an exception. Further details why the upgrade process has failed will be available in the Sqoop server log - same file as the Sqoop Server logs into.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If the repository dump was created without passwords (default), the connections will not contain a password and the jobs will fail to execute. In that case you&#8217;ll need to manually update the connections and set the password.</p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">RepositoryLoad tool will always generate new connections, jobs and submissions from the file. Even when an identical objects already exists in repository.</p>
+</div>
+</div>
+<div class="section" id="repositoryencryption">
+<span id="repositoryencryption-tool"></span><h2>1.2.5. RepositoryEncryption<a class="headerlink" href="#repositoryencryption" title="Permalink to this headline">¶</a></h2>
+<p>Please see <a class="reference internal" href="../security/RepositoryEncryption.html#repositoryencryption"><em>Repository Encryption</em></a> for more details on repository encryption.</p>
+<p>Sometimes we may want to change the password that is used to encrypt our data, generate a new key for our existing password,
+encrypt an existing unencrypted repository, or decrypt an existing encrypting repository. Sqoop 2 provides the
+Repository Encryption Tool to allow us to do this.</p>
+<p>Before using the tool it is important to shut down the Sqoop 2 server.</p>
+<p>All changes that the tool makes occur in a single transaction with the repository, which will prevent leaving the
+repository in a bad state.</p>
+<p>The Repository Encryption Tool is very simple, it uses the exact same configuration specified above (with the exception
+of <tt class="docutils literal"><span class="pre">useConf</span></tt>). Configuration prefixed with a &#8220;-F&#8221; represents the existing repository state, configuration prefixed with
+a &#8220;-T&#8221; represents the desired repository state. If one of these configuration sets is left out that means unencrypted.</p>
+<div class="section" id="changing-the-password">
+<h3>1.2.5.1. Changing the Password<a class="headerlink" href="#changing-the-password" title="Permalink to this headline">¶</a></h3>
+<p>In order to change the password, we need to specify the current configuration with the existing password and the desired
+configuration with the new password. It looks like this:</p>
+<div class="highlight-none"><div class="highlight"><pre>sqoop.sh tool repositoryencryption \
+    -Forg.apache.sqoop.security.repo_encryption.password=old_password \
+    -Forg.apache.sqoop.security.repo_encryption.hmac_algorithm=HmacSHA256 \
+    -Forg.apache.sqoop.security.repo_encryption.cipher_algorithm=AES \
+    -Forg.apache.sqoop.security.repo_encryption.cipher_key_size=16 \
+    -Forg.apache.sqoop.security.repo_encryption.cipher_spec=AES/CBC/PKCS5Padding \
+    -Forg.apache.sqoop.security.repo_encryption.initialization_vector_size=16 \
+    -Forg.apache.sqoop.security.repo_encryption.pbkdf2_algorithm=PBKDF2WithHmacSHA1 \
+    -Forg.apache.sqoop.security.repo_encryption.pbkdf2_rounds=4000 \
+    -Torg.apache.sqoop.security.repo_encryption.password=new_password \
+    -Torg.apache.sqoop.security.repo_encryption.hmac_algorithm=HmacSHA256 \
+    -Torg.apache.sqoop.security.repo_encryption.cipher_algorithm=AES \
+    -Torg.apache.sqoop.security.repo_encryption.cipher_key_size=16 \
+    -Torg.apache.sqoop.security.repo_encryption.cipher_spec=AES/CBC/PKCS5Padding \
+    -Torg.apache.sqoop.security.repo_encryption.initialization_vector_size=16 \
+    -Torg.apache.sqoop.security.repo_encryption.pbkdf2_algorithm=PBKDF2WithHmacSHA1 \
+    -Torg.apache.sqoop.security.repo_encryption.pbkdf2_rounds=4000
+</pre></div>
+</div>
+</div>
+<div class="section" id="generate-a-new-key-for-the-existing-password">
+<h3>1.2.5.2. Generate a New Key for the Existing Password<a class="headerlink" href="#generate-a-new-key-for-the-existing-password" title="Permalink to this headline">¶</a></h3>
+<p>Just like with the previous scenario you could copy the same configuration twice like this:</p>
+<div class="highlight-none"><div class="highlight"><pre>sqoop.sh tool repositoryencryption \
+    -Forg.apache.sqoop.security.repo_encryption.password=password \
+    -Forg.apache.sqoop.security.repo_encryption.hmac_algorithm=HmacSHA256 \
+    -Forg.apache.sqoop.security.repo_encryption.cipher_algorithm=AES \
+    -Forg.apache.sqoop.security.repo_encryption.cipher_key_size=16 \
+    -Forg.apache.sqoop.security.repo_encryption.cipher_spec=AES/CBC/PKCS5Padding \
+    -Forg.apache.sqoop.security.repo_encryption.initialization_vector_size=16 \
+    -Forg.apache.sqoop.security.repo_encryption.pbkdf2_algorithm=PBKDF2WithHmacSHA1 \
+    -Forg.apache.sqoop.security.repo_encryption.pbkdf2_rounds=4000 \
+    -Torg.apache.sqoop.security.repo_encryption.password=password \
+    -Torg.apache.sqoop.security.repo_encryption.hmac_algorithm=HmacSHA256 \
+    -Torg.apache.sqoop.security.repo_encryption.cipher_algorithm=AES \
+    -Torg.apache.sqoop.security.repo_encryption.cipher_key_size=16 \
+    -Torg.apache.sqoop.security.repo_encryption.cipher_spec=AES/CBC/PKCS5Padding \
+    -Torg.apache.sqoop.security.repo_encryption.initialization_vector_size=16 \
+    -Torg.apache.sqoop.security.repo_encryption.pbkdf2_algorithm=PBKDF2WithHmacSHA1 \
+    -Torg.apache.sqoop.security.repo_encryption.pbkdf2_rounds=4000
+</pre></div>
+</div>
+<p>But we do have a shortcut to make this easier:</p>
+<div class="highlight-none"><div class="highlight"><pre>sqoop.sh tool repositoryencryption -FuseConf -TuseConf
+</pre></div>
+</div>
+<p>The <tt class="docutils literal"><span class="pre">useConf</span></tt> option will read whatever configuration is already in the configured sqoop properties file and apply it
+for the specified direction.</p>
+</div>
+<div class="section" id="encrypting-an-existing-unencrypted-repository">
+<h3>1.2.5.3. Encrypting an Existing Unencrypted Repository<a class="headerlink" href="#encrypting-an-existing-unencrypted-repository" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-none"><div class="highlight"><pre>sqoop.sh tool repositoryencryption \
+    -Torg.apache.sqoop.security.repo_encryption.password=password \
+    -Torg.apache.sqoop.security.repo_encryption.hmac_algorithm=HmacSHA256 \
+    -Torg.apache.sqoop.security.repo_encryption.cipher_algorithm=AES \
+    -Torg.apache.sqoop.security.repo_encryption.cipher_key_size=16 \
+    -Torg.apache.sqoop.security.repo_encryption.cipher_spec=AES/CBC/PKCS5Padding \
+    -Torg.apache.sqoop.security.repo_encryption.initialization_vector_size=16 \
+    -Torg.apache.sqoop.security.repo_encryption.pbkdf2_algorithm=PBKDF2WithHmacSHA1 \
+    -Torg.apache.sqoop.security.repo_encryption.pbkdf2_rounds=4000
+</pre></div>
+</div>
+<p>If the configuration for the encrypted repository has already been written to the sqoop properties file, one can simply
+execute:</p>
+<div class="highlight-none"><div class="highlight"><pre>sqoop.sh tool repositoryencryption -TuseConf
+</pre></div>
+</div>
+</div>
+<div class="section" id="decrypting-an-existing-encrypted-repository">
+<h3>1.2.5.4. Decrypting an Existing Encrypted Repository<a class="headerlink" href="#decrypting-an-existing-encrypted-repository" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-none"><div class="highlight"><pre>sqoop.sh tool repositoryencryption \
+    -Forg.apache.sqoop.security.repo_encryption.password=password \
+    -Forg.apache.sqoop.security.repo_encryption.hmac_algorithm=HmacSHA256 \
+    -Forg.apache.sqoop.security.repo_encryption.cipher_algorithm=AES \
+    -Forg.apache.sqoop.security.repo_encryption.cipher_key_size=16 \
+    -Forg.apache.sqoop.security.repo_encryption.cipher_spec=AES/CBC/PKCS5Padding \
+    -Forg.apache.sqoop.security.repo_encryption.initialization_vector_size=16 \
+    -Forg.apache.sqoop.security.repo_encryption.pbkdf2_algorithm=PBKDF2WithHmacSHA1 \
+    -Forg.apache.sqoop.security.repo_encryption.pbkdf2_rounds=4000
+</pre></div>
+</div>
+<p>If the configuration for the encrypted repository has not yet been removed from the sqoop properties file, one can simply
+execute:</p>
+<div class="highlight-none"><div class="highlight"><pre>sqoop.sh tool repositoryencryption -FuseConf
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="Upgrade.html" class="btn btn-neutral float-right" title="1.3. Upgrade" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="Installation.html" class="btn btn-neutral" title="1.1. Installation" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2009-2016 The Apache Software Foundation.
+
+    </p>
+  </div> 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

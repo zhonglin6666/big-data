@@ -1,0 +1,272 @@
+
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>2.3.1. S3 Import to HDFS &mdash; Apache Sqoop  documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="Apache Sqoop  documentation" href="../../index.html"/>
+        <link rel="up" title="2.3. Examples" href="../Examples.html"/>
+        <link rel="next" title="2.4. Sqoop 5 Minutes Demo" href="../Sqoop5MinutesDemo.html"/>
+        <link rel="prev" title="2.3. Examples" href="../Examples.html"/> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Apache Sqoop
+          
+
+          
+            
+            <img src="../../_static/sqoop-logo.png" class="logo" />
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../admin.html">1. Admin Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../user.html">2. User Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../CommandLineClient.html">2.1. Command Line Shell</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../Connectors.html">2.2. Connectors</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../Examples.html">2.3. Examples</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="">2.3.1. S3 Import to HDFS</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#use-case">2.3.1.1. Use case</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#configuration">2.3.1.2. Configuration</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../Sqoop5MinutesDemo.html">2.4. Sqoop 5 Minutes Demo</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../dev.html">3. Developer Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../security.html">4. Security Guide</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../index.html">Apache Sqoop</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../../user.html">2. User Guide</a> &raquo;</li>
+      
+          <li><a href="../Examples.html">2.3. Examples</a> &raquo;</li>
+      
+    <li>2.3.1. S3 Import to HDFS</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../_sources/user/examples/S3Import.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="s3-import-to-hdfs">
+<h1><a class="toc-backref" href="#id1">2.3.1. S3 Import to HDFS</a><a class="headerlink" href="#s3-import-to-hdfs" title="Permalink to this headline">¶</a></h1>
+<div class="contents topic" id="contents">
+<p class="topic-title first">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#s3-import-to-hdfs" id="id1">S3 Import to HDFS</a><ul>
+<li><a class="reference internal" href="#use-case" id="id2">Use case</a></li>
+<li><a class="reference internal" href="#configuration" id="id3">Configuration</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<p>This section contains detailed description for example use case of transferring data from S3 to HDFS.</p>
+<div class="section" id="use-case">
+<h2><a class="toc-backref" href="#id2">2.3.1.1. Use case</a><a class="headerlink" href="#use-case" title="Permalink to this headline">¶</a></h2>
+<p>You have directory on S3 where some external process is creating new text files. New files are added to this directory, but existing files are never altered. They can only be removed after some period of time. Data from all new files needs to be transferred to a single HDFS directory. Preserving file names is not required and multiple source files can be merged to single file on HDFS.</p>
+</div>
+<div class="section" id="configuration">
+<h2><a class="toc-backref" href="#id3">2.3.1.2. Configuration</a><a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h2>
+<p>We will use HDFS connector for both <tt class="docutils literal"><span class="pre">From</span></tt> and <tt class="docutils literal"><span class="pre">To</span></tt> sides of the data transfer. In order to create link for S3 you need to have S3 bucket name and S3 access and secret keys. Please follow S3 documentation to retrieve S3 credentials if you don’t have them already.</p>
+<div class="highlight-bash"><div class="highlight"><pre>sqoop:000&gt; create link -c hdfs-connector
+</pre></div>
+</div>
+<ul class="simple">
+<li>Our example uses <tt class="docutils literal"><span class="pre">s3link</span></tt> for the link name</li>
+<li>Specify HDFS URI in form of <tt class="docutils literal"><span class="pre">s3a://$BUCKET_NAME</span></tt> where <tt class="docutils literal"><span class="pre">$BUCKET_NAME</span></tt> is name of the S3 bucket</li>
+<li>Use Override configuration option and specify <tt class="docutils literal"><span class="pre">fs.s3a.access.key</span></tt> and <tt class="docutils literal"><span class="pre">fs.s3a.secret.key</span></tt> with your S3 access and secret key respectively.</li>
+</ul>
+<p>Next step is to create link for HDFS</p>
+<div class="highlight-bash"><div class="highlight"><pre>sqoop:000&gt; create link -c hdfs-connector
+</pre></div>
+</div>
+<p>Our example uses hdfslink for the link name
+If your Sqoop server is running on node that has HDFS and mapreduce client configuration deployed, you can safely keep all options blank and use defaults for them.</p>
+<p>With having links for both HDFS and S3, you can create job that will transfer data from S3 to HDFS:</p>
+<div class="highlight-bash"><div class="highlight"><pre>sqoop:000&gt; create job -f s3link -t hdfslink
+</pre></div>
+</div>
+<ul class="simple">
+<li>Our example uses <tt class="docutils literal"><span class="pre">s3import</span></tt> for the job name</li>
+<li>Input directory should point to a directory inside your S3 bucket where new files are generated</li>
+<li>Make sure to choose mode <tt class="docutils literal"><span class="pre">NEW_FILES</span></tt> for Incremental type</li>
+<li>Final destination for the imported files can be specified in Output directory</li>
+<li>Make sure to enable Append mode, so that Sqoop can upload newly created files to the same directory on HDFS</li>
+<li>Configure the remaining options as you see fit</li>
+</ul>
+<p>Then finally you can start the job by issuing following command:</p>
+<div class="highlight-bash"><div class="highlight"><pre>sqoop:000&gt; start job -j s3import
+</pre></div>
+</div>
+<p>You can run the job <tt class="docutils literal"><span class="pre">s3import</span></tt> periodically and only newly created files will be transferred.</p>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../Sqoop5MinutesDemo.html" class="btn btn-neutral float-right" title="2.4. Sqoop 5 Minutes Demo" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../Examples.html" class="btn btn-neutral" title="2.3. Examples" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2009-2016 The Apache Software Foundation.
+
+    </p>
+  </div> 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../',
+            VERSION:'',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

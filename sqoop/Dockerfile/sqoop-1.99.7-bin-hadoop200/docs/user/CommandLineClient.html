@@ -1,0 +1,1020 @@
+
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>2.1. Command Line Shell &mdash; Apache Sqoop  documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="Apache Sqoop  documentation" href="../index.html"/>
+        <link rel="up" title="2. User Guide" href="../user.html"/>
+        <link rel="next" title="2.2. Connectors" href="Connectors.html"/>
+        <link rel="prev" title="2. User Guide" href="../user.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Apache Sqoop
+          
+
+          
+            
+            <img src="../_static/sqoop-logo.png" class="logo" />
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../admin.html">1. Admin Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../user.html">2. User Guide</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="">2.1. Command Line Shell</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#resource-file">2.1.1. Resource file</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#commands">2.1.2. Commands</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#auxiliary-commands">2.1.2.1. Auxiliary Commands</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#set-command">2.1.2.2. Set Command</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#show-command">2.1.2.3. Show Command</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#create-command">2.1.2.4. Create Command</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#update-command">2.1.2.5. Update Command</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#delete-command">2.1.2.6. Delete Command</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#clone-command">2.1.2.7. Clone Command</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#start-command">2.1.2.8. Start Command</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#stop-command">2.1.2.9. Stop Command</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#status-command">2.1.2.10. Status Command</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="Connectors.html">2.2. Connectors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Examples.html">2.3. Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Sqoop5MinutesDemo.html">2.4. Sqoop 5 Minutes Demo</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../dev.html">3. Developer Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../security.html">4. Security Guide</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">Apache Sqoop</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../user.html">2. User Guide</a> &raquo;</li>
+      
+    <li>2.1. Command Line Shell</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/user/CommandLineClient.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="command-line-shell">
+<h1><a class="toc-backref" href="#id1">2.1. Command Line Shell</a><a class="headerlink" href="#command-line-shell" title="Permalink to this headline">¶</a></h1>
+<p>Sqoop 2 provides command line shell that is capable of communicating with Sqoop 2 server using REST interface. Client is able to run in two modes - interactive and batch mode. Commands <tt class="docutils literal"><span class="pre">create</span></tt>, <tt class="docutils literal"><span class="pre">update</span></tt> and <tt class="docutils literal"><span class="pre">clone</span></tt> are not currently supported in batch mode. Interactive mode supports all available commands.</p>
+<p>You can start Sqoop 2 client in interactive mode using command <tt class="docutils literal"><span class="pre">sqoop2-shell</span></tt>:</p>
+<div class="highlight-none"><div class="highlight"><pre>sqoop2-shell
+</pre></div>
+</div>
+<p>Batch mode can be started by adding additional argument representing path to your Sqoop client script:</p>
+<div class="highlight-none"><div class="highlight"><pre>sqoop2-shell /path/to/your/script.sqoop
+</pre></div>
+</div>
+<p>Sqoop client script is expected to contain valid Sqoop client commands, empty lines and lines starting with <tt class="docutils literal"><span class="pre">#</span></tt> that are denoting comment lines. Comments and empty lines are ignored, all other lines are interpreted. Example script:</p>
+<div class="highlight-none"><div class="highlight"><pre># Specify company server
+set server --host sqoop2.company.net
+
+# Executing given job
+start job --name 1
+</pre></div>
+</div>
+<div class="contents topic" id="table-of-contents">
+<p class="topic-title first">Table of Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#command-line-shell" id="id1">Command Line Shell</a><ul>
+<li><a class="reference internal" href="#resource-file" id="id2">Resource file</a></li>
+<li><a class="reference internal" href="#commands" id="id3">Commands</a><ul>
+<li><a class="reference internal" href="#auxiliary-commands" id="id4">Auxiliary Commands</a></li>
+<li><a class="reference internal" href="#set-command" id="id5">Set Command</a><ul>
+<li><a class="reference internal" href="#set-server-function" id="id6">Set Server Function</a></li>
+<li><a class="reference internal" href="#set-option-function" id="id7">Set Option Function</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#show-command" id="id8">Show Command</a><ul>
+<li><a class="reference internal" href="#show-server-function" id="id9">Show Server Function</a></li>
+<li><a class="reference internal" href="#show-option-function" id="id10">Show Option Function</a></li>
+<li><a class="reference internal" href="#show-version-function" id="id11">Show Version Function</a></li>
+<li><a class="reference internal" href="#show-connector-function" id="id12">Show Connector Function</a></li>
+<li><a class="reference internal" href="#show-driver-function" id="id13">Show Driver Function</a></li>
+<li><a class="reference internal" href="#show-link-function" id="id14">Show Link Function</a></li>
+<li><a class="reference internal" href="#show-job-function" id="id15">Show Job Function</a></li>
+<li><a class="reference internal" href="#show-submission-function" id="id16">Show Submission Function</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#create-command" id="id17">Create Command</a><ul>
+<li><a class="reference internal" href="#create-link-function" id="id18">Create Link Function</a></li>
+<li><a class="reference internal" href="#create-job-function" id="id19">Create Job Function</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#update-command" id="id20">Update Command</a><ul>
+<li><a class="reference internal" href="#update-link-function" id="id21">Update Link Function</a></li>
+<li><a class="reference internal" href="#update-job-function" id="id22">Update Job Function</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#delete-command" id="id23">Delete Command</a><ul>
+<li><a class="reference internal" href="#delete-link-function" id="id24">Delete Link Function</a></li>
+<li><a class="reference internal" href="#delete-job-function" id="id25">Delete Job Function</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#clone-command" id="id26">Clone Command</a><ul>
+<li><a class="reference internal" href="#clone-link-function" id="id27">Clone Link Function</a></li>
+<li><a class="reference internal" href="#clone-job-function" id="id28">Clone Job Function</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#start-command" id="id29">Start Command</a><ul>
+<li><a class="reference internal" href="#start-job-function" id="id30">Start Job Function</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#stop-command" id="id31">Stop Command</a><ul>
+<li><a class="reference internal" href="#stop-job-function" id="id32">Stop Job Function</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#status-command" id="id33">Status Command</a><ul>
+<li><a class="reference internal" href="#status-job-function" id="id34">Status Job Function</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="resource-file">
+<h2><a class="toc-backref" href="#id2">2.1.1. Resource file</a><a class="headerlink" href="#resource-file" title="Permalink to this headline">¶</a></h2>
+<p>Sqoop 2 client have ability to load resource files similarly as other command line tools. At the beginning of execution Sqoop client will check existence of file <tt class="docutils literal"><span class="pre">.sqoop2rc</span></tt> in home directory of currently logged user. If such file exists, it will be interpreted before any additional actions. This file is loaded in both interactive and batch mode. It can be used to execute any batch compatible commands.</p>
+<p>Example resource file:</p>
+<div class="highlight-none"><div class="highlight"><pre># Configure our Sqoop 2 server automatically
+set server --host sqoop2.company.net
+
+# Run in verbose mode by default
+set option --name verbose --value true
+</pre></div>
+</div>
+</div>
+<div class="section" id="commands">
+<h2><a class="toc-backref" href="#id3">2.1.2. Commands</a><a class="headerlink" href="#commands" title="Permalink to this headline">¶</a></h2>
+<p>Sqoop 2 contains several commands that will be documented in this section. Each command have one more functions that are accepting various arguments. Not all commands are supported in both interactive and batch mode.</p>
+<div class="section" id="auxiliary-commands">
+<h3><a class="toc-backref" href="#id4">2.1.2.1. Auxiliary Commands</a><a class="headerlink" href="#auxiliary-commands" title="Permalink to this headline">¶</a></h3>
+<p>Auxiliary commands are commands that are improving user experience and are running purely on client side. Thus they do not need working connection to the server.</p>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">exit</span></tt> Exit client immediately. This command can be also executed by sending EOT (end of transmission) character. It&#8217;s CTRL+D on most common Linux shells like Bash or Zsh.</li>
+<li><tt class="docutils literal"><span class="pre">history</span></tt> Print out command history. Please note that Sqoop client is saving history from previous executions and thus you might see commands that you&#8217;ve executed in previous runs.</li>
+<li><tt class="docutils literal"><span class="pre">help</span></tt> Show all available commands with short in-shell documentation.</li>
+</ul>
+<div class="highlight-none"><div class="highlight"><pre>sqoop:000&gt; help
+For information about Sqoop, visit: http://sqoop.apache.org/
+
+Available commands:
+  exit    (\x  ) Exit the shell
+  history (\H  ) Display, manage and recall edit-line history
+  help    (\h  ) Display this help message
+  set     (\st ) Configure various client options and settings
+  show    (\sh ) Display various objects and configuration options
+  create  (\cr ) Create new object in Sqoop repository
+  delete  (\d  ) Delete existing object in Sqoop repository
+  update  (\up ) Update objects in Sqoop repository
+  clone   (\cl ) Create new object based on existing one
+  start   (\sta) Start job
+  stop    (\stp) Stop job
+  status  (\stu) Display status of a job
+  enable  (\en ) Enable object in Sqoop repository
+  disable (\di ) Disable object in Sqoop repository
+</pre></div>
+</div>
+</div>
+<div class="section" id="set-command">
+<h3><a class="toc-backref" href="#id5">2.1.2.2. Set Command</a><a class="headerlink" href="#set-command" title="Permalink to this headline">¶</a></h3>
+<p>Set command allows to set various properties of the client. Similarly as auxiliary commands, set do not require connection to Sqoop server. Set commands is not used to reconfigure Sqoop server.</p>
+<p>Available functions:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="26%" />
+<col width="74%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Function</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">server</span></tt></td>
+<td>Set connection configuration for server</td>
+</tr>
+<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">option</span></tt></td>
+<td>Set various client side options</td>
+</tr>
+</tbody>
+</table>
+<div class="section" id="set-server-function">
+<h4><a class="toc-backref" href="#id6">2.1.2.2.1. Set Server Function</a><a class="headerlink" href="#set-server-function" title="Permalink to this headline">¶</a></h4>
+<p>Configure connection to Sqoop server - host port and web application name. Available arguments:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="26%" />
+<col width="17%" />
+<col width="57%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Argument</th>
+<th class="head">Default value</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">-h</span></tt>, <tt class="docutils literal"><span class="pre">--host</span></tt></td>
+<td>localhost</td>
+<td>Server name (FQDN) where Sqoop server is running</td>
+</tr>
+<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">-p</span></tt>, <tt class="docutils literal"><span class="pre">--port</span></tt></td>
+<td>12000</td>
+<td>TCP Port</td>
+</tr>
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">-w</span></tt>, <tt class="docutils literal"><span class="pre">--webapp</span></tt></td>
+<td>sqoop</td>
+<td>Jetty&#8217;s web application name</td>
+</tr>
+<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">-u</span></tt>, <tt class="docutils literal"><span class="pre">--url</span></tt></td>
+<td>&nbsp;</td>
+<td>Sqoop Server in url format</td>
+</tr>
+</tbody>
+</table>
+<p>Example:</p>
+<div class="highlight-none"><div class="highlight"><pre>set server --host sqoop2.company.net --port 80 --webapp sqoop
+</pre></div>
+</div>
+<p>or</p>
+<div class="highlight-none"><div class="highlight"><pre>set server --url http://sqoop2.company.net:80/sqoop
+</pre></div>
+</div>
+<p>Note: When <tt class="docutils literal"><span class="pre">--url</span></tt> option is given, <tt class="docutils literal"><span class="pre">--host</span></tt>, <tt class="docutils literal"><span class="pre">--port</span></tt> or <tt class="docutils literal"><span class="pre">--webapp</span></tt> option will be ignored.</p>
+</div>
+<div class="section" id="set-option-function">
+<h4><a class="toc-backref" href="#id7">2.1.2.2.2. Set Option Function</a><a class="headerlink" href="#set-option-function" title="Permalink to this headline">¶</a></h4>
+<p>Configure Sqoop client related options. This function have two required arguments <tt class="docutils literal"><span class="pre">name</span></tt> and <tt class="docutils literal"><span class="pre">value</span></tt>. Name represents internal property name and value holds new value that should be set. List of available option names follows:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="18%" />
+<col width="15%" />
+<col width="67%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Option name</th>
+<th class="head">Default value</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">verbose</span></tt></td>
+<td>false</td>
+<td>Client will print additional information if verbose mode is enabled</td>
+</tr>
+<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">poll-timeout</span></tt></td>
+<td>10000</td>
+<td>Server poll timeout in milliseconds</td>
+</tr>
+</tbody>
+</table>
+<p>Example:</p>
+<div class="highlight-none"><div class="highlight"><pre>set option --name verbose --value true
+set option --name poll-timeout --value 20000
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="show-command">
+<h3><a class="toc-backref" href="#id8">2.1.2.3. Show Command</a><a class="headerlink" href="#show-command" title="Permalink to this headline">¶</a></h3>
+<p>Show commands displays various information as described below.</p>
+<p>Available functions:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="13%" />
+<col width="87%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Function</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">server</span></tt></td>
+<td>Display connection information to the sqoop server (host, port, webapp)</td>
+</tr>
+<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">option</span></tt></td>
+<td>Display various client side options</td>
+</tr>
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">version</span></tt></td>
+<td>Show client build version, with an option -all it shows server build version and supported api versions</td>
+</tr>
+<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">connector</span></tt></td>
+<td>Show connector configurable and its related configs</td>
+</tr>
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">driver</span></tt></td>
+<td>Show driver configurable and its related configs</td>
+</tr>
+<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">link</span></tt></td>
+<td>Show links in sqoop</td>
+</tr>
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">job</span></tt></td>
+<td>Show jobs in sqoop</td>
+</tr>
+</tbody>
+</table>
+<div class="section" id="show-server-function">
+<h4><a class="toc-backref" href="#id9">2.1.2.3.1. Show Server Function</a><a class="headerlink" href="#show-server-function" title="Permalink to this headline">¶</a></h4>
+<p>Show details about connection to Sqoop server.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="27%" />
+<col width="73%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Argument</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">-a</span></tt>, <tt class="docutils literal"><span class="pre">--all</span></tt></td>
+<td>Show all connection related information (host, port, webapp)</td>
+</tr>
+<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">-h</span></tt>, <tt class="docutils literal"><span class="pre">--host</span></tt></td>
+<td>Show host</td>
+</tr>
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">-p</span></tt>, <tt class="docutils literal"><span class="pre">--port</span></tt></td>
+<td>Show port</td>
+</tr>
+<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">-w</span></tt>, <tt class="docutils literal"><span class="pre">--webapp</span></tt></td>
+<td>Show web application name</td>
+</tr>
+</tbody>
+</table>
+<p>Example:</p>
+<div class="highlight-none"><div class="highlight"><pre>show server --all
+</pre></div>
+</div>
+</div>
+<div class="section" id="show-option-function">
+<h4><a class="toc-backref" href="#id10">2.1.2.3.2. Show Option Function</a><a class="headerlink" href="#show-option-function" title="Permalink to this headline">¶</a></h4>
+<p>Show values of various client side options. This function will show all client options when called without arguments.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="27%" />
+<col width="73%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Argument</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">-n</span></tt>, <tt class="docutils literal"><span class="pre">--name</span></tt></td>
+<td>Show client option value with given name</td>
+</tr>
+</tbody>
+</table>
+<p>Please check table in <a class="reference internal" href="#set-option-function">Set Option Function</a> section to get a list of all supported option names.</p>
+<p>Example:</p>
+<div class="highlight-none"><div class="highlight"><pre>show option --name verbose
+</pre></div>
+</div>
+</div>
+<div class="section" id="show-version-function">
+<h4><a class="toc-backref" href="#id11">2.1.2.3.3. Show Version Function</a><a class="headerlink" href="#show-version-function" title="Permalink to this headline">¶</a></h4>
+<p>Show build versions of both client and server as well as the supported rest api versions.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="34%" />
+<col width="66%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Argument</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">-a</span></tt>, <tt class="docutils literal"><span class="pre">--all</span></tt></td>
+<td>Show all versions (server, client, api)</td>
+</tr>
+<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">-c</span></tt>, <tt class="docutils literal"><span class="pre">--client</span></tt></td>
+<td>Show client build version</td>
+</tr>
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">-s</span></tt>, <tt class="docutils literal"><span class="pre">--server</span></tt></td>
+<td>Show server build version</td>
+</tr>
+<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">-p</span></tt>, <tt class="docutils literal"><span class="pre">--api</span></tt></td>
+<td>Show supported api versions</td>
+</tr>
+</tbody>
+</table>
+<p>Example:</p>
+<div class="highlight-none"><div class="highlight"><pre>show version --all
+</pre></div>
+</div>
+</div>
+<div class="section" id="show-connector-function">
+<h4><a class="toc-backref" href="#id12">2.1.2.3.4. Show Connector Function</a><a class="headerlink" href="#show-connector-function" title="Permalink to this headline">¶</a></h4>
+<p>Show persisted connector configurable and its related configs used in creating associated link and job objects</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="32%" />
+<col width="68%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Argument</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">-a</span></tt>, <tt class="docutils literal"><span class="pre">--all</span></tt></td>
+<td>Show information for all connectors</td>
+</tr>
+<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">-c</span></tt>, <tt class="docutils literal"><span class="pre">--cid</span> <span class="pre">&lt;x&gt;</span></tt></td>
+<td>Show information for connector with id <tt class="docutils literal"><span class="pre">&lt;x&gt;</span></tt></td>
+</tr>
+</tbody>
+</table>
+<p>Example:</p>
+<div class="highlight-none"><div class="highlight"><pre>show connector --all or show connector
+</pre></div>
+</div>
+</div>
+<div class="section" id="show-driver-function">
+<h4><a class="toc-backref" href="#id13">2.1.2.3.5. Show Driver Function</a><a class="headerlink" href="#show-driver-function" title="Permalink to this headline">¶</a></h4>
+<p>Show persisted driver configurable and its related configs used in creating job objects</p>
+<p>This function do not have any extra arguments. There is only one registered driver in sqoop</p>
+<p>Example:</p>
+<div class="highlight-none"><div class="highlight"><pre>show driver
+</pre></div>
+</div>
+</div>
+<div class="section" id="show-link-function">
+<h4><a class="toc-backref" href="#id14">2.1.2.3.6. Show Link Function</a><a class="headerlink" href="#show-link-function" title="Permalink to this headline">¶</a></h4>
+<p>Show persisted link objects.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="30%" />
+<col width="70%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Argument</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">-a</span></tt>, <tt class="docutils literal"><span class="pre">--all</span></tt></td>
+<td>Show all available links</td>
+</tr>
+<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">-n</span></tt>, <tt class="docutils literal"><span class="pre">--name</span> <span class="pre">&lt;x&gt;</span></tt></td>
+<td>Show link with name <tt class="docutils literal"><span class="pre">&lt;x&gt;</span></tt></td>
+</tr>
+</tbody>
+</table>
+<p>Example:</p>
+<div class="highlight-none"><div class="highlight"><pre>show link --all or show link --name linkName
+</pre></div>
+</div>
+</div>
+<div class="section" id="show-job-function">
+<h4><a class="toc-backref" href="#id15">2.1.2.3.7. Show Job Function</a><a class="headerlink" href="#show-job-function" title="Permalink to this headline">¶</a></h4>
+<p>Show persisted job objects.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="33%" />
+<col width="67%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Argument</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">-a</span></tt>, <tt class="docutils literal"><span class="pre">--all</span></tt></td>
+<td>Show all available jobs</td>
+</tr>
+<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">-n</span></tt>, <tt class="docutils literal"><span class="pre">--name</span> <span class="pre">&lt;x&gt;</span></tt></td>
+<td>Show job with name <tt class="docutils literal"><span class="pre">&lt;x&gt;</span></tt></td>
+</tr>
+</tbody>
+</table>
+<p>Example:</p>
+<div class="highlight-none"><div class="highlight"><pre>show job --all or show job --name jobName
+</pre></div>
+</div>
+</div>
+<div class="section" id="show-submission-function">
+<h4><a class="toc-backref" href="#id16">2.1.2.3.8. Show Submission Function</a><a class="headerlink" href="#show-submission-function" title="Permalink to this headline">¶</a></h4>
+<p>Show persisted job submission objects.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="33%" />
+<col width="67%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Argument</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">-j</span></tt>, <tt class="docutils literal"><span class="pre">--job</span> <span class="pre">&lt;x&gt;</span></tt></td>
+<td>Show available submissions for given job name</td>
+</tr>
+<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">-d</span></tt>, <tt class="docutils literal"><span class="pre">--detail</span></tt></td>
+<td>Show job submissions in full details</td>
+</tr>
+</tbody>
+</table>
+<p>Example:</p>
+<div class="highlight-none"><div class="highlight"><pre>show submission
+show submission --j jobName
+show submission --job jobName --detail
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="create-command">
+<h3><a class="toc-backref" href="#id17">2.1.2.4. Create Command</a><a class="headerlink" href="#create-command" title="Permalink to this headline">¶</a></h3>
+<p>Creates new link and job objects. This command is supported only in interactive mode. It will ask user to enter the link config and job configs for from /to and driver when creating link and job objects respectively.</p>
+<p>Available functions:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="25%" />
+<col width="75%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Function</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">link</span></tt></td>
+<td>Create new link object</td>
+</tr>
+<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">job</span></tt></td>
+<td>Create new job object</td>
+</tr>
+</tbody>
+</table>
+<div class="section" id="create-link-function">
+<h4><a class="toc-backref" href="#id18">2.1.2.4.1. Create Link Function</a><a class="headerlink" href="#create-link-function" title="Permalink to this headline">¶</a></h4>
+<p>Create new link object.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="33%" />
+<col width="67%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Argument</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">-c</span></tt>, <tt class="docutils literal"><span class="pre">--connector</span> <span class="pre">&lt;x&gt;</span></tt></td>
+<td>Create new link object for connector with name <tt class="docutils literal"><span class="pre">&lt;x&gt;</span></tt></td>
+</tr>
+</tbody>
+</table>
+<p>Example:</p>
+<div class="highlight-none"><div class="highlight"><pre>create link --connector connectorName or create link -c connectorName
+</pre></div>
+</div>
+</div>
+<div class="section" id="create-job-function">
+<h4><a class="toc-backref" href="#id19">2.1.2.4.2. Create Job Function</a><a class="headerlink" href="#create-job-function" title="Permalink to this headline">¶</a></h4>
+<p>Create new job object.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="27%" />
+<col width="73%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Argument</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">-f</span></tt>, <tt class="docutils literal"><span class="pre">--from</span> <span class="pre">&lt;x&gt;</span></tt></td>
+<td>Create new job object with a FROM link with name <tt class="docutils literal"><span class="pre">&lt;x&gt;</span></tt></td>
+</tr>
+<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">-t</span></tt>, <tt class="docutils literal"><span class="pre">--to</span> <span class="pre">&lt;t&gt;</span></tt></td>
+<td>Create new job object with a TO link with name <tt class="docutils literal"><span class="pre">&lt;x&gt;</span></tt></td>
+</tr>
+</tbody>
+</table>
+<p>Example:</p>
+<div class="highlight-none"><div class="highlight"><pre>create job --from fromLinkName --to toLinkName or create job --f fromLinkName --t toLinkName
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="update-command">
+<h3><a class="toc-backref" href="#id20">2.1.2.5. Update Command</a><a class="headerlink" href="#update-command" title="Permalink to this headline">¶</a></h3>
+<p>Update commands allows you to edit link and job objects. This command is supported only in interactive mode.</p>
+<div class="section" id="update-link-function">
+<h4><a class="toc-backref" href="#id21">2.1.2.5.1. Update Link Function</a><a class="headerlink" href="#update-link-function" title="Permalink to this headline">¶</a></h4>
+<p>Update existing link object.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="34%" />
+<col width="66%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Argument</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">-n</span></tt>, <tt class="docutils literal"><span class="pre">--name</span> <span class="pre">&lt;x&gt;</span></tt></td>
+<td>Update existing link with name <tt class="docutils literal"><span class="pre">&lt;x&gt;</span></tt></td>
+</tr>
+</tbody>
+</table>
+<p>Example:</p>
+<div class="highlight-none"><div class="highlight"><pre>update link --name linkName
+</pre></div>
+</div>
+</div>
+<div class="section" id="update-job-function">
+<h4><a class="toc-backref" href="#id22">2.1.2.5.2. Update Job Function</a><a class="headerlink" href="#update-job-function" title="Permalink to this headline">¶</a></h4>
+<p>Update existing job object.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="35%" />
+<col width="65%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Argument</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">-n</span></tt>, <tt class="docutils literal"><span class="pre">--name</span> <span class="pre">&lt;x&gt;</span></tt></td>
+<td>Update existing job object with name <tt class="docutils literal"><span class="pre">&lt;x&gt;</span></tt></td>
+</tr>
+</tbody>
+</table>
+<p>Example:</p>
+<div class="highlight-none"><div class="highlight"><pre>update job --name jobName
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="delete-command">
+<h3><a class="toc-backref" href="#id23">2.1.2.6. Delete Command</a><a class="headerlink" href="#delete-command" title="Permalink to this headline">¶</a></h3>
+<p>Deletes link and job objects from Sqoop server.</p>
+<div class="section" id="delete-link-function">
+<h4><a class="toc-backref" href="#id24">2.1.2.6.1. Delete Link Function</a><a class="headerlink" href="#delete-link-function" title="Permalink to this headline">¶</a></h4>
+<p>Delete existing link object.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="37%" />
+<col width="63%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Argument</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">-n</span></tt>, <tt class="docutils literal"><span class="pre">--name</span> <span class="pre">&lt;x&gt;</span></tt></td>
+<td>Delete link object with name <tt class="docutils literal"><span class="pre">&lt;x&gt;</span></tt></td>
+</tr>
+</tbody>
+</table>
+<p>Example:</p>
+<div class="highlight-none"><div class="highlight"><pre>delete link --name linkName
+</pre></div>
+</div>
+</div>
+<div class="section" id="delete-job-function">
+<h4><a class="toc-backref" href="#id25">2.1.2.6.2. Delete Job Function</a><a class="headerlink" href="#delete-job-function" title="Permalink to this headline">¶</a></h4>
+<p>Delete existing job object.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="37%" />
+<col width="63%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Argument</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">-n</span></tt>, <tt class="docutils literal"><span class="pre">--name</span> <span class="pre">&lt;x&gt;</span></tt></td>
+<td>Delete job object with name <tt class="docutils literal"><span class="pre">&lt;x&gt;</span></tt></td>
+</tr>
+</tbody>
+</table>
+<p>Example:</p>
+<div class="highlight-none"><div class="highlight"><pre>delete job --name jobName
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="clone-command">
+<h3><a class="toc-backref" href="#id26">2.1.2.7. Clone Command</a><a class="headerlink" href="#clone-command" title="Permalink to this headline">¶</a></h3>
+<p>Clone command will load existing link or job object from Sqoop server and allow user in place updates that will result in creation of new link or job object. This command is not supported in batch mode.</p>
+<div class="section" id="clone-link-function">
+<h4><a class="toc-backref" href="#id27">2.1.2.7.1. Clone Link Function</a><a class="headerlink" href="#clone-link-function" title="Permalink to this headline">¶</a></h4>
+<p>Clone existing link object.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="37%" />
+<col width="63%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Argument</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">-n</span></tt>, <tt class="docutils literal"><span class="pre">--name</span> <span class="pre">&lt;x&gt;</span></tt></td>
+<td>Clone link object with name <tt class="docutils literal"><span class="pre">&lt;x&gt;</span></tt></td>
+</tr>
+</tbody>
+</table>
+<p>Example:</p>
+<div class="highlight-none"><div class="highlight"><pre>clone link --name linkName
+</pre></div>
+</div>
+</div>
+<div class="section" id="clone-job-function">
+<h4><a class="toc-backref" href="#id28">2.1.2.7.2. Clone Job Function</a><a class="headerlink" href="#clone-job-function" title="Permalink to this headline">¶</a></h4>
+<p>Clone existing job object.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="37%" />
+<col width="63%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Argument</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">-n</span></tt>, <tt class="docutils literal"><span class="pre">--name</span> <span class="pre">&lt;x&gt;</span></tt></td>
+<td>Clone job object with name <tt class="docutils literal"><span class="pre">&lt;x&gt;</span></tt></td>
+</tr>
+</tbody>
+</table>
+<p>Example:</p>
+<div class="highlight-none"><div class="highlight"><pre>clone job --name jobName
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="start-command">
+<h3><a class="toc-backref" href="#id29">2.1.2.8. Start Command</a><a class="headerlink" href="#start-command" title="Permalink to this headline">¶</a></h3>
+<p>Start command will begin execution of an existing Sqoop job.</p>
+<div class="section" id="start-job-function">
+<h4><a class="toc-backref" href="#id30">2.1.2.8.1. Start Job Function</a><a class="headerlink" href="#start-job-function" title="Permalink to this headline">¶</a></h4>
+<p>Start job (submit new submission). Starting already running job is considered as invalid operation.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="50%" />
+<col width="50%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Argument</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">-n</span></tt>, <tt class="docutils literal"><span class="pre">--name</span> <span class="pre">&lt;x&gt;</span></tt></td>
+<td>Start job with name <tt class="docutils literal"><span class="pre">&lt;x&gt;</span></tt></td>
+</tr>
+<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">-s</span></tt>, <tt class="docutils literal"><span class="pre">--synchronous</span></tt></td>
+<td>Synchoronous job execution</td>
+</tr>
+</tbody>
+</table>
+<p>Example:</p>
+<div class="highlight-none"><div class="highlight"><pre>start job --name jobName
+start job --name jobName --synchronous
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="stop-command">
+<h3><a class="toc-backref" href="#id31">2.1.2.9. Stop Command</a><a class="headerlink" href="#stop-command" title="Permalink to this headline">¶</a></h3>
+<p>Stop command will interrupt an job execution.</p>
+<div class="section" id="stop-job-function">
+<h4><a class="toc-backref" href="#id32">2.1.2.9.1. Stop Job Function</a><a class="headerlink" href="#stop-job-function" title="Permalink to this headline">¶</a></h4>
+<p>Interrupt running job.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="37%" />
+<col width="63%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Argument</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">-n</span></tt>, <tt class="docutils literal"><span class="pre">--name</span> <span class="pre">&lt;x&gt;</span></tt></td>
+<td>Interrupt running job with name <tt class="docutils literal"><span class="pre">&lt;x&gt;</span></tt></td>
+</tr>
+</tbody>
+</table>
+<p>Example:</p>
+<div class="highlight-none"><div class="highlight"><pre>stop job --name jobName
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="status-command">
+<h3><a class="toc-backref" href="#id33">2.1.2.10. Status Command</a><a class="headerlink" href="#status-command" title="Permalink to this headline">¶</a></h3>
+<p>Status command will retrieve the last status of a job.</p>
+<div class="section" id="status-job-function">
+<h4><a class="toc-backref" href="#id34">2.1.2.10.1. Status Job Function</a><a class="headerlink" href="#status-job-function" title="Permalink to this headline">¶</a></h4>
+<p>Retrieve last status for given job.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="37%" />
+<col width="63%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Argument</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">-n</span></tt>, <tt class="docutils literal"><span class="pre">--name</span> <span class="pre">&lt;x&gt;</span></tt></td>
+<td>Retrieve status for job with name <tt class="docutils literal"><span class="pre">&lt;x&gt;</span></tt></td>
+</tr>
+</tbody>
+</table>
+<p>Example:</p>
+<div class="highlight-none"><div class="highlight"><pre>status job --name jobName
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="Connectors.html" class="btn btn-neutral float-right" title="2.2. Connectors" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../user.html" class="btn btn-neutral" title="2. User Guide" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2009-2016 The Apache Software Foundation.
+
+    </p>
+  </div> 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

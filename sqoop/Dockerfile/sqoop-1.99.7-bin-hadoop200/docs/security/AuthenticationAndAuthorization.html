@@ -1,0 +1,438 @@
+
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>4.2. Authentication and Authorization &mdash; Apache Sqoop  documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="Apache Sqoop  documentation" href="../index.html"/>
+        <link rel="up" title="4. Security Guide" href="../security.html"/>
+        <link rel="next" title="4.3. Repository Encryption" href="RepositoryEncryption.html"/>
+        <link rel="prev" title="4.1. API TLS/SSL" href="API TLS-SSL.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Apache Sqoop
+          
+
+          
+            
+            <img src="../_static/sqoop-logo.png" class="logo" />
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../admin.html">1. Admin Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user.html">2. User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dev.html">3. Developer Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../security.html">4. Security Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="API TLS-SSL.html">4.1. API TLS/SSL</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="">4.2. Authentication and Authorization</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#simple-authentication">4.2.1. Simple Authentication</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#configuration">4.2.1.1. Configuration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#run-command">4.2.1.2. Run command</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#kerberos-authentication">4.2.2. Kerberos Authentication</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#dependency">4.2.2.1. Dependency</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id1">4.2.2.2. Configuration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id2">4.2.2.3. Run command</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#verify">4.2.2.4. Verify</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#customized-authentication">4.2.3. Customized Authentication</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#authorization">4.2.4. Authorization</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#users-groups-and-roles">4.2.4.1. Users, Groups, and Roles</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#administrator">4.2.4.2. Administrator</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#role-management-commands">4.2.4.3. Role management commands</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#principal-management-commands">4.2.4.4. Principal management commands</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#privilege-management-commands">4.2.4.5. Privilege management commands</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="RepositoryEncryption.html">4.3. Repository Encryption</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">Apache Sqoop</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../security.html">4. Security Guide</a> &raquo;</li>
+      
+    <li>4.2. Authentication and Authorization</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/security/AuthenticationAndAuthorization.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="authentication-and-authorization">
+<h1>4.2. Authentication and Authorization<a class="headerlink" href="#authentication-and-authorization" title="Permalink to this headline">¶</a></h1>
+<p>Most Hadoop components, such as HDFS, Yarn, Hive, etc., have security frameworks, which support Simple, Kerberos and LDAP authentication. currently Sqoop 2 provides 2 types of authentication: simple and kerberos. The authentication module is pluggable, so more authentication types can be added. Additionally, a new role based access control is introduced in Sqoop 1.99.6. We recommend to use this capability in multi tenant environments, so that malicious users can’t easily abuse your created link and job objects.</p>
+<div class="section" id="simple-authentication">
+<h2>4.2.1. Simple Authentication<a class="headerlink" href="#simple-authentication" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="configuration">
+<h3>4.2.1.1. Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h3>
+<p>Modify Sqoop configuration file, normally in &lt;Sqoop Folder&gt;/conf/sqoop.properties.</p>
+<div class="highlight-none"><div class="highlight"><pre>org.apache.sqoop.authentication.type=SIMPLE
+org.apache.sqoop.authentication.handler=org.apache.sqoop.security.authentication.SimpleAuthenticationHandler
+org.apache.sqoop.anonymous=true
+</pre></div>
+</div>
+<ul class="simple">
+<li>Simple authentication is used by default. Commenting out authentication configuration will yield the use of simple authentication.</li>
+</ul>
+</div>
+<div class="section" id="run-command">
+<h3>4.2.1.2. Run command<a class="headerlink" href="#run-command" title="Permalink to this headline">¶</a></h3>
+<p>Start Sqoop server as usual.</p>
+<div class="highlight-none"><div class="highlight"><pre>&lt;Sqoop Folder&gt;/bin/sqoop.sh server start
+</pre></div>
+</div>
+<p>Start Sqoop client as usual.</p>
+<div class="highlight-none"><div class="highlight"><pre>&lt;Sqoop Folder&gt;/bin/sqoop.sh client
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="kerberos-authentication">
+<h2>4.2.2. Kerberos Authentication<a class="headerlink" href="#kerberos-authentication" title="Permalink to this headline">¶</a></h2>
+<p>Kerberos is a computer network authentication protocol which works on the basis of &#8216;tickets&#8217; to allow nodes communicating over a non-secure network to prove their identity to one another in a secure manner. Its designers aimed it primarily at a client–server model and it provides mutual authentication—both the user and the server verify each other&#8217;s identity. Kerberos protocol messages are protected against eavesdropping and replay attacks.</p>
+<div class="section" id="dependency">
+<h3>4.2.2.1. Dependency<a class="headerlink" href="#dependency" title="Permalink to this headline">¶</a></h3>
+<p>Set up a KDC server. Skip this step if KDC server exists. It&#8217;s difficult to cover every way Kerberos can be setup (ie: there are cross realm setups and multi-trust environments). This section will describe how to setup the sqoop principals with a local deployment of MIT kerberos.</p>
+<ul class="simple">
+<li>All components which are Kerberos authenticated need one KDC server. If current Hadoop cluster uses Kerberos authentication, there should be a KDC server.</li>
+<li>If there is no KDC server, follow <a class="reference external" href="http://web.mit.edu/kerberos/krb5-devel/doc/admin/install_kdc.html">http://web.mit.edu/kerberos/krb5-devel/doc/admin/install_kdc.html</a> to set up one.</li>
+</ul>
+<p>Configure Hadoop cluster to use Kerberos authentication.</p>
+<ul class="simple">
+<li>Authentication type should be cluster level. All components must have the same authentication type: use Kerberos or not. In other words, Sqoop with Kerberos authentication could not communicate with other Hadoop components, such as HDFS, Yarn, Hive, etc., without Kerberos authentication, and vice versa.</li>
+<li>How to set up a Hadoop cluster with Kerberos authentication is out of the scope of this document. Follow the related links like <a class="reference external" href="https://hadoop.apache.org/docs/r2.5.0/hadoop-project-dist/hadoop-common/SecureMode.html">https://hadoop.apache.org/docs/r2.5.0/hadoop-project-dist/hadoop-common/SecureMode.html</a></li>
+</ul>
+<p>Create keytab and principal for Sqoop 2 via kadmin in command line.</p>
+<div class="highlight-none"><div class="highlight"><pre>addprinc -randkey HTTP/&lt;FQDN&gt;@&lt;REALM&gt;
+addprinc -randkey sqoop/&lt;FQDN&gt;@&lt;REALM&gt;
+xst -k /home/kerberos/sqoop.keytab HTTP/&lt;FQDN&gt;@&lt;REALM&gt;
+xst -k /home/kerberos/sqoop.keytab sqoop/&lt;FQDN&gt;@&lt;REALM&gt;
+</pre></div>
+</div>
+<ul class="simple">
+<li>The &lt;FQDN&gt; should be replaced by the FQDN of the server, which could be found via “hostname -f” in command line.</li>
+<li>The &lt;REALM&gt; should be replaced by the realm name in krb5.conf file generated when installing the KDC server in the former step.</li>
+<li>The principal HTTP/&lt;FQDN&gt;&#64;&lt;REALM&gt; is used in communication between Sqoop client and Sqoop server. Since Sqoop server is an http server, so the HTTP principal is a must during SPNEGO process, and it is case sensitive.</li>
+<li>Http request could be sent from other client like browser, wget or curl with SPNEGO support.</li>
+<li>The principal sqoop/&lt;FQDN&gt;&#64;&lt;REALM&gt; is used in communication between Sqoop server and Hdfs/Yarn as the credential of Sqoop server.</li>
+</ul>
+</div>
+<div class="section" id="id1">
+<h3>4.2.2.2. Configuration<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<p>Modify Sqoop configuration file, normally in &lt;Sqoop Folder&gt;/conf/sqoop.properties.</p>
+<div class="highlight-none"><div class="highlight"><pre>org.apache.sqoop.authentication.type=KERBEROS
+org.apache.sqoop.authentication.handler=org.apache.sqoop.security.authentication.KerberosAuthenticationHandler
+org.apache.sqoop.authentication.kerberos.principal=sqoop/_HOST@&lt;REALM&gt;
+org.apache.sqoop.authentication.kerberos.keytab=/home/kerberos/sqoop.keytab
+org.apache.sqoop.authentication.kerberos.http.principal=HTTP/_HOST@&lt;REALM&gt;
+org.apache.sqoop.authentication.kerberos.http.keytab=/home/kerberos/sqoop.keytab
+org.apache.sqoop.authentication.kerberos.proxyuser=true
+</pre></div>
+</div>
+<ul class="simple">
+<li>When _HOST is used as FQDN in principal, it will be replaced by the real FQDN. <a class="reference external" href="https://issues.apache.org/jira/browse/HADOOP-6632">https://issues.apache.org/jira/browse/HADOOP-6632</a></li>
+<li>If parameter proxyuser is set true, Sqoop server will use proxy user mode (sqoop delegate real client user) to run Yarn job. If false, Sqoop server will use sqoop user to run Yarn job.</li>
+</ul>
+</div>
+<div class="section" id="id2">
+<h3>4.2.2.3. Run command<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+<p>Set SQOOP2_HOST to FQDN.</p>
+<div class="highlight-none"><div class="highlight"><pre>export SQOOP2_HOST=$(hostname -f).
+</pre></div>
+</div>
+<ul class="simple">
+<li>The &lt;FQDN&gt; should be replaced by the FQDN of the server, which could be found via “hostname -f” in command line.</li>
+</ul>
+<p>Start Sqoop server using sqoop user.</p>
+<div class="highlight-none"><div class="highlight"><pre>sudo –u sqoop &lt;Sqoop Folder&gt;/bin/sqoop.sh server start
+</pre></div>
+</div>
+<p>Run kinit to generate ticket cache.</p>
+<div class="highlight-none"><div class="highlight"><pre>kinit HTTP/&lt;FQDN&gt;@&lt;REALM&gt; -kt /home/kerberos/sqoop.keytab
+</pre></div>
+</div>
+<p>Start Sqoop client.</p>
+<div class="highlight-none"><div class="highlight"><pre>&lt;Sqoop Folder&gt;/bin/sqoop.sh client
+</pre></div>
+</div>
+</div>
+<div class="section" id="verify">
+<h3>4.2.2.4. Verify<a class="headerlink" href="#verify" title="Permalink to this headline">¶</a></h3>
+<p>If the Sqoop server has started successfully with Kerberos authentication, the following line will be in &lt;&#64;LOGDIR&gt;/sqoop.log:</p>
+<div class="highlight-none"><div class="highlight"><pre>2014-12-04 15:02:58,038 INFO  security.KerberosAuthenticationHandler [org.apache.sqoop.security.authentication.KerberosAuthenticationHandler.secureLogin(KerberosAuthenticationHandler.java:84)] Using Kerberos authentication, principal [sqoop/_HOST@HADOOP.COM] keytab [/home/kerberos/sqoop.keytab]
+</pre></div>
+</div>
+<p>If the Sqoop client was able to communicate with the Sqoop server, the following will be in &lt;&#64;LOGDIR&gt;/sqoop.log :</p>
+<div class="highlight-none"><div class="highlight"><pre>Refreshing Kerberos configuration
+Acquire TGT from Cache
+Principal is HTTP/&lt;FQDN&gt;@HADOOP.COM
+null credentials from Ticket Cache
+principal is HTTP/&lt;FQDN&gt;@HADOOP.COM
+Will use keytab
+Commit Succeeded
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="customized-authentication">
+<h2>4.2.3. Customized Authentication<a class="headerlink" href="#customized-authentication" title="Permalink to this headline">¶</a></h2>
+<p>Users can create their own authentication modules. By performing the following steps:</p>
+<ul class="simple">
+<li>Create customized authentication handler extends abstract class AuthenticationHandler.</li>
+<li>Implement abstract function doInitialize and secureLogin in AuthenticationHandler.</li>
+</ul>
+<div class="highlight-none"><div class="highlight"><pre>public class MyAuthenticationHandler extends AuthenticationHandler {
+
+  private static final Logger LOG = Logger.getLogger(MyAuthenticationHandler.class);
+
+  public void doInitialize() {
+    securityEnabled = true;
+  }
+
+  public void secureLogin() {
+    LOG.info(&quot;Using customized authentication.&quot;);
+  }
+}
+</pre></div>
+</div>
+<ul class="simple">
+<li>Modify configuration org.apache.sqoop.authentication.handler in &lt;Sqoop Folder&gt;/conf/sqoop.properties and set it to the customized authentication handler class name.</li>
+<li>Restart the Sqoop server.</li>
+</ul>
+</div>
+<div class="section" id="authorization">
+<h2>4.2.4. Authorization<a class="headerlink" href="#authorization" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="users-groups-and-roles">
+<h3>4.2.4.1. Users, Groups, and Roles<a class="headerlink" href="#users-groups-and-roles" title="Permalink to this headline">¶</a></h3>
+<p>At the core of Sqoop&#8217;s authorization system are users, groups, and roles. Roles allow administrators to give a name to a set of grants which can be easily reused. A role may be assigned to users, groups, and other roles. For example, consider a system with the following users and groups.</p>
+<div class="highlight-none"><div class="highlight"><pre>&lt;User&gt;: &lt;Groups&gt;
+user_all: group1, group2
+user1: group1
+user2: group2
+</pre></div>
+</div>
+<p>Sqoop roles must be created manually before being used, unlike users and groups. Users and groups are managed by the login system (Linux, LDAP or Kerberos). When a user wants to access one resource (connector, link, connector), the Sqoop2 server will determine the username of this user and the groups associated. That information is then used to determine if the user should have access to this resource being requested, by comparing the required privileges of the Sqoop operation to the user privileges using the following rules.</p>
+<ul class="simple">
+<li>User privileges (Has the privilege been granted to the user?)</li>
+<li>Group privileges (Does the user belong to any groups that the privilege has been granted to?)</li>
+<li>Role privileges (Does the user or any of the groups that the user belongs to have a role that grants the privilege?)</li>
+</ul>
+</div>
+<div class="section" id="administrator">
+<h3>4.2.4.2. Administrator<a class="headerlink" href="#administrator" title="Permalink to this headline">¶</a></h3>
+<p>There is a special user: administrator, which can’t be created, deleted by command. The only way to set administrator is to modify the configuration file. Administrator could run management commands to create/delete roles. However, administrator does not implicitly have all privileges. Administrator has to grant privilege to him/her if he/she needs to request the resource.</p>
+</div>
+<div class="section" id="role-management-commands">
+<h3>4.2.4.3. Role management commands<a class="headerlink" href="#role-management-commands" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-none"><div class="highlight"><pre>CREATE ROLE –role role_name
+DROP ROLE –role role_name
+SHOW ROLE
+</pre></div>
+</div>
+<ul class="simple">
+<li>Only the administrator has privilege for this.</li>
+</ul>
+</div>
+<div class="section" id="principal-management-commands">
+<h3>4.2.4.4. Principal management commands<a class="headerlink" href="#principal-management-commands" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-none"><div class="highlight"><pre>GRANT ROLE --principal-type principal_type --principal principal_name --role role_name
+REVOKE ROLE --principal-type principal_type --principal principal_name --role role_name
+SHOW ROLE --principal-type principal_type --principal principal_name
+SHOW PRINCIPAL --role role_name
+</pre></div>
+</div>
+<ul class="simple">
+<li>principal_type: USER | GROUP | ROLE</li>
+</ul>
+</div>
+<div class="section" id="privilege-management-commands">
+<h3>4.2.4.5. Privilege management commands<a class="headerlink" href="#privilege-management-commands" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-none"><div class="highlight"><pre>GRANT PRIVILEGE --principal-type principal_type --principal principal_name --resource-type resource_type --resource resource_name --action action_name [--with-grant]
+REVOKE PRIVILEGE --principal-type principal_type --principal principal_name [--resource-type resource_type --resource resource_name --action action_name] [--with-grant]
+SHOW PRIVILEGE –principal-type principal_type –principal principal_name [--resource-type resource_type --resource resource_name --action action_name]
+</pre></div>
+</div>
+<ul class="simple">
+<li>principal_type: USER | GROUP | ROLE</li>
+<li>resource_type: CONNECTOR | LINK | JOB</li>
+<li>action_type: ALL | READ | WRITE</li>
+<li>With with-grant in GRANT PRIVILEGE command, this principal could grant his/her privilege to other users.</li>
+<li>Without resource in REVOKE PRIVILEGE command, all privileges on this principal will be revoked.</li>
+<li>With with-grant in REVOKE PRIVILEGE command, only grant privilege on this principal will be removed. This principal has the privilege to access this resource, but he/she could not grant his/her privilege to others.</li>
+<li>Without resource in SHOW PRIVILEGE command, all privileges on this principal will be listed.</li>
+</ul>
+</div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="RepositoryEncryption.html" class="btn btn-neutral float-right" title="4.3. Repository Encryption" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="API TLS-SSL.html" class="btn btn-neutral" title="4.1. API TLS/SSL" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2009-2016 The Apache Software Foundation.
+
+    </p>
+  </div> 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

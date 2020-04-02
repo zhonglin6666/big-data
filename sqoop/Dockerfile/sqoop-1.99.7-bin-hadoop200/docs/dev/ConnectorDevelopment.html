@@ -1,0 +1,830 @@
+
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>3.3. Sqoop 2 Connector Development &mdash; Apache Sqoop  documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="Apache Sqoop  documentation" href="../index.html"/>
+        <link rel="up" title="3. Developer Guide" href="../dev.html"/>
+        <link rel="next" title="3.4. Sqoop 2 Development Environment Setup" href="DevEnv.html"/>
+        <link rel="prev" title="3.2. Sqoop Java Client API Guide" href="ClientAPI.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Apache Sqoop
+          
+
+          
+            
+            <img src="../_static/sqoop-logo.png" class="logo" />
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../admin.html">1. Admin Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user.html">2. User Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../dev.html">3. Developer Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="BuildingSqoop2.html">3.1. Building Sqoop2 from source code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ClientAPI.html">3.2. Sqoop Java Client API Guide</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="">3.3. Sqoop 2 Connector Development</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#what-is-a-sqoop-connector">3.3.1. What is a Sqoop Connector?</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#when-do-we-add-a-new-connector">3.3.1.1. When do we add a new connector?</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#connector-implementation">3.3.2. Connector Implementation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#from">3.3.2.1. From</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#to">3.3.2.2. To</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sqoop-connector-identifier-sqoopconnector-properties">3.3.2.3. Sqoop Connector Identifier : sqoopconnector.properties</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sqoop-connector-build-time-dependencies">3.3.2.4. Sqoop Connector Build-time Dependencies</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sqoop-connector-build">3.3.2.5. Sqoop Connector Build</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#configurables">3.3.3. Configurables</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#configurable-registration">3.3.3.1. Configurable registration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#configurations">3.3.3.2. Configurations</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#configs-and-inputs">3.3.3.3. Configs and Inputs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#configuration-resourcebundle">3.3.3.4. Configuration ResourceBundle</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#validations-for-configs-and-inputs">3.3.3.5. Validations for Configs and Inputs</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#loading-external-connectors">3.3.4. Loading External Connectors</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#sqoop-2-mapreduce-job-execution-lifecycle-with-connector-api">3.3.5. Sqoop 2 MapReduce Job Execution Lifecycle with Connector API</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="DevEnv.html">3.4. Sqoop 2 Development Environment Setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="RESTAPI.html">3.5. Sqoop REST API Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Repository.html">3.6. Repository</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../security.html">4. Security Guide</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">Apache Sqoop</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../dev.html">3. Developer Guide</a> &raquo;</li>
+      
+    <li>3.3. Sqoop 2 Connector Development</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/dev/ConnectorDevelopment.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="sqoop-2-connector-development">
+<h1><a class="toc-backref" href="#id2">3.3. Sqoop 2 Connector Development</a><a class="headerlink" href="#sqoop-2-connector-development" title="Permalink to this headline">¶</a></h1>
+<p>This document describes how to implement a connector in the Sqoop 2 using the code sample from one of the built-in connectors ( <tt class="docutils literal"><span class="pre">GenericJdbcConnector</span></tt> ) as a reference. Sqoop 2 jobs support extraction from and/or loading to different data sources. Sqoop 2 connectors encapsulate the job lifecyle operations for extracting and/or loading data from and/or to
+different data sources. Each connector will primarily focus on a particular data source and its custom implementation for optimally reading and/or writing data in a distributed environment.</p>
+<div class="contents topic" id="contents">
+<p class="topic-title first">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#sqoop-2-connector-development" id="id2">Sqoop 2 Connector Development</a><ul>
+<li><a class="reference internal" href="#what-is-a-sqoop-connector" id="id3">What is a Sqoop Connector?</a><ul>
+<li><a class="reference internal" href="#when-do-we-add-a-new-connector" id="id4">When do we add a new connector?</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#connector-implementation" id="id5">Connector Implementation</a><ul>
+<li><a class="reference internal" href="#from" id="id6">From</a><ul>
+<li><a class="reference internal" href="#initializer-and-destroyer" id="id7">Initializer and Destroyer</a></li>
+<li><a class="reference internal" href="#partitioner" id="id8">Partitioner</a></li>
+<li><a class="reference internal" href="#extractor" id="id9">Extractor</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#to" id="id10">To</a><ul>
+<li><a class="reference internal" href="#id1" id="id11">Initializer and Destroyer</a></li>
+<li><a class="reference internal" href="#loader" id="id12">Loader</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#sqoop-connector-identifier-sqoopconnector-properties" id="id13">Sqoop Connector Identifier : sqoopconnector.properties</a></li>
+<li><a class="reference internal" href="#sqoop-connector-build-time-dependencies" id="id14">Sqoop Connector Build-time Dependencies</a></li>
+<li><a class="reference internal" href="#sqoop-connector-build" id="id15">Sqoop Connector Build</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#configurables" id="id16">Configurables</a><ul>
+<li><a class="reference internal" href="#configurable-registration" id="id17">Configurable registration</a></li>
+<li><a class="reference internal" href="#configurations" id="id18">Configurations</a></li>
+<li><a class="reference internal" href="#configs-and-inputs" id="id19">Configs and Inputs</a><ul>
+<li><a class="reference internal" href="#empty-configuration" id="id20">Empty Configuration</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#configuration-resourcebundle" id="id21">Configuration ResourceBundle</a></li>
+<li><a class="reference internal" href="#validations-for-configs-and-inputs" id="id22">Validations for Configs and Inputs</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#loading-external-connectors" id="id23">Loading External Connectors</a></li>
+<li><a class="reference internal" href="#sqoop-2-mapreduce-job-execution-lifecycle-with-connector-api" id="id24">Sqoop 2 MapReduce Job Execution Lifecycle with Connector API</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="what-is-a-sqoop-connector">
+<h2><a class="toc-backref" href="#id3">3.3.1. What is a Sqoop Connector?</a><a class="headerlink" href="#what-is-a-sqoop-connector" title="Permalink to this headline">¶</a></h2>
+<p>Connectors provide the facility to interact with many data sources and thus can be used as a means to transfer data between them in Sqoop. The connector implementation will provide logic to read from and/or write to a data source that it represents. For instance the ( <tt class="docutils literal"><span class="pre">GenericJdbcConnector</span></tt> ) encapsulates the logic to read from and/or write to jdbc enabled relational data sources. The connector part that enables reading from a data source and transferring this data to internal Sqoop format is called the FROM and the part that enables writng data to a data source by transferring data from Sqoop format is called TO. In order to interact with these data sources, the connector will provide one or many config classes and input fields within it.</p>
+<p>Broadly we support two main config types for connectors, link type represented by the enum <tt class="docutils literal"><span class="pre">ConfigType.LINK</span></tt> and job type represented by the enum <tt class="docutils literal"><span class="pre">ConfigType.JOB</span></tt>. Link config represents the properties to physically connect to the data source. Job config represent the properties that are required to invoke reading from and/or writing to particular dataset in the data source it connects to. If a connector supports both reading from and writing to, it will provide the <tt class="docutils literal"><span class="pre">FromJobConfig</span></tt> and <tt class="docutils literal"><span class="pre">ToJobConfig</span></tt> objects. Each of these config objects are custom to each connector and can have one or more inputs associated with each of the Link, FromJob and ToJob config types. Hence we call the connectors as configurables i.e an entity that can provide configs for interacting with the data source it represents. As the connectors evolve over time to support new features in their data sources, the configs and inputs will change as well. Thus the connector API also provides methods for upgrading the config and input names and data related to these data sources across different versions.</p>
+<p>The connectors implement logic for various stages of the extract/load process using the connector API described below. While extracting/reading data from the data-source the main stages are <tt class="docutils literal"><span class="pre">Initializer</span></tt>, <tt class="docutils literal"><span class="pre">Partitioner</span></tt>, <tt class="docutils literal"><span class="pre">Extractor</span></tt> and <tt class="docutils literal"><span class="pre">Destroyer</span></tt>. While loading/writitng data to the data source the main stages currently supported are <tt class="docutils literal"><span class="pre">Initializer</span></tt>, <tt class="docutils literal"><span class="pre">Loader</span></tt> and <tt class="docutils literal"><span class="pre">Destroyer</span></tt>. Each stage has its unique set of responsibilities that are explained in detail below. Since connectors understand the internals of the data source they represent, they work in tandem with the sqoop supported execution engines such as MapReduce or Spark (in future) to accomplish this process in a most optimal way.</p>
+<div class="section" id="when-do-we-add-a-new-connector">
+<h3><a class="toc-backref" href="#id4">3.3.1.1. When do we add a new connector?</a><a class="headerlink" href="#when-do-we-add-a-new-connector" title="Permalink to this headline">¶</a></h3>
+<p>You add a new connector when you need to extract/read data from a new data source, or load/write
+data into a new data source that is not supported yet in Sqoop 2.
+In addition to the connector API, Sqoop 2 also has an submission and execution engine interface.
+At the moment the only supported engine is MapReduce, but we may support additional engines in the future such as Spark. Since many parallel execution engines are capable of reading/writing data, there may be a question of whether adding support for a new data source should be done through the connector or the execution engine API.</p>
+<p><strong>Our guideline are as follows:</strong> Connectors should manage all data extract(reading) from and/or load(writing) into a data source. Submission and execution engine together manage the job submission and execution life cycle to read/write data from/to data sources in the most optimal way possible. If you need to support a new data store and details of linking to it and don&#8217;t care how the process of reading/writing from/to happens then you are looking to add a connector and you should continue reading the below Connector API details to contribute new connectors to Sqoop 2.</p>
+</div>
+</div>
+<div class="section" id="connector-implementation">
+<h2><a class="toc-backref" href="#id5">3.3.2. Connector Implementation</a><a class="headerlink" href="#connector-implementation" title="Permalink to this headline">¶</a></h2>
+<p>The <tt class="docutils literal"><span class="pre">SqoopConnector</span></tt> class defines an API for the connectors that must be implemented by the connector developers. Each Connector must extend <tt class="docutils literal"><span class="pre">SqoopConnector</span></tt> and override the methods shown below.</p>
+<div class="highlight-none"><div class="highlight"><pre>public abstract String getVersion();
+public abstract ResourceBundle getBundle(Locale locale);
+public abstract Class getLinkConfigurationClass();
+public abstract Class getJobConfigurationClass(Direction direction);
+public abstract From getFrom();
+public abstract To getTo();
+public abstract ConnectorConfigurableUpgrader getConfigurableUpgrader(String oldConnectorVersion)
+</pre></div>
+</div>
+<p>Connectors can optionally override the following methods:</p>
+<div class="highlight-none"><div class="highlight"><pre>public List&lt;Direction&gt; getSupportedDirections();
+public Class&lt;? extends IntermediateDataFormat&lt;?&gt;&gt; getIntermediateDataFormat()
+</pre></div>
+</div>
+<p>The <tt class="docutils literal"><span class="pre">getVersion</span></tt> method returns the current version of the connector
+It is important to provide a unique identifier every time a connector jar is released externally.
+In case of the Sqoop built-in connectors, the version refers to the Sqoop build/release version. External
+connectors can also use the same or similar mechanism to set this version. The version number is critical for
+the connector upgrade logic used in Sqoop</p>
+<div class="highlight-none"><div class="highlight"><pre>@Override
+ public String getVersion() {
+  return VersionInfo.getBuildVersion();
+ }
+</pre></div>
+</div>
+<p>The <tt class="docutils literal"><span class="pre">getFrom</span></tt> method returns <a class="reference internal" href="#from">From</a> instance
+which is a <tt class="docutils literal"><span class="pre">Transferable</span></tt> entity that encapsulates the operations
+needed to read from the data source that the connector represents.</p>
+<p>The <tt class="docutils literal"><span class="pre">getTo</span></tt> method returns <a class="reference internal" href="#to">To</a> instance
+which is a <tt class="docutils literal"><span class="pre">Transferable</span></tt> entity that encapsulates the operations
+needed to write to the data source that the connector represents.</p>
+<p>Methods such as <tt class="docutils literal"><span class="pre">getBundle</span></tt> , <tt class="docutils literal"><span class="pre">getLinkConfigurationClass</span></tt> , <tt class="docutils literal"><span class="pre">getJobConfigurationClass</span></tt>
+are related to <a class="reference internal" href="#configurations">Configurations</a></p>
+<p>Since a connector represents a data source and it can support one of the two directions, either reading FROM its data source or writing to its data souurce or both, the <tt class="docutils literal"><span class="pre">getSupportedDirections</span></tt> method returns a list of directions that a connector will implement. This should be a subset of the values in the <tt class="docutils literal"><span class="pre">Direction</span></tt> enum we provide:</p>
+<div class="highlight-none"><div class="highlight"><pre>public List&lt;Direction&gt; getSupportedDirections() {
+    return Arrays.asList(new Direction[]{
+        Direction.FROM,
+        Direction.TO
+    });
+}
+</pre></div>
+</div>
+<div class="section" id="from">
+<h3><a class="toc-backref" href="#id6">3.3.2.1. From</a><a class="headerlink" href="#from" title="Permalink to this headline">¶</a></h3>
+<p>The <tt class="docutils literal"><span class="pre">getFrom</span></tt> method returns <a class="reference internal" href="#from">From</a> instance which is a <tt class="docutils literal"><span class="pre">Transferable</span></tt> entity that encapsulates the operations needed to read from the data source the connector represents. The built-in <tt class="docutils literal"><span class="pre">GenericJdbcConnector</span></tt> defines <tt class="docutils literal"><span class="pre">From</span></tt> like this.</p>
+<div class="highlight-none"><div class="highlight"><pre>private static final From FROM = new From(
+      GenericJdbcFromInitializer.class,
+      GenericJdbcPartitioner.class,
+      GenericJdbcExtractor.class,
+      GenericJdbcFromDestroyer.class);
+...
+
+@Override
+public From getFrom() {
+  return FROM;
+}
+</pre></div>
+</div>
+<div class="section" id="initializer-and-destroyer">
+<h4><a class="toc-backref" href="#id7">3.3.2.1.1. Initializer and Destroyer</a><a class="headerlink" href="#initializer-and-destroyer" title="Permalink to this headline">¶</a></h4>
+<p>Initializer is instantiated before the submission of sqoop job to the execution engine and doing preparations such as connecting to the data source, creating temporary tables or adding dependent jar files. Initializers are executed as the first step in the sqoop job lifecyle. All interactions within an initializer are assumed to occur within a single thread, so state can be maintained between method calls (such as database connections). Here is the <tt class="docutils literal"><span class="pre">Initializer</span></tt> API.</p>
+<div class="highlight-none"><div class="highlight"><pre>public abstract void initialize(InitializerContext context, LinkConfiguration linkConfiguration,
+    JobConfiguration jobConfiguration);
+
+public List&lt;String&gt; getJars(InitializerContext context, LinkConfiguration linkConfiguration,
+    JobConfiguration jobConfiguration){
+     return new LinkedList&lt;String&gt;();
+    }
+
+public abstract Schema getSchema(InitializerContext context, LinkConfiguration linkConfiguration,
+    JobConfiguration jobConfiguration) {
+       return new NullSchema();
+    }
+</pre></div>
+</div>
+<p>In addition to the initialize() method where the job execution preparation activities occur, the <tt class="docutils literal"><span class="pre">Initializer</span></tt> can also implement the getSchema() method for the directions <tt class="docutils literal"><span class="pre">FROM</span></tt> and <tt class="docutils literal"><span class="pre">TO</span></tt> that it supports.</p>
+<p>The getSchema() method is used by the sqoop system to match the data extracted/read by the <tt class="docutils literal"><span class="pre">From</span></tt> instance of connector data source with the data loaded/written to the <tt class="docutils literal"><span class="pre">To</span></tt> instance of the connector data source. In case of a relational database or columnar database, the returned Schema object will include collection of columns with their data types. If the data source is schema-less, such as a file, a default <tt class="docutils literal"><span class="pre">NullSchema</span></tt> will be used (i.e a Schema object without any columns).</p>
+<p>NOTE: Sqoop 2 currently does not support extract and load between two connectors that represent schema-less data sources. We expect that atleast the <tt class="docutils literal"><span class="pre">From</span></tt> instance of the connector or the <tt class="docutils literal"><span class="pre">To</span></tt> instance of the connector in the sqoop job will have a schema. If both <tt class="docutils literal"><span class="pre">From</span></tt> and <tt class="docutils literal"><span class="pre">To</span></tt> have a associated non empty schema, Sqoop 2 will load data by column name, i.e, data in column &#8220;A&#8221; in <tt class="docutils literal"><span class="pre">From</span></tt> instance of the connector for the job will be loaded to column &#8220;A&#8221; in the <tt class="docutils literal"><span class="pre">To</span></tt> instance of the connector for that job.</p>
+<p><tt class="docutils literal"><span class="pre">Destroyer</span></tt> is instantiated after the execution engine finishes its processing. It is the last step in the sqoop job lifecyle, so pending clean up tasks such as dropping temporary tables and closing connections. The term destroyer is a little misleading. It represents the phase where the final output commits to the data source can also happen in case of the <tt class="docutils literal"><span class="pre">TO</span></tt> instance of the connector code.</p>
+</div>
+<div class="section" id="partitioner">
+<h4><a class="toc-backref" href="#id8">3.3.2.1.2. Partitioner</a><a class="headerlink" href="#partitioner" title="Permalink to this headline">¶</a></h4>
+<p>The <tt class="docutils literal"><span class="pre">Partitioner</span></tt> creates <tt class="docutils literal"><span class="pre">Partition</span></tt> instances ranging from 1..N. The N is driven by a configuration as well. The default set of partitions created is set to 10 in the sqoop code. Here is the <tt class="docutils literal"><span class="pre">Partitioner</span></tt> API</p>
+<p><tt class="docutils literal"><span class="pre">Partitioner</span></tt> must implement the <tt class="docutils literal"><span class="pre">getPartitions</span></tt> method in the <tt class="docutils literal"><span class="pre">Partitioner</span></tt> API.</p>
+<div class="highlight-none"><div class="highlight"><pre>public abstract List&lt;Partition&gt; getPartitions(PartitionerContext context,
+    LinkConfiguration linkConfiguration, FromJobConfiguration jobConfiguration);
+</pre></div>
+</div>
+<p><tt class="docutils literal"><span class="pre">Partition</span></tt> instances are passed to <a class="reference internal" href="#extractor">Extractor</a> as the argument of <tt class="docutils literal"><span class="pre">extract</span></tt> method.
+<a class="reference internal" href="#extractor">Extractor</a> determines which portion of the data to extract by a given partition.</p>
+<p>There is no actual convention for Partition classes other than being actually <tt class="docutils literal"><span class="pre">Writable</span></tt> and <tt class="docutils literal"><span class="pre">toString()</span></tt> -able. Here is the <tt class="docutils literal"><span class="pre">Partition</span></tt> API</p>
+<div class="highlight-none"><div class="highlight"><pre>public abstract class Partition {
+  public abstract void readFields(DataInput in) throws IOException;
+  public abstract void write(DataOutput out) throws IOException;
+  public abstract String toString();
+}
+</pre></div>
+</div>
+<p>Connectors can implement custom <tt class="docutils literal"><span class="pre">Partition</span></tt> classes. <tt class="docutils literal"><span class="pre">GenericJdbcPartitioner</span></tt> is one such example. It returns the <tt class="docutils literal"><span class="pre">GenericJdbcPartition</span></tt> objects.</p>
+</div>
+<div class="section" id="extractor">
+<h4><a class="toc-backref" href="#id9">3.3.2.1.3. Extractor</a><a class="headerlink" href="#extractor" title="Permalink to this headline">¶</a></h4>
+<p>Extractor (E for ETL) extracts data from a given data source
+<tt class="docutils literal"><span class="pre">Extractor</span></tt> must implement the <tt class="docutils literal"><span class="pre">extract</span></tt> method in the <tt class="docutils literal"><span class="pre">Extractor</span></tt> API.</p>
+<div class="highlight-none"><div class="highlight"><pre>public abstract void extract(ExtractorContext context,
+                             LinkConfiguration linkConfiguration,
+                             JobConfiguration jobConfiguration,
+                             SqoopPartition partition);
+</pre></div>
+</div>
+<p>The <tt class="docutils literal"><span class="pre">extract</span></tt> method extracts data from the data source using the link and job configuration properties and writes it to the <tt class="docutils literal"><span class="pre">SqoopMapDataWriter</span></tt> (provided in the extractor context given to the extract method).
+The <tt class="docutils literal"><span class="pre">SqoopMapDataWriter</span></tt> has the <tt class="docutils literal"><span class="pre">SqoopWritable</span></tt> thats holds the data read from the data source in the <a class="reference external" href="https://cwiki.apache.org/confluence/display/SQOOP/Sqoop2+Intermediate+representation">Intermediate Data Format representation</a></p>
+<p>Extractors use Writer&#8217;s provided by the ExtractorContext to send a record through the sqoop system.</p>
+<div class="highlight-none"><div class="highlight"><pre>context.getDataWriter().writeArrayRecord(array);
+</pre></div>
+</div>
+<p>The extractor must iterate through the given partition in the <tt class="docutils literal"><span class="pre">extract</span></tt> method.</p>
+<div class="highlight-none"><div class="highlight"><pre>while (resultSet.next()) {
+  ...
+  context.getDataWriter().writeArrayRecord(array);
+  ...
+}
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="to">
+<h3><a class="toc-backref" href="#id10">3.3.2.2. To</a><a class="headerlink" href="#to" title="Permalink to this headline">¶</a></h3>
+<p>The <tt class="docutils literal"><span class="pre">getTo</span></tt> method returns <tt class="docutils literal"><span class="pre">TO</span></tt> instance which is a <tt class="docutils literal"><span class="pre">Transferable</span></tt> entity that encapsulates the operations needed to wtite data to the data source the connector represents. The built-in <tt class="docutils literal"><span class="pre">GenericJdbcConnector</span></tt> defines <tt class="docutils literal"><span class="pre">To</span></tt> like this.</p>
+<div class="highlight-none"><div class="highlight"><pre>private static final To TO = new To(
+      GenericJdbcToInitializer.class,
+      GenericJdbcLoader.class,
+      GenericJdbcToDestroyer.class);
+...
+
+@Override
+public To getTo() {
+  return TO;
+}
+</pre></div>
+</div>
+<div class="section" id="id1">
+<h4><a class="toc-backref" href="#id11">3.3.2.2.1. Initializer and Destroyer</a><a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h4>
+<p><a class="reference internal" href="#initializer">Initializer</a> and <a class="reference internal" href="#destroyer">Destroyer</a> of a <tt class="docutils literal"><span class="pre">To</span></tt> instance are used in a similar way to those of a <tt class="docutils literal"><span class="pre">From</span></tt> instance.
+Refer to the previous section for more details.</p>
+</div>
+<div class="section" id="loader">
+<h4><a class="toc-backref" href="#id12">3.3.2.2.2. Loader</a><a class="headerlink" href="#loader" title="Permalink to this headline">¶</a></h4>
+<p>A loader (L for ETL) receives data from the <tt class="docutils literal"><span class="pre">From</span></tt> instance of the sqoop connector associated with the sqoop job and then loads it to an <tt class="docutils literal"><span class="pre">TO</span></tt> instance of the connector associated with the same sqoop job</p>
+<p><tt class="docutils literal"><span class="pre">Loader</span></tt> must implement <tt class="docutils literal"><span class="pre">load</span></tt> method of the <tt class="docutils literal"><span class="pre">Loader</span></tt> API</p>
+<div class="highlight-none"><div class="highlight"><pre>public abstract void load(LoaderContext context,
+                          ConnectionConfiguration connectionConfiguration,
+                          JobConfiguration jobConfiguration) throws Exception;
+</pre></div>
+</div>
+<p>The <tt class="docutils literal"><span class="pre">load</span></tt> method reads data from <tt class="docutils literal"><span class="pre">SqoopOutputFormatDataReader</span></tt> (provided in the loader context of the load methods). It reads the data in the <a class="reference external" href="https://cwiki.apache.org/confluence/display/SQOOP/Sqoop2+Intermediate+representation">Intermediate Data Format representation</a> and loads it to the data source.</p>
+<p>Loader must iterate in the <tt class="docutils literal"><span class="pre">load</span></tt> method until the data from <tt class="docutils literal"><span class="pre">DataReader</span></tt> is exhausted.</p>
+<div class="highlight-none"><div class="highlight"><pre>while ((array = context.getDataReader().readArrayRecord()) != null) {
+  ...
+}
+</pre></div>
+</div>
+<p>NOTE: we do not yet support a stage for connector developers to control how to balance the loading/writitng of data across the mutiple loaders. In future we may be adding this to the connector API to have custom logic to balance the loading across multiple reducers.</p>
+</div>
+</div>
+<div class="section" id="sqoop-connector-identifier-sqoopconnector-properties">
+<h3><a class="toc-backref" href="#id13">3.3.2.3. Sqoop Connector Identifier : sqoopconnector.properties</a><a class="headerlink" href="#sqoop-connector-identifier-sqoopconnector-properties" title="Permalink to this headline">¶</a></h3>
+<p>Every Sqoop 2 connector needs to have a sqoopconnector.properties in the packaged jar to be identified by Sqoop.
+A typical <tt class="docutils literal"><span class="pre">sqoopconnector.properties</span></tt> for a sqoop2 connector looks like below</p>
+<div class="highlight-none"><div class="highlight"><pre># Sqoop Foo Connector Properties
+org.apache.sqoop.connector.class = org.apache.sqoop.connector.foo.FooConnector
+org.apache.sqoop.connector.name = sqoop-foo-connector
+</pre></div>
+</div>
+<p>If the above file does not exist, then Sqoop will not load this jar and thus cannot be registered into Sqoop repository for creating Sqoop jobs</p>
+</div>
+<div class="section" id="sqoop-connector-build-time-dependencies">
+<h3><a class="toc-backref" href="#id14">3.3.2.4. Sqoop Connector Build-time Dependencies</a><a class="headerlink" href="#sqoop-connector-build-time-dependencies" title="Permalink to this headline">¶</a></h3>
+<p>Sqoop provides the connector-sdk module identified by the package:<tt class="docutils literal"><span class="pre">org.apache.sqoop.connector</span></tt> It provides the public facing apis for the external connectors
+to extend from. It also provides common utilities that the connectors can utilize for converting data to and from the sqoop intermediate data format</p>
+<p>The common-test module identified by the package  <tt class="docutils literal"><span class="pre">org.apache.sqoop.common.test</span></tt> provides utilities used related to the built-in connectors such as the JDBC, HDFS,
+and Kafka connectors that can be used by the external connectors for creating the end-end integration test for sqoop jobs</p>
+<dl class="docutils">
+<dt>The test module identified by the package <tt class="docutils literal"><span class="pre">org.apache.sqoop.test</span></tt> provides various minicluster utilites the integration tests can extend from to run</dt>
+<dd>a sqoop job with the given sqoop connector either using it as a <tt class="docutils literal"><span class="pre">FROM</span></tt> or <tt class="docutils literal"><span class="pre">TO</span></tt> data-source</dd>
+</dl>
+<p>Hence the pom.xml for the sqoop kite connector built using the kite-sdk  might look something like below</p>
+<div class="highlight-none"><div class="highlight"><pre> &lt;dependencies&gt;
+  &lt;!-- Sqoop modules --&gt;
+  &lt;dependency&gt;
+    &lt;groupId&gt;org.apache.sqoop&lt;/groupId&gt;
+    &lt;artifactId&gt;connector-sdk&lt;/artifactId&gt;
+  &lt;/dependency&gt;
+
+  &lt;!-- Testing specified modules --&gt;
+  &lt;dependency&gt;
+    &lt;groupId&gt;org.testng&lt;/groupId&gt;
+    &lt;artifactId&gt;testng&lt;/artifactId&gt;
+    &lt;scope&gt;test&lt;/scope&gt;
+  &lt;/dependency&gt;
+  &lt;dependency&gt;
+    &lt;groupId&gt;org.mockito&lt;/groupId&gt;
+    &lt;artifactId&gt;mockito-all&lt;/artifactId&gt;
+    &lt;scope&gt;test&lt;/scope&gt;
+  &lt;/dependency&gt;
+   &lt;dependency&gt;
+     &lt;groupId&gt;org.apache.sqoop&lt;/groupId&gt;
+     &lt;artifactId&gt;sqoop-common-test&lt;/artifactId&gt;
+   &lt;/dependency&gt;
+
+   &lt;dependency&gt;
+     &lt;groupId&gt;org.apache.sqoop&lt;/groupId&gt;
+     &lt;artifactId&gt;test&lt;/artifactId&gt;
+   &lt;/dependency&gt;
+  &lt;!-- Connector required modules --&gt;
+  &lt;dependency&gt;
+    &lt;groupId&gt;org.kitesdk&lt;/groupId&gt;
+    &lt;artifactId&gt;kite-data-core&lt;/artifactId&gt;
+  &lt;/dependency&gt;
+  ....
+&lt;/dependencies&gt;
+</pre></div>
+</div>
+</div>
+<div class="section" id="sqoop-connector-build">
+<h3><a class="toc-backref" href="#id15">3.3.2.5. Sqoop Connector Build</a><a class="headerlink" href="#sqoop-connector-build" title="Permalink to this headline">¶</a></h3>
+<p>Sqoop 2 supports connectors to package their dependencies into the <tt class="docutils literal"><span class="pre">lib</span></tt> directory inside the connector jar to provide classpath isolation between connectors. Add the following to the pom.xml for the connector:</p>
+<div class="highlight-none"><div class="highlight"><pre>&lt;plugins&gt;
+  &lt;plugin&gt;
+    &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+    &lt;artifactId&gt;maven-assembly-plugin&lt;/artifactId&gt;
+    &lt;version&gt;${maven-assembly-plugin.version}&lt;/version&gt;
+    &lt;dependencies&gt;
+      &lt;dependency&gt;
+        &lt;groupId&gt;org.apache.sqoop&lt;/groupId&gt;
+        &lt;artifactId&gt;sqoop-assemblies&lt;/artifactId&gt;
+        &lt;version&gt;${sqoop.version}&lt;/version&gt;
+      &lt;/dependency&gt;
+    &lt;/dependencies&gt;
+    &lt;executions&gt;
+      &lt;execution&gt;
+        &lt;id&gt;make-assembly&lt;/id&gt;
+        &lt;phase&gt;package&lt;/phase&gt;
+        &lt;goals&gt;
+          &lt;goal&gt;single&lt;/goal&gt;
+        &lt;/goals&gt;
+        &lt;configuration&gt;
+          &lt;finalName&gt;${project.artifactId}-${project.version}&lt;/finalName&gt;
+          &lt;appendAssemblyId&gt;false&lt;/appendAssemblyId&gt;
+          &lt;descriptorRefs&gt;
+            &lt;descriptorRef&gt;sqoop-connector&lt;/descriptorRef&gt;
+          &lt;/descriptorRefs&gt;
+        &lt;/configuration&gt;
+      &lt;/execution&gt;
+    &lt;/executions&gt;
+  &lt;/plugin&gt;
+&lt;/plugins&gt;
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="configurables">
+<h2><a class="toc-backref" href="#id16">3.3.3. Configurables</a><a class="headerlink" href="#configurables" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="configurable-registration">
+<h3><a class="toc-backref" href="#id17">3.3.3.1. Configurable registration</a><a class="headerlink" href="#configurable-registration" title="Permalink to this headline">¶</a></h3>
+<p>One of the currently supported configurable in Sqoop are the connectors. Sqoop 2 registers definitions of connectors from the file named <tt class="docutils literal"><span class="pre">sqoopconnector.properties</span></tt> which each connector implementation should provide to become available in Sqoop.</p>
+<div class="highlight-none"><div class="highlight"><pre># Generic JDBC Connector Properties
+org.apache.sqoop.connector.class = org.apache.sqoop.connector.jdbc.GenericJdbcConnector
+org.apache.sqoop.connector.name = generic-jdbc-connector
+</pre></div>
+</div>
+</div>
+<div class="section" id="configurations">
+<h3><a class="toc-backref" href="#id18">3.3.3.2. Configurations</a><a class="headerlink" href="#configurations" title="Permalink to this headline">¶</a></h3>
+<p>Implementations of <tt class="docutils literal"><span class="pre">SqoopConnector</span></tt> overrides methods such as <tt class="docutils literal"><span class="pre">getLinkConfigurationClass</span></tt> and <tt class="docutils literal"><span class="pre">getJobConfigurationClass</span></tt> returning configuration class.</p>
+<div class="highlight-none"><div class="highlight"><pre>@Override
+public Class getLinkConfigurationClass() {
+  return LinkConfiguration.class;
+}
+
+@Override
+public Class getJobConfigurationClass(Direction direction) {
+  switch (direction) {
+    case FROM:
+      return FromJobConfiguration.class;
+    case TO:
+      return ToJobConfiguration.class;
+    default:
+      return null;
+  }
+}
+</pre></div>
+</div>
+<p>Configurations are represented by annotations defined in <tt class="docutils literal"><span class="pre">org.apache.sqoop.model</span></tt> package.
+Annotations such as <tt class="docutils literal"><span class="pre">ConfigurationClass</span></tt> , <tt class="docutils literal"><span class="pre">ConfigClass</span></tt> , <tt class="docutils literal"><span class="pre">Config</span></tt> and <tt class="docutils literal"><span class="pre">Input</span></tt>
+are provided for defining configuration objects for each connector.</p>
+<p><tt class="docutils literal"><span class="pre">&#64;ConfigurationClass</span></tt> is a marker annotation for <tt class="docutils literal"><span class="pre">ConfigurationClasses</span></tt>  that hold a group or lis of <tt class="docutils literal"><span class="pre">ConfigClasses</span></tt> annotated with the marker <tt class="docutils literal"><span class="pre">&#64;ConfigClass</span></tt></p>
+<div class="highlight-none"><div class="highlight"><pre>@ConfigurationClass
+public class LinkConfiguration {
+
+  @Config public LinkConfig linkConfig;
+
+  public LinkConfiguration() {
+    linkConfig = new LinkConfig();
+  }
+}
+</pre></div>
+</div>
+<p>Each <tt class="docutils literal"><span class="pre">ConfigClass</span></tt> defines the different inputs it exposes for the link and job configs. These inputs are annotated with <tt class="docutils literal"><span class="pre">&#64;Input</span></tt> and the user will be asked to fill in when they create a sqoop job and choose to use this instance of the connector for either the <tt class="docutils literal"><span class="pre">From</span></tt> or <tt class="docutils literal"><span class="pre">To</span></tt> part of the job.</p>
+<div class="highlight-none"><div class="highlight"><pre>@ConfigClass(validators = {@Validator(LinkConfig.ConfigValidator.class)})
+public class LinkConfig {
+  @Input(size = 128, validators = {@Validator(NotEmpty.class), @Validator(ClassAvailable.class)} )
+  @Input(size = 128) public String jdbcDriver;
+  @Input(size = 128) public String connectionString;
+  @Input(size = 40)  public String username;
+  @Input(size = 40, sensitive = true) public String password;
+  @Input public Map&lt;String, String&gt; jdbcProperties;
+}
+</pre></div>
+</div>
+<p>Each <tt class="docutils literal"><span class="pre">ConfigClass</span></tt> and the  inputs within the configs annotated with <tt class="docutils literal"><span class="pre">Input</span></tt> can specifiy validators via the <tt class="docutils literal"><span class="pre">&#64;Validator</span></tt> annotation described below.</p>
+</div>
+<div class="section" id="configs-and-inputs">
+<h3><a class="toc-backref" href="#id19">3.3.3.3. Configs and Inputs</a><a class="headerlink" href="#configs-and-inputs" title="Permalink to this headline">¶</a></h3>
+<p>As discussed above, <tt class="docutils literal"><span class="pre">Input</span></tt> provides a way to express the type of config parameter exposed. In addition it allows connector developer to add attributes
+that describe how the input will be used in the sqoop job. Here are the list of the supported attributes</p>
+<p>Inputs associated with the link configuration include:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="18%" />
+<col width="6%" />
+<col width="45%" />
+<col width="31%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Attribute</th>
+<th class="head">Type</th>
+<th class="head">Description</th>
+<th class="head">Example</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>size</td>
+<td>Integer</td>
+<td>Describes the maximum size of the attribute value .</td>
+<td>&#64;Input(size = 128) public String driver</td>
+</tr>
+<tr class="row-odd"><td>sensitive</td>
+<td>Boolean</td>
+<td>Describes if the input value should be hidden from display</td>
+<td>&#64;Input(sensitive = true) public String password</td>
+</tr>
+<tr class="row-even"><td>sensitiveKeyPattern</td>
+<td>String</td>
+<td>If the config paramteter is a map, this java regular expression
+(<a class="reference external" href="http://docs.oracle.com/javase/7/docs/api/java/util/regex/Pattern.html">http://docs.oracle.com/javase/7/docs/api/java/util/regex/Pattern.html</a>)
+will be used to decide which keys are hidden from display.</td>
+<td>&#64;Input(sensitiveKeyPattern = &#8221;.*sensitive&#8221;)
+public Map&lt;String, String&gt; sensitiveMap</td>
+</tr>
+<tr class="row-odd"><td>editable</td>
+<td>Enum</td>
+<td>Describes the roles that can edit the value of this input</td>
+<td>&#64;Input(editable = ANY) public String value</td>
+</tr>
+<tr class="row-even"><td>overrides</td>
+<td>String</td>
+<td>Describes a list of other inputs this input can override in this config</td>
+<td>&#64;Input(overrides =&#8221;value&#8221;) public String lvalue</td>
+</tr>
+</tbody>
+</table>
+<p><tt class="docutils literal"><span class="pre">Editable</span></tt> Attribute: Possible values for the Enum InputEditable are USER_ONLY, CONNECTOR_ONLY, ANY. If an input says editable by USER_ONLY, then the connector code during the
+job run or upgrade cannot update the config input value. Similarly for a CONNECTOR_ONLY, user cannot update its value via the rest api or shell command line.</p>
+<p><tt class="docutils literal"><span class="pre">Overrides</span></tt> Attribute: USER_ONLY input attribute values cannot be overriden by other inputs.</p>
+<div class="section" id="empty-configuration">
+<h4><a class="toc-backref" href="#id20">3.3.3.3.1. Empty Configuration</a><a class="headerlink" href="#empty-configuration" title="Permalink to this headline">¶</a></h4>
+<p>If a connector does not have any configuration inputs to specify for the <tt class="docutils literal"><span class="pre">ConfigType.LINK</span></tt> or <tt class="docutils literal"><span class="pre">ConfigType.JOB</span></tt> it is recommended to return the <tt class="docutils literal"><span class="pre">EmptyConfiguration</span></tt> class in the <tt class="docutils literal"><span class="pre">getLinkConfigurationClass()</span></tt> or <tt class="docutils literal"><span class="pre">getJobConfigurationClass(..)</span></tt> methods.</p>
+<div class="highlight-none"><div class="highlight"><pre>@ConfigurationClass
+public class EmptyConfiguration { }
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="configuration-resourcebundle">
+<h3><a class="toc-backref" href="#id21">3.3.3.4. Configuration ResourceBundle</a><a class="headerlink" href="#configuration-resourcebundle" title="Permalink to this headline">¶</a></h3>
+<p>The config and its corresponding input names, the input field description are represented in the config resource bundle defined per connector.</p>
+<div class="highlight-none"><div class="highlight"><pre># jdbc driver
+connection.jdbcDriver.label = JDBC Driver Class
+connection.jdbcDriver.help = Enter the fully qualified class name of the JDBC \
+                   driver that will be used for establishing this connection.
+
+# connect string
+connection.connectionString.label = JDBC Connection String
+connection.connectionString.help = Enter the value of JDBC connection string to be \
+                   used by this connector for creating connections.
+
+...
+</pre></div>
+</div>
+<p>Those resources are loaded by <tt class="docutils literal"><span class="pre">getBundle</span></tt> method of the <tt class="docutils literal"><span class="pre">SqoopConnector.</span></tt></p>
+<div class="highlight-none"><div class="highlight"><pre>@Override
+public ResourceBundle getBundle(Locale locale) {
+  return ResourceBundle.getBundle(
+  GenericJdbcConnectorConstants.RESOURCE_BUNDLE_NAME, locale);
+}
+</pre></div>
+</div>
+</div>
+<div class="section" id="validations-for-configs-and-inputs">
+<h3><a class="toc-backref" href="#id22">3.3.3.5. Validations for Configs and Inputs</a><a class="headerlink" href="#validations-for-configs-and-inputs" title="Permalink to this headline">¶</a></h3>
+<p>Validators validate the config objects and the inputs associated with the config objects. For config objects themselves we encourage developers to write custom valdiators for both the link and job config types.</p>
+<div class="highlight-none"><div class="highlight"><pre>@Input(size = 128, validators = {@Validator(value = StartsWith.class, strArg = &quot;jdbc:&quot;)} )
+
+@Input(size = 255, validators = { @Validator(NotEmpty.class) })
+</pre></div>
+</div>
+<p>Sqoop 2 provides a list of standard input validators that can be used by different connectors for the link and job type configuration inputs.</p>
+<div class="highlight-none"><div class="highlight"><pre>public class NotEmpty extends AbstractValidator&lt;String&gt; {
+@Override
+public void validate(String instance) {
+  if (instance == null || instance.isEmpty()) {
+   addMessage(Status.ERROR, &quot;Can&#39;t be null nor empty&quot;);
+  }
+ }
+}
+</pre></div>
+</div>
+<p>The validation logic is executed when users creating the sqoop jobs input values for the link and job configs associated with the <tt class="docutils literal"><span class="pre">From</span></tt> and <tt class="docutils literal"><span class="pre">To</span></tt> instances of the connectors associated with the job.</p>
+</div>
+</div>
+<div class="section" id="loading-external-connectors">
+<h2><a class="toc-backref" href="#id23">3.3.4. Loading External Connectors</a><a class="headerlink" href="#loading-external-connectors" title="Permalink to this headline">¶</a></h2>
+<p>Loading new connector say sqoop-foo-connector to the sqoop2, here are the steps to follow</p>
+<ol class="arabic simple">
+<li>Create a <tt class="docutils literal"><span class="pre">sqoop-foo-connector.jar</span></tt>. Make sure the jar contains the <tt class="docutils literal"><span class="pre">sqoopconnector.properties</span></tt> for it to be picked up by Sqoop</li>
+<li>Add this jar to the <tt class="docutils literal"><span class="pre">org.apache.sqoop.classpath.extra</span></tt> property in the sqoop.properties located under the <tt class="docutils literal"><span class="pre">conf</span></tt> directory.</li>
+</ol>
+<div class="highlight-none"><div class="highlight"><pre># Sqoop application classpath
+# &quot;:&quot; separated list of jars to be included in sqoop.
+#
+org.apache.sqoop.classpath.extra=/path/to/connector.jar
+</pre></div>
+</div>
+<ol class="arabic simple" start="3">
+<li>Start the Sqoop 2 server and while initializing the server this jar should be loaded into the Sqoop 2&#8217;s class path and registered into the Sqoop 2 repository</li>
+</ol>
+</div>
+<div class="section" id="sqoop-2-mapreduce-job-execution-lifecycle-with-connector-api">
+<h2><a class="toc-backref" href="#id24">3.3.5. Sqoop 2 MapReduce Job Execution Lifecycle with Connector API</a><a class="headerlink" href="#sqoop-2-mapreduce-job-execution-lifecycle-with-connector-api" title="Permalink to this headline">¶</a></h2>
+<p>Sqoop 2 provides MapReduce utilities such as <tt class="docutils literal"><span class="pre">SqoopMapper</span></tt> and <tt class="docutils literal"><span class="pre">SqoopReducer</span></tt> that aid sqoop job execution.</p>
+<p>Note: Any class prefixed with Sqoop is a internal sqoop class provided for MapReduce and is not part of the conenector API. These internal classes work with the custom implementations of <tt class="docutils literal"><span class="pre">Extractor</span></tt>, <tt class="docutils literal"><span class="pre">Partitioner</span></tt> in the <tt class="docutils literal"><span class="pre">From</span></tt> instance and <tt class="docutils literal"><span class="pre">Loader</span></tt> in the <tt class="docutils literal"><span class="pre">To</span></tt> instance of the connector.</p>
+<p>When reading from a data source, the <tt class="docutils literal"><span class="pre">Extractor</span></tt> provided by the <tt class="docutils literal"><span class="pre">From</span></tt> instance of the connector extracts data from a corresponding data source it represents and the <tt class="docutils literal"><span class="pre">Loader</span></tt>, provided by the TO instance of the connector, loads data into the data source it represents.</p>
+<p>The diagram below describes the initialization phase of a job.
+<tt class="docutils literal"><span class="pre">SqoopInputFormat</span></tt> create splits using <tt class="docutils literal"><span class="pre">Partitioner</span></tt>.</p>
+<div class="highlight-none"><div class="highlight"><pre>    ,----------------.          ,-----------.
+    |SqoopInputFormat|          |Partitioner|
+    `-------+--------&#39;          `-----+-----&#39;
+ getSplits  |                         |
+-----------&gt;|                         |
+            |      getPartitions      |
+            |------------------------&gt;|
+            |                         |         ,---------.
+            |                         |-------&gt; |Partition|
+            |                         |         `----+----&#39;
+            |&lt;- - - - - - - - - - - - |              |
+            |                         |              |          ,----------.
+            |--------------------------------------------------&gt;|SqoopSplit|
+            |                         |              |          `----+-----&#39;
+</pre></div>
+</div>
+<p>The diagram below describes the map phase of a job.
+<tt class="docutils literal"><span class="pre">SqoopMapper</span></tt> invokes <tt class="docutils literal"><span class="pre">From</span></tt> connector&#8217;s extractor&#8217;s <tt class="docutils literal"><span class="pre">extract</span></tt> method.</p>
+<div class="highlight-none"><div class="highlight"><pre>    ,-----------.
+    |SqoopMapper|
+    `-----+-----&#39;
+   run    |
+---------&gt;|                                   ,------------------.
+          |----------------------------------&gt;|SqoopMapDataWriter|
+          |                                   `------+-----------&#39;
+          |                ,---------.               |
+          |--------------&gt; |Extractor|               |
+          |                `----+----&#39;               |
+          |      extract        |                    |
+          |--------------------&gt;|                    |
+          |                     |                    |
+         read from Data Source  |                    |
+&lt;-------------------------------|      write*        |
+          |                     |-------------------&gt;|
+          |                     |                    |           ,-------------.
+          |                     |                    |----------&gt;|SqoopWritable|
+          |                     |                    |           `----+--------&#39;
+          |                     |                    |                |
+          |                     |                    |                |  context.write(writable, ..)
+          |                     |                    |                |----------------------------&gt;
+</pre></div>
+</div>
+<p>The diagram below decribes the reduce phase of a job.
+<tt class="docutils literal"><span class="pre">OutputFormat</span></tt> invokes <tt class="docutils literal"><span class="pre">To</span></tt> connector&#8217;s loader&#8217;s <tt class="docutils literal"><span class="pre">load</span></tt> method (via <tt class="docutils literal"><span class="pre">SqoopOutputFormatLoadExecutor</span></tt> ).</p>
+<div class="highlight-none"><div class="highlight"><pre>  ,------------.  ,---------------------.
+  |SqoopReducer|  |SqoopNullOutputFormat|
+  `---+--------&#39;  `----------+----------&#39;
+      |                 |   ,-----------------------------.
+      |                 |-&gt; |SqoopOutputFormatLoadExecutor|
+      |                 |   `--------------+--------------&#39;              |
+      |                 |                  |                             |
+      |                 |                  |   ,-----------------.   ,-------------.
+      |                 |                  |-&gt; |SqoopRecordWriter|--&gt;|SqoopWritable|
+    getRecordWriter     |                  |   `--------+--------&#39;   `---+---------&#39;
+-----------------------&gt;| getRecordWriter  |            |                |
+      |                 |-----------------&gt;|            |                |     ,--------------.
+      |                 |                  |----------------------------------&gt;|ConsumerThread|
+      |                 |                  |            |                |     `------+-------&#39;
+      |                 |&lt;- - - - - - - - -|            |                |            |    ,------.
+&lt;- - - - - - - - - - - -|                  |            |                |            |---&gt;|Loader|
+      |                 |                  |            |                |            |    `--+---&#39;
+      |                 |                  |            |                |            |       |
+      |                 |                  |            |                |            | load  |
+ run  |                 |                  |            |                |            |------&gt;|
+-----&gt;|                 |     write        |            |                |            |       |
+      |------------------------------------------------&gt;| setContent     |            | read* |
+      |                 |                  |            |---------------&gt;| getContent |&lt;------|
+      |                 |                  |            |                |&lt;-----------|       |
+      |                 |                  |            |                |            | - - -&gt;|
+      |                 |                  |            |                |            |       | write into Data Source
+      |                 |                  |            |                |            |       |-----------------------&gt;
+</pre></div>
+</div>
+<p>More details can be found in <a class="reference external" href="https://cwiki.apache.org/confluence/display/SQOOP/Sqoop+MR+Execution+Engine">Sqoop MR Execution Engine</a></p>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="DevEnv.html" class="btn btn-neutral float-right" title="3.4. Sqoop 2 Development Environment Setup" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="ClientAPI.html" class="btn btn-neutral" title="3.2. Sqoop Java Client API Guide" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2009-2016 The Apache Software Foundation.
+
+    </p>
+  </div> 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>
