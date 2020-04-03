@@ -1,0 +1,111 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: hbase-master
+spec:
+  clusterIP: None
+  selector:
+    app: hbase-master
+  ports:
+    - name: rpc
+      port: 16000
+    - name: http
+      port: 16010
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hbase-master
+  labels:
+    app: hbase-master  
+spec:
+  selector:
+    matchLabels:
+      app: hbase-master 
+  template:
+    metadata:
+      labels:
+        app: hbase-master
+    spec:
+      containers:
+      - env:
+        - name: POD_NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        - name: HBASE_SERVER_TYPE
+          value: master
+        - name: HDFS_PATH
+          value: hadoop-hdfs-master:9000
+        - name: ZOOKEEPER_SERVICE_LIST
+          value: zk-cs
+        - name: ZOOKEEPER_PORT
+          value: "2181"
+        image: hbase:2.2.4
+        imagePullPolicy: IfNotPresent
+        name: hbase-master
+        ports:
+        - containerPort: 16000
+          protocol: TCP
+        - containerPort: 16010
+          protocol: TCP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: hbase-region-1
+spec:
+  clusterIP: None
+  selector:
+    app: hbase-region-1
+  ports:
+    - name: rpc
+      port: 16020
+    - name: http
+      port: 16030
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: hbase-region-1
+  name: hbase-region-1
+spec:
+  selector:
+    matchLabels:
+      app: hbase-region-1
+  template:
+    metadata:
+      labels:
+        app: hbase-master
+    spec:    
+      containers:
+      - env:
+        - name: POD_NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        - name: HBASE_SERVER_TYPE
+          value: regionserver
+        - name: HDFS_PATH
+          value: hadoop-hdfs-master:9000
+        - name: ZOOKEEPER_SERVICE_LIST
+          value: zk-cs
+        - name: ZOOKEEPER_PORT
+          value: "2181"
+        image: hbase:2.2.4
+        imagePullPolicy: IfNotPresent
+        name: hbase-region-1
+        ports:
+        - containerPort: 16020
+          protocol: TCP
+        - containerPort: 16030
+          protocol: TCP
